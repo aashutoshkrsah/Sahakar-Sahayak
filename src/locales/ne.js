@@ -1,0 +1,155 @@
+export default {
+  // Nav & Sidebar
+  dashboard: "ड्यासबोर्ड",
+  askSahayak: "सहायकलाई सोध्नुहोस्",
+  cooperativeGuide: "सहकारी निर्देशिका",
+  legalResources: "कानूनी स्रोतहरू",
+  documents: "कागजात मार्गनिर्देशन",
+  savedAnswers: "सुरक्षित उत्तरहरू",
+  chatHistory: "कुराकानी इतिहास",
+  helpSupport: "मद्दत र समर्थन",
+  settings: "सेटिङहरू",
+  profile: "प्रयोगकर्ता प्रोफाइल",
+  login: "लग इन",
+  logout: "लग आउट",
+  register: "दर्ता गर्नुहोस्",
+  guestMode: "अतिथि मोड",
+  welcomeBack: "स्वागत छ",
+  howCanIHelp: "सहकार सहायकले आज तपाईंलाई कसरी मद्दತ गर्न सक्छ?",
+  searchQuestionPlaceholder: "सहकारी सम्बन्धी प्रश्न सोध्नुहोस्...",
+
+  // General Action Buttons
+  save: "बचत गर्नुहोस्",
+  cancel: "रद्द गर्नुहोस्",
+  submit: "पेश गर्नुहोस्",
+  edit: "सम्पादन गर्नुहोस्",
+  delete: "हटाउनुहोस्",
+  back: "पछाडि",
+  search: "खोज्नुहोस्",
+  viewDetails: "विवरण हेर्नुहोस्",
+  download: "डाउनलोड",
+  clear: "सफा गर्नुहोस्",
+
+  // Landing Page
+  landingTitle: "सहकारी शासन अब एकदमै सरल",
+  landingSubtitle: "तपाईंको बहुभाषिक डिजिटल सहायक मार्फत सहकारी शासन, प्रक्रिया, कागजात र कानूनी प्रावधानहरूको बारेमा भरपर्दो र बुझ्न सजिलो जानकारी प्राप्त गर्नुहोस्।",
+  trustIndicatorMultilingual: "बहुभाषिक",
+  trustIndicatorEasy: "बुझ्न सजिलो",
+  trustIndicatorAvailable: "सधैं उपलब्ध",
+  ctaAskSahayak: "सहायकलाई सोध्नुहोस्",
+  ctaExploreGuide: "सहकारी निर्देशिका खोज्नुहोस्",
+  whatCanHelpWith: "सहकार सहायकले तपाईंलाई केमा मद्दत गर्न सक्छ?",
+  featuresTitle: "सहकार सहायक किन प्रयोग गर्ने?",
+
+  // Features List
+  featAiAssistantTitle: "एआई सहकारी सहायक",
+  featAiAssistantDesc: "प्राकृतिक भाषामा सहकारी शासन सम्बन्धी प्रश्नहरू सोध्नुहोस्।",
+  featMultilingualTitle: "बहुभाषिक सहयोग",
+  featMultilingualDesc: "प्रयोगकर्ताहरूलाई धेरै समर्थित भाषाहरू प्रयोग गरेर अन्तरक्रिया गर्न अनुमति दिनुहोस्।",
+  featLegalInfoTitle: "कानूनी र शासन जानकारी",
+  featLegalInfoDesc: "सान्दर्भिक सहकारी नियम र प्रक्रियाहरूको बुझ्न सजिलो व्याख्या प्रदान गर्नुहोस्।",
+  featDocGuidanceTitle: "कागजात निर्देशन",
+  featDocGuidanceDesc: "सामान्य सहकारी प्रक्रियाहरूको लागि आवश्यक कागजातहरू बुझ्न प्रयोगकर्ताहरूलाई मद्दत गर्नुहोस्।",
+  featSourceBasedTitle: "स्रोतमा आधारित जानकारी",
+  featSourceBasedDesc: "उपलब्ध हुँदा सन्दर्भ वा स्रोत कागजातहरू देखाउनुहोस्।",
+  featAvailableAnytimeTitle: "सधैं उपलब्ध",
+  featAvailableAnytimeDesc: "सामान्य जानकारीको लागि कार्यालय जानु नपर्ने गरी निर्देशिका प्राप्त गर्नुहोस्।",
+
+  // Chatbot Screen
+  chatInitialGreeting: "नमस्ते! 👋 म सहायक हुँ। म तपाईंलाई सहकारी शासन, प्रक्रिया, कागजात र सम्बन्धित कानूनी जानकारी बुझ्न मद्दत गर्न सक्छु। तपाईं के जान्न चाहनुहुन्छ?",
+  chatPlaceholder: "सहकारी शासनको बारेमा सोध्नुहोस्...",
+  chatPreparingAnswer: "सहायकले तपाईंको उत्तर तयार गर्दैछ...",
+  chatDisclaimer: "सहकार सहायकले जानकारीमूलक मार्गदर्शन मात्र प्रदान गर्दछ र योग्य कानूनी पेशेवर वा सक्षम अधिकारीको सल्लाहलाई प्रतिस्थापन गर्दैन।",
+  relatedSources: "सम्बन्धित स्रोतहरू",
+  suggestedQuestions: "सुझाव गरिएका प्रश्नहरू",
+  viewSource: "स्रोत हेर्नुहोस्",
+  reportIncorrect: "गलत उत्तर रिपोर्ट गर्नुहोस्",
+  savedToBookmarks: "उत्तर सुरक्षित गरियो!",
+  removedFromBookmarks: "बचत सूचीबाट हटाइयो!",
+
+  // Quick Action Cards
+  qaAskSahayak: "सहायकलाई सोध्नुहोस्",
+  qaExploreLaws: "सहकारी कानूनहरू खोज्ನುहोस्",
+  qaCheckDocs: "आवश्यक कागजात जाँच गर्नुहोस्",
+  qaUnderstandRights: "सदस्य अधिकार बुझ्नुहोस्",
+  qaViewSaved: "सुरक्षित उत्तरहरू हेर्नुहोस्",
+  qaContinueChat: "भर्खरको कुराकानी जारी राख्नुहोस्",
+
+  // Dashboard Indicators
+  statRecentConversations: "भर्खरका कुराकानीहरू",
+  statSavedAnswers: "सुरक्षित उत्तरहरू",
+  statDocuments: "कागजात प्रक्रियाहरू",
+  statResourcesExplored: "अन्वेषण गरिएका स्रोतहरू",
+  quickActions: "द्रुत कार्यहरू",
+  recentQuestions: "भर्खरका प्रश्नहरू",
+
+  // Cooperative Guide Page
+  guideDescription: "सहकारी अवधारणा, शासन प्रक्रिया र जिम्मेवारीहरू सरल भाषामा अन्वेषण गर्नुहोस्।",
+  guideSearchPlaceholder: "निर्देशिका लेखहरू खोज्नुहोस्...",
+
+  // Legal Resources Page
+  legalDescription: "आधिकारिक ऐन, सहकारी नीति र नियमनकारी दिशानिर्देशहरू ब्राउज गर्नुहोस्।",
+  legalSearchPlaceholder: "नियम, कानुन र निर्देशिकाहरू खोज्नुहोस्...",
+  categoryAll: "सबै",
+  categoryLaws: "कानुनहरू",
+  categoryRegulations: "नियमावलीहरू",
+  categoryGuidelines: "निर्देशिकाहरू",
+  categoryPolicies: "नीतिहरू",
+
+  // Document Guidance Page
+  docDescription: "आवश्यक कागजात चेकलिस्टहरू र मस्यौदा गाइडहरू हेर्नको लागि सहकारी प्रक्रिया चयन गर्नुहोस्।",
+  selectProcess: "सहकारी प्रक्रिया चयन गर्नुहोस्",
+  requiredDocsChecklist: "आवश्यक कागजातहरूको चेकलिस्ट",
+  askSahayakAboutDocs: "यी कागजातहरूको बारेमा सहायकलाई सोध्नुहोस्",
+
+  // Settings
+  settingsLanguage: "भाषा चयन",
+  settingsAppearance: "रंग र विषयवस्तु",
+  settingsAccessibility: "पहुँचयोग्यता (एक्सेसिबिलिटी) विकल्पहरू",
+  settingsChatPreferences: "कुराकानी प्राथमिकताहरू",
+  settingsPrivacy: "गोपनीयता सेटिङहरू",
+  themeLight: "उज्यालो मोड",
+  themeDark: "अध्यारो मोड",
+  themeSystem: "प्रणाली पूर्वनिರ್ಧಾರಿತ",
+  accLargerText: "ठूलो पाठ (१८px बेस)",
+  accHighContrast: "उच्च कन्ट्रास्ट रंगहरू",
+  prefShowSources: "स्रोत र सन्दर्भहरू देखाउनुहोस्",
+  prefSaveHistory: "कुराकानी इतिहास सुरक्षित गर्नुहोस्",
+  prefEnableVoice: "आवाज इनपुट सक्षम गर्नुहोस् (माइक्रोफोन)",
+  privClearHistory: "कुराकानी इतिहास सफा गर्नुहोस्",
+  privDataPrefs: "डाटा सुरक्षा प्राथमिकताहरू",
+  clearHistoryConfirm: "के तपाईं निश्चित रूपमा सबै कुराकानी इतिहास स्थायी रूपमा मेटाउन चाहनुहुन्छ?",
+
+  // Help & FAQ
+  helpTitle: "मद्दत र समर्थन",
+  helpSubtitle: "सहकार सहायक कसरी प्रयोग गर्ने र समस्याहरू कसरी समाधान गर्ने।",
+  faqTitle: "बारम्बार सोधिने प्रश्नहरू",
+  reportIssueTitle: "गलत जानकारी रिपोर्ट गर्नुहोस्",
+  reportIssueDesc: "कानूनी जानकारी भरपर्दो हुनुपर्ने हुनाले, हामीलाई सहायकको उत्तर सुधार्न मद्दत गर्न कृपया तपाईंले भेट्नुभएको कुनै पनि गलत उत्तर रिपोर्ट गर्नुहोस्।",
+  reportButton: "मुद्दा रिपोर्ट गर्नुहोस्",
+
+  // Auth
+  emailAddress: "इमेल ठेगाना",
+  password: "पासवर्ड",
+  confirmPassword: "पासवर्ड पुष्टि गर्नुहोस्",
+  fullName: "पूरा नाम",
+  preferredLang: "रुचाइएको भाषा",
+  userType: "प्रयोगकर्ताको प्रकार",
+  rememberMe: "मलाई सम्झनुहोस्",
+  forgotPassword: "पासवर्ड बिर्सनुभयो?",
+  dontHaveAccount: "खाता छैन? दर्ता गर्नुहोस्",
+  alreadyHaveAccount: "पहिले नै खाता छ? लग इन गर्नुहोस्",
+  continueAsGuest: "अतिथिको रूपमा जारी राख्नुहोस्",
+  typeMember: "सहकारी सदस्य",
+  typeManager: "सहकारी प्रबन्धक",
+  typeCitizen: "नागरिक",
+  typeStudent: "विद्यार्थी / अनुसन्धानकर्ता",
+  typeOther: "अन्य",
+
+  // States
+  emptyHistory: "तपाईंले अझै कुनै कुराकानी सुरु गर्नुभएको छैन।",
+  askFirstQuestion: "पहिलो प्रश्न सोध्नुहोस्",
+  noResultsFound: "कुनै मिल्दो स्रोत फेला परेन।",
+  apiFailure: "मैले अहिले जानकारी प्राप्त गर्न सकिन। कृपया पुन: प्रयास गर्नुहोस्।",
+  offlineState: "तपाईं अफलाइन हुनुहुन्छ जस्तो देखिन्छ। सहकार सहायकका केही सुविधाहरूको लागि इन्टरनेट जडान आवश्यक पर्छ।"
+};

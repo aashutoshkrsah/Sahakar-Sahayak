@@ -1,0 +1,155 @@
+export default {
+  // Nav & Sidebar
+  dashboard: "ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+  askSahayak: "ಸಹಾಯಕ್ ಬಳಿ ಕೇಳಿ",
+  cooperativeGuide: "ಸಹಕಾರ ಮಾರ್ಗದರ್ಶಿ",
+  legalResources: "ಕಾನೂನು ಸಂಪನ್ಮೂಲಗಳು",
+  documents: "ದಾಖಲೆಗಳ ಮಾರ್ಗದರ್ಶನ",
+  savedAnswers: "ಉಳಿಸಿದ ಉತ್ತರಗಳು",
+  chatHistory: "ಚಾಟ್ ಇತಿಹಾಸ",
+  helpSupport: "ಸಹಾಯ ಮತ್ತು ಬೆಂಬಲ",
+  settings: "ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
+  profile: "ಬಳಕೆದಾರರ ಪ್ರೊಫೈಲ್",
+  login: "ಲಾಗ್ ಇನ್",
+  logout: "ಲಾಗ್ ಔಟ್",
+  register: "ನೋಂದಾಯಿಸಿ",
+  guestMode: "ಅತಿಥಿ ಮೋಡ್",
+  welcomeBack: "ಸುಸ್ವಾಗತ",
+  howCanIHelp: "ಇಂದು ಸಹಕಾರ ಸಹಾಯಕ್ ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?",
+  searchQuestionPlaceholder: "ಸಹಕಾರಕ್ಕೆ ಸಂಬಂಧಿಸಿದ ಪ್ರಶ್ನೆಯನ್ನು ಕೇಳಿ...",
+
+  // General Action Buttons
+  save: "ಉಳಿಸಿ",
+  cancel: "ರದ್ದುಮಾಡಿ",
+  submit: "ಸಲ್ಲಿಸಿ",
+  edit: "ಸಂಪಾದಿಸಿ",
+  delete: "ಅಳಿಸಿ",
+  back: "ಹಿಂದೆ",
+  search: "ಹುಡುಕಿ",
+  viewDetails: "ವಿವರಗಳನ್ನು ನೋಡಿ",
+  download: "ಡೌನ್‌ಲೋಡ್",
+  clear: "ತೆರವುಗೊಳಿಸಿ",
+
+  // Landing Page
+  landingTitle: "ಸಹಕಾರಿ ಆಡಳಿತ ಈಗ ತೀರಾ ಸರಳ",
+  landingSubtitle: "ನಿಮ್ಮ ಬಹುಭಾಷಾ ಡಿಜಿಟಲ್ ಸಹಾಯಕರ ಮೂಲಕ ಸಹಕಾರಿ ಆಡಳಿತ, ಕಾರ್ಯವಿಧಾನಗಳು, ದಾಖಲೆಗಳು ಮತ್ತು ಕಾನೂನು ನಿಬಂಧನೆಗಳ ಬಗ್ಗೆ ವಿಶ್ವಾಸಾರ್ಹ ಹಾಗೂ ಸುಲಭವಾಗಿ ಅರ್ಥವಾಗುವ ಮಾಹಿತಿಯನ್ನು ಪಡೆಯಿರಿ.",
+  trustIndicatorMultilingual: "ಬಹುಭಾಷಾ ಬೆಂಬಲ",
+  trustIndicatorEasy: "ಸುಲಭವಾಗಿ ಅರ್ಥವಾಗುತ್ತದೆ",
+  trustIndicatorAvailable: "ಯಾವಾಗಲೂ ಲಭ್ಯವಿದೆ",
+  ctaAskSahayak: "ಸಹಾಯಕ್ ಬಳಿ ಕೇಳಿ",
+  ctaExploreGuide: "ಸಹಕಾರ ಮಾರ್ಗದರ್ಶಿ ನೋಡಿ",
+  whatCanHelpWith: "ಸಹಕಾರ ಸಹಾಯಕ್ ನಿಮಗೆ ಯಾವುದರಲ್ಲಿ ಸಹಾಯ ಮಾಡಬಹುದು?",
+  featuresTitle: "ಸಹಕಾರ ಸಹಾಯಕ್ ಏಕೆ ಬಳಸಬೇಕು?",
+
+  // Features List
+  featAiAssistantTitle: "ಎಐ ಸಹಕಾರ ಸಹಾಯಕ",
+  featAiAssistantDesc: "ನೈಸರ್ಗಿಕ ಭಾಷೆಯನ್ನು ಬಳಸಿ ಸಹಕಾರಿ ಆಡಳಿತದ ಪ್ರಶ್ನೆಗಳನ್ನು ಕೇಳಿ.",
+  featMultilingualTitle: "ಬಹುಭಾಷಾ ಸಹಾಯ",
+  featMultilingualDesc: "ಬಳಕೆದಾರರಿಗೆ ಅವರ ಆದ್ಯತೆಯ ಭಾಷೆಗಳಲ್ಲಿ ವ್ಯವಹರಿಸಲು ಅನುಮತಿಸಿ.",
+  featLegalInfoTitle: "ಕಾನೂನು ಮತ್ತು ಆಡಳಿತ ಮಾಹಿತಿ",
+  featLegalInfoDesc: "ಸಂಬಂಧಿತ ಸಹಕಾರಿ ನಿಯಮಗಳು ಮತ್ತು ಕಾರ್ಯವಿಧಾನಗಳ ಸುಲಭ ವಿವರಣೆಯನ್ನು ಒದಗಿಸಿ.",
+  featDocGuidanceTitle: "ದಾಖಲೆಗಳ ಮಾರ್ಗದರ್ಶನ",
+  featDocGuidanceDesc: "ಸಾಮಾನ್ಯ ಸಹಕಾರಿ ಪ್ರಕ್ರಿಯೆಗಳಿಗೆ ಅಗತ್ಯವಿರುವ ದಾಖಲೆಗಳನ್ನು ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲು ಸಹಾಯ ಮಾಡಿ.",
+  featSourceBasedTitle: "ಮೂಲ-ಆಧಾರಿತ ಮಾಹಿತಿ",
+  featSourceBasedDesc: "ಅಧಿಕೃತ ಉಲ್ಲೇಖಗಳು ಅಥವಾ ಮೂಲ ದಾಖಲೆಗಳನ್ನು ಲಭ್ಯವಿದ್ದಾಗ ಪ್ರದರ್ಶಿಸಿ.",
+  featAvailableAnytimeTitle: "ಯಾವಾಗಲೂ ಲಭ್ಯವಿದೆ",
+  featAvailableAnytimeDesc: "ಮೂಲಭೂತ ಮಾಹಿತಿಗಾಗಿ ಕಚೇರಿಗೆ ಭೇಟಿ ನೀಡುವ ಅಗತ್ಯವಿಲ್ಲದೆಯೇ ಮಾಹಿತಿ ಪಡೆಯಿರಿ.",
+
+  // Chatbot Screen
+  chatInitialGreeting: "ನಮಸ್ತೆ! 👋 ನಾನು ಸಹಾಯಕ. ಸಹಕಾರಿ ಆಡಳಿತ, ಕಾರ್ಯವಿಧಾನಗಳು, ದಾಖಲೆಗಳು ಮತ್ತು ಸಂಬಂಧಿತ ಕಾನೂನು ಮಾಹಿತಿಯನ್ನು ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲು ನಾನು ನಿಮಗೆ ಸಹಾಯ ಮಾಡಬಲ್ಲೆ. ನೀವು ಏನನ್ನು ತಿಳಿಯಲು ಬಯಸುತ್ತೀರಿ?",
+  chatPlaceholder: "ಸಹಕಾರಿ ಆಡಳಿತದ ಬಗ್ಗೆ ಕೇಳಿ...",
+  chatPreparingAnswer: "ಸಹಾಯಕ್ ನಿಮ್ಮ ಉತ್ತರವನ್ನು ಸಿದ್ಧಪಡಿಸುತ್ತಿದ್ದಾರೆ...",
+  chatDisclaimer: "ಸಹಕಾರ ಸಹಾಯಕ್ ಕೇವಲ ಮಾಹಿತಿ ಮಾರ್ಗದರ್ಶನವನ್ನು ಒದಗಿಸುತ್ತದೆ ಮತ್ತು ಅರ್ಹ ಕಾನೂನು ವೃತ್ತಿಪರರು ಅಥವಾ ಸಕ್ಷಮ ಅಧಿಕಾರಿಯ ಸಲಹೆಗೆ ಬದಲಿಯಾಗಿಲ್ಲ.",
+  relatedSources: "ಸಂಬಂಧಿತ ಮೂಲಗಳು",
+  suggestedQuestions: "ಸೂಚಿಸಲಾದ ಪ್ರಶ್ನೆಗಳು",
+  viewSource: "ಮೂಲವನ್ನು ನೋಡಿ",
+  reportIncorrect: "ತಪ್ಪು ಉತ್ತರವನ್ನು ವರದಿ ಮಾಡಿ",
+  savedToBookmarks: "ಉತ್ತರವನ್ನು ಬುಕ್‌ಮಾರ್ಕ್ ಮಾಡಲಾಗಿದೆ!",
+  removedFromBookmarks: "ಬುಕ್‌ಮಾರ್ಕ್‌ನಿಂದ ತೆಗೆದುಹಾಕಲಾಗಿದೆ!",
+
+  // Quick Action Cards
+  qaAskSahayak: "ಸಹಾಯಕ್ ಬಳಿ ಕೇಳಿ",
+  qaExploreLaws: "ಸಹಕಾರಿ ಕಾನೂನುಗಳನ್ನು ಪರಿಶೋಧಿಸಿ",
+  qaCheckDocs: "ಅಗತ್ಯವಿರುವ ದಾಖಲೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ",
+  qaUnderstandRights: "ಸದಸ್ಯರ ಹಕ್ಕುಗಳನ್ನು ತಿಳಿಯಿರಿ",
+  qaViewSaved: "ಉಳಿಸಿದ ಉತ್ತರಗಳನ್ನು ವೀಕ್ಷಿಸಿ",
+  qaContinueChat: "ಇತ್ತೀಚಿನ ಚಾಟ್ ಮುಂದುವರಿಸಿ",
+
+  // Dashboard Indicators
+  statRecentConversations: "ಇತ್ತೀಚಿನ ಸಂಭಾಷಣೆಗಳು",
+  statSavedAnswers: "ಉಳಿಸಿದ ಉತ್ತರಗಳು",
+  statDocuments: "ದಾಖಲೆ ಪ್ರಕ್ರಿಯೆಗಳು",
+  statResourcesExplored: "ಪರಿಶೋಧಿಸಿದ ಸಂಪನ್ಮೂಲಗಳು",
+  quickActions: "ತ್ವರಿತ ಕ್ರಿಯೆಗಳು",
+  recentQuestions: "ಇತ್ತೀಚಿನ ಪ್ರಶ್ನೆಗಳು",
+
+  // Cooperative Guide Page
+  guideDescription: "ಸಹಕಾರಿ ಪರಿಕಲ್ಪನೆಗಳು, ಆಡಳಿತ ಪ್ರಕ್ರಿಯೆಗಳು ಮತ್ತು ಜವಾಬ್ದಾರಿಗಳನ್ನು ಸರಳ ಭಾಷೆಯಲ್ಲಿ ಪರಿಶೋಧಿಸಿ.",
+  guideSearchPlaceholder: "ಮಾರ್ಗದರ್ಶಿ ಲೇಖನಗಳನ್ನು ಹುಡುಕಿ...",
+
+  // Legal Resources Page
+  legalDescription: "ಅಧಿಕೃತ ಕಾಯ್ದೆಗಳು, ಸಹಕಾರಿ ನೀತಿಗಳು ಮತ್ತು ನಿಯಂತ್ರಕ ಮಾರ್ಗಸೂಚಿಗಳನ್ನು ಬ್ರೌಸ್ ಮಾಡಿ.",
+  legalSearchPlaceholder: "ಕಾನೂನುಗಳು, ನಿಯಮಗಳು ಮತ್ತು ಮಾರ್ಗಸೂಚಿಗಳನ್ನು ಹುಡುಕಿ...",
+  categoryAll: "ಎಲ್ಲವೂ",
+  categoryLaws: "ಕಾನೂನುಗಳು",
+  categoryRegulations: "ನಿಯಮಾವಳಿಗಳು",
+  categoryGuidelines: "ಮಾರ್ಗಸೂಚಿಗಳು",
+  categoryPolicies: "ನೀತಿಗಳು",
+
+  // Document Guidance Page
+  docDescription: "ಅಗತ್ಯವಿರುವ ದಾಖಲೆ ಪರಿಶೀಲನಾ ಪಟ್ಟಿಗಳು ಮತ್ತು ಕರಡು ಮಾರ್ಗದರ್ಶಿಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಸಹಕಾರಿ ಪ್ರಕ್ರಿಯೆಯನ್ನು ಆರಿಸಿ.",
+  selectProcess: "ಸಹಕಾರಿ ಪ್ರಕ್ರಿಯೆಯನ್ನು ಆರಿಸಿ",
+  requiredDocsChecklist: "ಅಗತ್ಯವಿರುವ ದಾಖಲೆಗಳ ಪರಿಶೀಲನಾ ಪಟ್ಟಿ",
+  askSahayakAboutDocs: "ಈ ದಾಖಲೆಗಳ ಬಗ್ಗೆ ಸಹಾಯಕ್ ಬಳಿ ಕೇಳಿ",
+
+  // Settings
+  settingsLanguage: "ಭಾಷೆಯ ಆಯ್ಕೆ",
+  settingsAppearance: "ಗೋಚರತೆ ಥೀಮ್",
+  settingsAccessibility: "ಪ್ರವೇಶಸಾಧ್ಯತೆಯ (ಅಕ್ಸೆಸಿಬಿಲಿಟಿ) ಆಯ್ಕೆಗಳು",
+  settingsChatPreferences: "ಚಾಟ್ ಆದ್ಯತೆಗಳು",
+  settingsPrivacy: "ಗೌಪ್ಯತೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
+  themeLight: "ಲೈಟ್ ಮೋಡ್",
+  themeDark: "ಡಾರ್ಕ್ ಮೋಡ್",
+  themeSystem: "ಸಿಸ್ಟಮ್ ಡಿಫಾಲ್ಟ್",
+  accLargerText: "ದೊಡ್ಡ ಅಕ್ಷರಗಳು (18px ಬೇಸ್)",
+  accHighContrast: "ಹೆಚ್ಚಿನ ಕಾಂಟ್ರಾಸ್ಟ್ ಬಣ್ಣಗಳು",
+  prefShowSources: "ಮೂಲಗಳು ಮತ್ತು ಉಲ್ಲೇಖಗಳನ್ನು ತೋರಿಸಿ",
+  prefSaveHistory: "ಸಂಭಾಷಣೆಯ ಇತಿಹಾಸವನ್ನು ಉಳಿಸಿ",
+  prefEnableVoice: "ಧ್ವನಿ ಇನ್ಪುಟ್ ಸಕ್ರಿಯಗೊಳಿಸಿ (ಮೈಕ್ರೊಫೋನ್)",
+  privClearHistory: "ಚಾಟ್ ಇತಿಹಾಸವನ್ನು ಅಳಿಸಿ",
+  privDataPrefs: "ಡೇಟಾ ರಕ್ಷಣೆ ಆದ್ಯತೆಗಳು",
+  clearHistoryConfirm: "ನಿಮ್ಮ ಎಲ್ಲಾ ಚಾಟ್ ಇತಿಹಾಸವನ್ನು ಶಾಶ್ವತವಾಗಿ ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?",
+
+  // Help & FAQ
+  helpTitle: "ಸಹಾಯ ಮತ್ತು ಬೆಂಬಲ",
+  helpSubtitle: "ಸಹಕಾರ ಸಹಾಯಕ್ ಅನ್ನು ಹೇಗೆ ಬಳಸುವುದು ಮತ್ತು ಸಮಸ್ಯೆಗಳನ್ನು ಹೇಗೆ ಪರಿಹರಿಸುವುದು.",
+  faqTitle: "ಪದೇ ಪದೇ ಕೇಳಲಾಗುವ ಪ್ರಶ್ನೆಗಳು",
+  reportIssueTitle: "ತಪ್ಪು ಮಾಹಿತಿಯನ್ನು ವರದಿ ಮಾಡಿ",
+  reportIssueDesc: "ಕಾನೂನು ಮಾಹಿತಿ ವಿಶ್ವಾಸಾರ್ಹವಾಗಿರಬೇಕಿರುವುದರಿಂದ, ದಯವಿಟ್ಟು ಸಹಾಯಕನ ಉತ್ತರಗಳನ್ನು ಸುಧಾರಿಸಲು ನೀವು ಕಂಡುಕೊಳ್ಳುವ ಯಾವುದೇ ತಪ್ಪು ಉತ್ತರಗಳನ್ನು ವರದಿ ಮಾಡಿ.",
+  reportButton: "ಸಮಸ್ಯೆಯನ್ನು ವರದಿ ಮಾಡಿ",
+
+  // Auth
+  emailAddress: "ಇಮೇಲ್ ವಿಳಾಸ",
+  password: "ಪಾಸ್ವರ್ಡ್",
+  confirmPassword: "ಪಾಸ್ವರ್ಡ್ ದೃಢೀಕರಿಸಿ",
+  fullName: "ಪೂರ್ಣ ಹೆಸರು",
+  preferredLang: "ಆದ್ಯತೆಯ ಭಾಷೆ",
+  userType: "ಬಳಕೆದಾರರ ಪ್ರಕಾರ",
+  rememberMe: "ನನ್ನನ್ನು ನೆನಪಿಡಿ",
+  forgotPassword: "ಪಾಸ್ವರ್ಡ್ ಮರೆತಿರಾ?",
+  dontHaveAccount: "ಖಾತೆ ಇಲ್ಲವೇ? ನೋಂದಾಯಿಸಿ",
+  alreadyHaveAccount: "ಈಗಾಗಲೇ ಖಾತೆ ಇದೆಯೇ? ಲಾಗ್ ಇನ್ ಆಗಿ",
+  continueAsGuest: "ಅತಿಥಿಯಾಗಿ ಮುಂದುವರಿಯಿರಿ",
+  typeMember: "ಸಹಕಾರಿ ಸದಸ್ಯ",
+  typeManager: "ಸಹಕಾರಿ ವ್ಯವಸ್ಥಾಪಕ",
+  typeCitizen: "ನಾಗರಿಕ",
+  typeStudent: "ವಿದ್ಯಾರ್ಥಿ / ಸಂಶೋಧಕ",
+  typeOther: "ಇತರೆ",
+
+  // States
+  emptyHistory: "ನೀವು ಇನ್ನೂ ಯಾವುದೇ ಸಂಭಾಷಣೆಗಳನ್ನು ಪ್ರಾರಂಭಿಸಿಲ್ಲ.",
+  askFirstQuestion: "ನಿಮ್ಮ ಮೊದಲ ಪ್ರಶ್ನೆಯನ್ನು ಕೇಳಿ",
+  noResultsFound: "ಯಾವುದೇ ಹೊಂದಾಣಿಕೆಯ ಸಂಪನ್ಮೂಲಗಳು ಕಂಡುಬಂದಿಲ್ಲ.",
+  apiFailure: "ನನಗೆ ಈಗ ಮಾಹಿತಿಯನ್ನು ಹಿಂಪಡೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+  offlineState: "ನೀವು ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿದ್ದೀರಿ ಎಂದು ತೋರುತ್ತಿದೆ. ಸಹಕಾರ ಸಹಾಯಕ್‌ನ ಕೆಲವು ವೈಶಿಷ್ಟ್ಯಗಳಿಗೆ ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕದ ಅಗತ್ಯವಿದೆ."
+};

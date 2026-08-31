@@ -1,0 +1,155 @@
+export default {
+  // Nav & Sidebar
+  dashboard: "Dashboard",
+  askSahayak: "Ask Sahayak",
+  cooperativeGuide: "Cooperative Guide",
+  legalResources: "Legal Resources",
+  documents: "Document Guidance",
+  savedAnswers: "Saved Answers",
+  chatHistory: "Chat History",
+  helpSupport: "Help & Support",
+  settings: "Settings",
+  profile: "User Profile",
+  login: "Log In",
+  logout: "Log Out",
+  register: "Register",
+  guestMode: "Guest Mode",
+  welcomeBack: "Welcome back",
+  howCanIHelp: "How can Sahakar Sahayak help you today?",
+  searchQuestionPlaceholder: "Ask a cooperative question...",
+
+  // General Action Buttons
+  save: "Save",
+  cancel: "Cancel",
+  submit: "Submit",
+  edit: "Edit",
+  delete: "Delete",
+  back: "Back",
+  search: "Search",
+  viewDetails: "View Details",
+  download: "Download",
+  clear: "Clear",
+
+  // Landing Page
+  landingTitle: "Cooperative Governance Made Simple",
+  landingSubtitle: "Get reliable, easy-to-understand information about cooperative governance, procedures, documents, and legal provisions through your multilingual digital assistant.",
+  trustIndicatorMultilingual: "Multilingual",
+  trustIndicatorEasy: "Easy to Understand",
+  trustIndicatorAvailable: "Available Anytime",
+  ctaAskSahayak: "Ask Sahayak",
+  ctaExploreGuide: "Explore Cooperative Guide",
+  whatCanHelpWith: "What can Sahakar Sahayak help you with?",
+  featuresTitle: "Why Use Sahakar Sahayak?",
+
+  // Features List
+  featAiAssistantTitle: "AI Cooperative Assistant",
+  featAiAssistantDesc: "Ask cooperative governance questions using natural language.",
+  featMultilingualTitle: "Multilingual Assistance",
+  featMultilingualDesc: "Allow users to interact using multiple supported languages.",
+  featLegalInfoTitle: "Legal & Governance Information",
+  featLegalInfoDesc: "Provide understandable explanations of relevant cooperative rules and procedures.",
+  featDocGuidanceTitle: "Document Guidance",
+  featDocGuidanceDesc: "Help users understand documents needed for common cooperative processes.",
+  featSourceBasedTitle: "Source-Based Information",
+  featSourceBasedDesc: "Show references or source documents when available.",
+  featAvailableAnytimeTitle: "Available Anytime",
+  featAvailableAnytimeDesc: "Access guidance without needing to visit an office for basic information.",
+
+  // Chatbot Screen
+  chatInitialGreeting: "Namaste! 👋 I'm Sahayak. I can help you understand cooperative governance, procedures, documents and related legal information. What would you like to know?",
+  chatPlaceholder: "Ask about cooperative governance...",
+  chatPreparingAnswer: "Sahayak is preparing your answer...",
+  chatDisclaimer: "Sahakar Sahayak provides informational guidance and does not replace advice from a qualified legal professional or competent authority.",
+  relatedSources: "Related Sources",
+  suggestedQuestions: "Suggested Questions",
+  viewSource: "View Source",
+  reportIncorrect: "Report incorrect answer",
+  savedToBookmarks: "Answer bookmarked!",
+  removedFromBookmarks: "Bookmark removed!",
+
+  // Quick Action Cards
+  qaAskSahayak: "Ask Sahayak",
+  qaExploreLaws: "Explore Cooperative Laws",
+  qaCheckDocs: "Check Required Documents",
+  qaUnderstandRights: "Understand Member Rights",
+  qaViewSaved: "View Saved Answers",
+  qaContinueChat: "Continue Recent Chat",
+
+  // Dashboard Indicators
+  statRecentConversations: "Recent Conversations",
+  statSavedAnswers: "Saved Answers",
+  statDocuments: "Document Processes",
+  statResourcesExplored: "Resources Explored",
+  quickActions: "Quick Actions",
+  recentQuestions: "Recent Questions",
+
+  // Cooperative Guide Page
+  guideDescription: "Explore cooperative concepts, governance processes, and responsibilities in simple language.",
+  guideSearchPlaceholder: "Search guide articles...",
+  
+  // Legal Resources Page
+  legalDescription: "Browse official acts, cooperative policies, and regulatory guidelines.",
+  legalSearchPlaceholder: "Search laws, regulations, and guidelines...",
+  categoryAll: "All",
+  categoryLaws: "Laws",
+  categoryRegulations: "Regulations",
+  categoryGuidelines: "Guidelines",
+  categoryPolicies: "Policies",
+
+  // Document Guidance Page
+  docDescription: "Select a governance process to view the required document checklists and draft guides.",
+  selectProcess: "Select a cooperative process",
+  requiredDocsChecklist: "Required Documents Checklist",
+  askSahayakAboutDocs: "Ask Sahayak About These Documents",
+
+  // Settings
+  settingsLanguage: "Language Selection",
+  settingsAppearance: "Appearance Theme",
+  settingsAccessibility: "Accessibility Options",
+  settingsChatPreferences: "Chat Preferences",
+  settingsPrivacy: "Privacy Settings",
+  themeLight: "Light Mode",
+  themeDark: "Dark Mode",
+  themeSystem: "System Default",
+  accLargerText: "Larger Text (18px Base)",
+  accHighContrast: "High Contrast Colors",
+  prefShowSources: "Show sources & references",
+  prefSaveHistory: "Save conversation history",
+  prefEnableVoice: "Enable voice input (Microphone)",
+  privClearHistory: "Clear Chat History",
+  privDataPrefs: "Data Protection Preferences",
+  clearHistoryConfirm: "Are you sure you want to permanently clear all chat history?",
+
+  // Help & FAQ
+  helpTitle: "Help & Support",
+  helpSubtitle: "How to use Sahakar Sahayak and troubleshoot issues.",
+  faqTitle: "Frequently Asked Questions",
+  reportIssueTitle: "Report Incorrect Information",
+  reportIssueDesc: "Since legal information must be reliable, please report any incorrect answers you encounter so we can improve Sahayak.",
+  reportButton: "Report an issue",
+
+  // Auth
+  emailAddress: "Email Address",
+  password: "Password",
+  confirmPassword: "Confirm Password",
+  fullName: "Full Name",
+  preferredLang: "Preferred Language",
+  userType: "User Type",
+  rememberMe: "Remember me",
+  forgotPassword: "Forgot password?",
+  dontHaveAccount: "Don't have an account? Register",
+  alreadyHaveAccount: "Already have an account? Log In",
+  continueAsGuest: "Continue as Guest",
+  typeMember: "Cooperative Member",
+  typeManager: "Cooperative Manager",
+  typeCitizen: "Citizen",
+  typeStudent: "Student / Researcher",
+  typeOther: "Other",
+
+  // States
+  emptyHistory: "You haven't started any conversations yet.",
+  askFirstQuestion: "Ask Your First Question",
+  noResultsFound: "No matching resources found.",
+  apiFailure: "I couldn't retrieve the information right now. Please try again.",
+  offlineState: "You appear to be offline. Some Sahakar Sahayak features require an internet connection."
+};

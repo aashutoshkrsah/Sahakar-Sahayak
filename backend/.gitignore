@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.venv/
+
+# Environment variables
+.env
+
+# Generated RAG indexes
+data/indexes/
+
+# Local documents
+data/documents/
+
+# Python cache
+.pytest_cache/

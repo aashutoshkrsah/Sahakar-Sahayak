@@ -2,9 +2,7 @@ import os
 from dotenv import load_dotenv
 
 from sarvamai import SarvamAI
-
 from app.rag.context_builder import build_context
-
 
 # ---------------------------------
 # Load environment variables
@@ -31,7 +29,7 @@ client = SarvamAI(
 # Ask Sarvam using RAG context
 # ---------------------------------
 
-def ask_sarvam(question, top_k=5):
+def ask_sarvam(question: str, language: str = "English", top_k: int = 5) -> str:
 
     # Retrieve relevant government document context
     context = build_context(
@@ -44,10 +42,11 @@ You are Sahakar Sahayak, an agricultural government-scheme assistant.
 
 Answer the farmer's question using ONLY the information provided
 in the government document context below.
+Respond completely in the requested language: {language}.
 
 Do not invent information.
 
-If the answer is not present in the context, say:
+If the answer is not present in the context, say (in {language}):
 "I could not find this information in the available government documents."
 
 Keep the answer simple and easy for a farmer to understand.
@@ -61,18 +60,19 @@ GOVERNMENT DOCUMENT CONTEXT
 {context}
 
 --------------------------------
-FARMER QUESTION
+FARMER QUESTION ({language})
 --------------------------------
 
 {question}
 
 --------------------------------
-ANSWER
+ANSWER ({language})
 --------------------------------
 """
 
     response = client.chat.completions(
         model="sarvam-105b",
+        reasoning_effort=None,  # Disables deep reasoning mode so output populates message.content directly
         messages=[
             {
                 "role": "user",
@@ -81,44 +81,11 @@ ANSWER
         ]
     )
 
-    return response.choices[0].message.content
+    # Safely extract response text and fallback if content is empty
+    message = response.choices[0].message
+    content = getattr(message, "content", None)
+    
+    if not content and hasattr(message, "reasoning_content"):
+        content = message.reasoning_content
 
-
-# ---------------------------------
-# Test
-# ---------------------------------
-
-if __name__ == "__main__":
-
-    questions = [
-    "What is PM-KISAN?",
-    "How much money does a farmer receive under PM-KISAN?",
-    "Who is eligible for PM-KISAN?",
-    "Who is excluded from PM-KISAN?",
-    "How are PM-KISAN benefits transferred?",
-    "Are income tax payers eligible for PM-KISAN?",
-    "How many installments are provided under PM-KISAN?"
-]
-
-    for question in questions:
-
-        print("\n" + "=" * 60)
-        print("QUESTION")
-        print("=" * 60)
-
-        print(question)
-
-        print("\n" + "=" * 60)
-        print("SARVAM ANSWER")
-        print("=" * 60)
-
-        try:
-
-            answer = ask_sarvam(question)
-
-            print(answer)
-
-        except Exception as e:
-
-            print("ERROR:")
-            print(e)
+    return content or "I could not find this information in the available government documents."

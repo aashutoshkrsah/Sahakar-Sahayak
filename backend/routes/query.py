@@ -1,4 +1,6 @@
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 
 from backend.models.schemas import QueryRequest, QueryResponse
 
@@ -47,7 +49,11 @@ def query(request: QueryRequest):
         result["language"] = language
         result["intent"] = intent
 
-        return result
+        # Force UTF-8 JSON response output
+        return JSONResponse(
+            content=jsonable_encoder(result),
+            media_type="application/json; charset=utf-8"
+        )
 
     except Exception as e:
 

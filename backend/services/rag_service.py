@@ -42,6 +42,20 @@ def load_documents():
 
 
 def get_answer(query: str, language: str = "en", intent: str = "general"):
+    target_lang = str(language).strip().lower() if language else "en"
+    print(f"[RAG_SERVICE] Target language passed: '{target_lang}'")
+
+    # Step 1: Translate non-English incoming queries into English for RAG lookup
+    search_query = query
+    if target_lang != "en":
+        try:
+            translated_query = GoogleTranslator(source="auto", target="en").translate(query)
+            if translated_query:
+                search_query = translated_query
+                print(f"[RAG_SERVICE] Translated search query to English: '{search_query}'")
+        except Exception as err:
+            print(f"[RAG_SERVICE ERROR] Input query translation failed: {err}")
+
     chunks = load_documents()
 
     stop_words = {
@@ -57,7 +71,8 @@ def get_answer(query: str, language: str = "en", intent: str = "general"):
         "schemes", "revised", "official"
     }
 
-    clean_query = query.lower().translate(str.maketrans("", "", string.punctuation))
+    # Clean and split the translated English query
+    clean_query = search_query.lower().translate(str.maketrans("", "", string.punctuation))
     query_words = [w for w in clean_query.split() if w not in stop_words]
 
     best_chunk = None
@@ -99,10 +114,7 @@ def get_answer(query: str, language: str = "en", intent: str = "general"):
     if len(answer_text) > 1000:
         answer_text = answer_text[:1000] + "..."
 
-    # Force and log translation
-    target_lang = str(language).strip().lower() if language else "en"
-    print(f"[RAG_SERVICE] Target language passed: '{target_lang}'")
-
+    # Step 2: Translate answer text back to target language
     if target_lang != "en":
         try:
             print(f"[RAG_SERVICE] Translating {len(answer_text)} characters to '{target_lang}'...")
@@ -113,7 +125,7 @@ def get_answer(query: str, language: str = "en", intent: str = "general"):
             else:
                 print("[RAG_SERVICE] Translator returned empty response.")
         except Exception as err:
-            print(f"[RAG_SERVICE ERROR] Translation failed: {err}")
+            print(f"[RAG_SERVICE ERROR] Output translation failed: {err}")
 
     return {
         "answer": answer_text,

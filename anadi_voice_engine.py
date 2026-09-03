@@ -16,7 +16,7 @@ def convert_audio_to_text(audio_file_path):
     and returns the text string and language code.
     """
     try:
-        result = stt_model.transcribe(audio_file_path)
+        result = stt_model.transcribe(audio_file_path, initial_prompt="PM-KISAN, Sahakar, PACS, NABARD, subsidy, loan")
         return result["text"].strip(), result["language"]
     except Exception as e:
         return f"Error understanding audio: {e}", "en"

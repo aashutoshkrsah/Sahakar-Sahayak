@@ -279,8 +279,9 @@ export const AppProvider = ({ children }) => {
     }, 3000);
   };
 
-  const addChatMessage = (chatId, message) => {
-    const updatedHistory = chatHistory.map(chat => {
+const addChatMessage = (chatId, message) => {
+  setChatHistory(prevHistory => {
+    const updatedHistory = prevHistory.map(chat => {
       if (chat.id === chatId) {
         return {
           ...chat,
@@ -289,28 +290,41 @@ export const AppProvider = ({ children }) => {
           messages: [...chat.messages, message]
         };
       }
+
       return chat;
     });
-    setChatHistory(updatedHistory);
+
     localStorage.setItem('chatHistory', JSON.stringify(updatedHistory));
+    return updatedHistory;
+  });
+};
+
+const createNewChat = (title, category, firstMessage = null) => {
+  const newId = `chat-${Date.now()}`;
+
+  const newChat = {
+    id: newId,
+    title: title || "New Conversation",
+    lastMessage: firstMessage ? firstMessage.text : "No messages yet.",
+    date: new Date().toISOString(),
+    language: language,
+    category: category || "General",
+    messages: firstMessage ? [firstMessage] : []
   };
 
-  const createNewChat = (title, category, firstMessage = null) => {
-    const newId = `chat-${Date.now()}`;
-    const newChat = {
-      id: newId,
-      title: title || "New Conversation",
-      lastMessage: firstMessage ? firstMessage.text : "No messages yet.",
-      date: new Date().toISOString(),
-      language: language,
-      category: category || "General",
-      messages: firstMessage ? [firstMessage] : []
-    };
-    const updatedHistory = [newChat, ...chatHistory];
-    setChatHistory(updatedHistory);
-    localStorage.setItem('chatHistory', JSON.stringify(updatedHistory));
-    return newId;
-  };
+  setChatHistory(prevHistory => {
+    const updatedHistory = [newChat, ...prevHistory];
+
+    localStorage.setItem(
+      'chatHistory',
+      JSON.stringify(updatedHistory)
+    );
+
+    return updatedHistory;
+  });
+
+  return newId;
+};
 
   const deleteChat = (chatId) => {
     const updatedHistory = chatHistory.filter(chat => chat.id !== chatId);

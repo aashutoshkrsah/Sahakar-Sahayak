@@ -1,4 +1,5 @@
 import string
+import re
 import numpy as np
 import faiss
 from pathlib import Path
@@ -100,15 +101,22 @@ def is_non_ascii(text: str) -> bool:
     return any(ord(char) > 127 for char in text)
 
 
+def normalize_query_terms(query: str) -> str:
+    """Corrects common scheme acronym typos and maps aliases."""
+    # Fix PMSKY typo -> PMKSY
+    normalized = re.sub(r'\bpmsky\b', 'PMKSY', query, flags=re.IGNORECASE)
+    # Fix purcahses typo -> purchases
+    normalized = re.sub(r'\bpurcahses\b', 'purchases', normalized, flags=re.IGNORECASE)
+    return normalized
+
+
 def get_answer(query: str, language: str = "en", intent: str = "general"):
     target_lang = str(language).strip().lower() if language else "en"
 
     # Auto-detect target language script if query contains non-ASCII characters
     if target_lang == "en" and is_non_ascii(query):
-        # Kannada unicode block range check
         if any('\u0C80' <= c <= '\u0CFF' for c in query):
             target_lang = "kn"
-        # Devanagari (Hindi) unicode block range check
         elif any('\u0900' <= c <= '\u097F' for c in query):
             target_lang = "hi"
 
@@ -123,6 +131,9 @@ def get_answer(query: str, language: str = "en", intent: str = "general"):
         except Exception as err:
             print(f"[RAG_SERVICE ERROR] Input translation failed: {err}")
 
+    # Step 2: Term Normalization (Acronym typo mapping)
+    search_query = normalize_query_terms(search_query)
+
     initialize_hybrid_index()
     chunks = INDEX_CACHE["chunks"]
 
@@ -134,18 +145,18 @@ def get_answer(query: str, language: str = "en", intent: str = "general"):
             "confidence": 0.0
         }
 
-    # Step 2: BM25 Keyword Search
+    # Step 3: BM25 Keyword Search
     tokenized_query = search_query.lower().translate(str.maketrans("", "", string.punctuation)).split()
     bm25_scores = INDEX_CACHE["bm25"].get_scores(tokenized_query)
     top_bm25_indices = np.argsort(bm25_scores)[::-1][:10]
 
-    # Step 3: FAISS Vector Search
+    # Step 4: FAISS Vector Search
     query_vector = INDEX_CACHE["embed_model"].encode([search_query], convert_to_numpy=True)
     faiss.normalize_L2(query_vector)
     _, top_faiss_indices = INDEX_CACHE["faiss_index"].search(query_vector, 10)
     top_faiss_indices = top_faiss_indices[0]
 
-    # Step 4: Reciprocal Rank Fusion (RRF) Scoring
+    # Step 5: Reciprocal Rank Fusion (RRF) Scoring
     rrf_scores = {}
     k = 60
 
@@ -160,8 +171,9 @@ def get_answer(query: str, language: str = "en", intent: str = "general"):
 
     confidence = min(raw_rrf * 25.0, 0.95)
 
-    # Step 5: Strict Threshold Check (Filters Out-of-Domain Queries)
-    if confidence < 0.60 or bm25_scores[best_chunk_idx] == 0:
+    # Step 6: Flexible Threshold Check
+    # Allows strong vector matches (FAISS) while filtering out-of-domain queries
+    if confidence < 0.60 or (bm25_scores[best_chunk_idx] == 0 and confidence < 0.72):
         return {
             "answer": "I could not find relevant information.",
             "language": target_lang,
@@ -171,7 +183,7 @@ def get_answer(query: str, language: str = "en", intent: str = "general"):
 
     answer_text = chunks[best_chunk_idx]["content"].strip()
 
-    # Step 6: Translate Answer Back to Target Language
+    # Step 7: Translate Answer Back to Target Language
     if target_lang != "en":
         try:
             translated_answer = GoogleTranslator(source="auto", target=target_lang).translate(answer_text)

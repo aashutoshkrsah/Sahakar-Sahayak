@@ -7,6 +7,7 @@ load_dotenv()
 if os.getenv("GEMINI_API_KEY"):
     genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
+# Updated to the exact model identifier specified by the error message
 model = genai.GenerativeModel('gemini-3.6-flash')
 
 def get_answer(query: str, language: str = "en", intent: str = "general") -> dict:

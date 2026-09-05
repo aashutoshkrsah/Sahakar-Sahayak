@@ -3,6 +3,16 @@ from fastapi.middleware.cors import CORSMiddleware
 
 import tempfile
 import os
+import google.generativeai as genai
+from dotenv import load_dotenv
+
+# Load local .env files if present (safely ignored on Render)
+load_dotenv()
+
+# Explicitly configure the Gemini API key using Render's environment variable
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if GEMINI_API_KEY:
+    genai.configure(api_key=GEMINI_API_KEY)
 
 from anadi_voice_engine import (
     convert_audio_to_text,
@@ -38,7 +48,6 @@ def health():
     }
 
 
-# 👇 ADD THIS PART
 @app.post("/voice/transcribe")
 async def transcribe_voice(file: UploadFile = File(...)):
     temp_path = None

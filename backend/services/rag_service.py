@@ -4,11 +4,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-api_key = os.getenv("GEMINI_API_KEY")
-if api_key:
-    genai.configure(api_key=api_key)
+if os.getenv("GEMINI_API_KEY"):
+    genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel('gemini-2.5-flash')
 
 def get_answer(query: str, language: str = "en", intent: str = "general") -> dict:
     try:
@@ -20,7 +19,7 @@ def get_answer(query: str, language: str = "en", intent: str = "general") -> dic
         instruction = lang_instructions.get(language, "Please respond in English.")
         
         full_prompt = (
-            f"You are Sahakar Sahayak, a helpful assistant for cooperative schemes and citizen queries. "
+            f"You are Sahakar Sahayak, a helpful assistant for cooperative schemes. "
             f"{instruction}\n"
             f"User Intent: {intent}\n"
             f"User Query: {query}"
@@ -31,4 +30,4 @@ def get_answer(query: str, language: str = "en", intent: str = "general") -> dic
         
         return {"answer": answer_text}
     except Exception as e:
-        return {"answer": f"AI Connection Error: {str(e)}"}
+        return {"answer": f"AI Error: {str(e)}"}

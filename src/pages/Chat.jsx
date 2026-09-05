@@ -366,7 +366,7 @@ export const Chat = () => {
 
           const ttsResponse =
             await fetch(
-              "http://127.0.0.1:8000/voice/speak",
+              "https://sahakar-sahayak-2.onrender.com/voice/speak",
               {
                 method: "POST",
 

@@ -144,7 +144,7 @@ export const ChatInput = ({ onSend, isLoading }) => {
           );
 
           const response = await fetch(
-            "http://127.0.0.1:8000/voice/transcribe",
+            "https://sahakar-sahayak-2.onrender.com/voice/transcribe",
             {
               method: "POST",
               body: formData

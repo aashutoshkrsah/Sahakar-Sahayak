@@ -6,10 +6,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-API_URL = "http://127.0.0.1:8000/query"
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+API_URL = os.getenv("API_URL", "https://sahakar-sahayak-2.onrender.com/query")
 
 if not BOT_TOKEN:
-    raise ValueError("TELEGRAM_BOT_TOKEN is missing from your .env file!")
+    raise ValueError("TELEGRAM_BOT_TOKEN is missing from your environment variables!")
 
 print("🤖 Sahakar Sahayak Bot running with Interactive Menu...")
 last_update_id = 0
@@ -33,15 +34,19 @@ def send_language_menu(chat_id):
         "Please select your preferred language:\n"
         "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ:"
     )
-    requests.post(
-        f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
-        json={
-            "chat_id": chat_id, 
-            "text": welcome_msg, 
-            "parse_mode": "Markdown", 
-            "reply_markup": keyboard
-        }
-    )
+    try:
+        requests.post(
+            f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
+            json={
+                "chat_id": chat_id, 
+                "text": welcome_msg, 
+                "parse_mode": "Markdown", 
+                "reply_markup": keyboard
+            },
+            timeout=10
+        )
+    except Exception as e:
+        print(f"Error sending language menu: {e}")
 
 while True:
     try:
@@ -58,8 +63,10 @@ while True:
                 data = cb["data"]
                 cb_id = cb["id"]
 
-                # Acknowledge button press to remove loading animation
-                requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery", json={"callback_query_id": cb_id})
+                try:
+                    requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery", json={"callback_query_id": cb_id}, timeout=5)
+                except Exception:
+                    pass
 
                 if data == "lang_kn":
                     user_languages[chat_id] = "kn"
@@ -70,11 +77,17 @@ while True:
                 elif data == "lang_hi":
                     user_languages[chat_id] = "hi"
                     reply = "✅ **भाषा हिंदी सेट की गई है!**\nअपना प्रश्न पूछें (उदा: PM-KISAN के लाभ क्या हैं?)."
+                else:
+                    reply = "✅ Language updated!"
 
-                requests.post(
-                    f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
-                    json={"chat_id": chat_id, "text": reply, "parse_mode": "Markdown"}
-                )
+                try:
+                    requests.post(
+                        f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
+                        json={"chat_id": chat_id, "text": reply, "parse_mode": "Markdown"},
+                        timeout=10
+                    )
+                except Exception as e:
+                    print(f"Error sending language response: {e}")
                 continue
 
             # 2. Handle User Text Messages
@@ -83,34 +96,38 @@ while True:
             user_text = message.get("text")
 
             if user_text and chat_id:
-                # Trigger language menu on start or command
                 if user_text.lower() in ["/start", "/language", "/lang"]:
                     send_language_menu(chat_id)
                     continue
 
-                # Default to Kannada if user hasn't selected a language yet
                 selected_lang = user_languages.get(chat_id, "kn")
 
-                # Send typing status
-                requests.post(
-                    f"https://api.telegram.org/bot{BOT_TOKEN}/sendChatAction",
-                    json={"chat_id": chat_id, "action": "typing"}
-                )
+                try:
+                    requests.post(
+                        f"https://api.telegram.org/bot{BOT_TOKEN}/sendChatAction",
+                        json={"chat_id": chat_id, "action": "typing"},
+                        timeout=5
+                    )
+                except Exception:
+                    pass
 
-                # Send query to FastAPI backend
                 rag_payload = {"query": user_text, "language": selected_lang}
                 try:
                     rag_res = requests.post(API_URL, json=rag_payload, timeout=25).json()
                     answer = rag_res.get("answer", "No response generated.")
                 except Exception as req_err:
-                    answer = "⚠️ Could not connect to backend server."
-                    print(f"Error calling FastAPI: {req_err}")
+                    answer = "⚠️ Could not connect to backend server / ಬ್ಯಾಕೆಂಡ್ ಸರ್ವರ್ ಸಂಪರ್ಕಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
+                    print(f"Error calling backend: {req_err}")
 
-                requests.post(
-                    f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
-                    json={"chat_id": chat_id, "text": answer}
-                )
+                try:
+                    requests.post(
+                        f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
+                        json={"chat_id": chat_id, "text": answer},
+                        timeout=10
+                    )
+                except Exception as e:
+                    print(f"Error sending final message: {e}")
 
     except Exception as e:
         print(f"Connection error, retrying... ({e})")
-        time.sleep(2)
+        time.sleep(5)

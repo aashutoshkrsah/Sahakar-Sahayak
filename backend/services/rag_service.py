@@ -1,16 +1,34 @@
 import os
 import google.generativeai as genai
+from dotenv import load_dotenv
 
-# Your Gemini API key
-api_key = os.environ.get("GEMINI_API_KEY")
-genai.configure(api_key=api_key)
+load_dotenv()
 
-# Using Gemini 1.5 Flash for fast, ChatGPT-like responses
+api_key = os.getenv("GEMINI_API_KEY")
+if api_key:
+    genai.configure(api_key=api_key)
+
 model = genai.GenerativeModel('gemini-1.5-flash')
 
-def get_answer(query: str):
+def get_answer(query: str, language: str = "en", intent: str = "general") -> dict:
     try:
-        response = model.generate_content(query)
-        return response.text
+        lang_instructions = {
+            "kn": "Please respond in Kannada (ಕನ್ನಡ).",
+            "hi": "Please respond in Hindi (हिंदी).",
+            "en": "Please respond in English."
+        }
+        instruction = lang_instructions.get(language, "Please respond in English.")
+        
+        full_prompt = (
+            f"You are Sahakar Sahayak, a helpful assistant for cooperative schemes and citizen queries. "
+            f"{instruction}\n"
+            f"User Intent: {intent}\n"
+            f"User Query: {query}"
+        )
+
+        response = model.generate_content(full_prompt)
+        answer_text = response.text if response and response.text else "No response generated."
+        
+        return {"answer": answer_text}
     except Exception as e:
-        return f"AI Connection Error: {str(e)}"
+        return {"answer": f"AI Connection Error: {str(e)}"}

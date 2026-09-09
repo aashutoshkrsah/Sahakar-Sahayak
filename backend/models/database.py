@@ -38,6 +38,7 @@ def init_db():
     """Initialize database tables and perform lightweight schema migrations if necessary."""
     # Import all models to ensure they are registered with Base.metadata
     from backend.models.user import User  # noqa: F401
+    from backend.models.pending_registration import PendingRegistration  # noqa: F401
 
     Base.metadata.create_all(bind=engine)
 
@@ -56,3 +57,13 @@ def init_db():
                 if "preferred_language" not in columns:
                     conn.execute(text("ALTER TABLE users ADD COLUMN preferred_language VARCHAR(10) DEFAULT 'en'"))
                     conn.commit()
+                if "email_verified" not in columns:
+                    conn.execute(text("ALTER TABLE users ADD COLUMN email_verified BOOLEAN DEFAULT 1"))
+                    conn.commit()
+                if "phone_verified" not in columns:
+                    conn.execute(text("ALTER TABLE users ADD COLUMN phone_verified BOOLEAN DEFAULT 1"))
+                    conn.commit()
+                if "is_active" not in columns:
+                    conn.execute(text("ALTER TABLE users ADD COLUMN is_active BOOLEAN DEFAULT 1"))
+                    conn.commit()
+

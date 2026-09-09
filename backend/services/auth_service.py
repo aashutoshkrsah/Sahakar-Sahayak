@@ -184,3 +184,88 @@ def get_current_user(
         )
 
     return user
+
+
+def generate_numeric_otp(length: int = 6) -> str:
+    """
+    Generates a cryptographically secure random numeric OTP of the specified length (default: 6 digits).
+    Uses secrets.randbelow to ensure cryptographically strong randomness.
+    """
+    if length < 4:
+        length = 6
+    min_val = 10 ** (length - 1)
+    max_val = (10 ** length) - 1
+    # Example for 6 digits: randbelow(900000) + 100000 gives [100000, 999999]
+    return str(secrets.randbelow(max_val - min_val + 1) + min_val)
+
+
+def hash_otp(plain_otp: str, salt: Optional[str] = None) -> str:
+    """
+    Cryptographically hashes an OTP using PBKDF2-HMAC-SHA256 with a 16-byte random salt.
+    Prevents plaintext OTP exposure in database or logs.
+    """
+    if not salt:
+        salt = secrets.token_hex(16)
+    iterations = 50_000
+    derived = hashlib.pbkdf2_hmac(
+        "sha256",
+        plain_otp.strip().encode("utf-8"),
+        salt.encode("utf-8"),
+        iterations
+    )
+    return f"pbkdf2_sha256${iterations}${salt}${derived.hex()}"
+
+
+def verify_otp(plain_otp: str, hashed_otp: str) -> bool:
+    """
+    Verifies a user-supplied OTP against the stored salted PBKDF2 hash using constant-time comparison.
+    """
+    if not plain_otp or not hashed_otp:
+        return False
+    try:
+        parts = hashed_otp.split("$")
+        if len(parts) != 4:
+            return False
+        _, iterations_str, salt, expected_hash = parts
+        iterations = int(iterations_str)
+        derived = hashlib.pbkdf2_hmac(
+            "sha256",
+            plain_otp.strip().encode("utf-8"),
+            salt.encode("utf-8"),
+            iterations
+        )
+        return hmac.compare_digest(derived.hex(), expected_hash)
+    except Exception:
+        return False
+
+
+def mask_email(email: str) -> str:
+    """
+    Masks an email for safe display in UI e.g. 'ramesh@example.gov.in' -> 'r***h@example.gov.in'.
+    """
+    if not email or "@" not in email:
+        return email or ""
+    parts = email.split("@", 1)
+    user_part, domain = parts[0], parts[1]
+    if len(user_part) <= 2:
+        masked_user = user_part[0] + "***"
+    else:
+        masked_user = user_part[0] + "***" + user_part[-1]
+    return f"{masked_user}@{domain}"
+
+
+def mask_phone(phone: str) -> str:
+    """
+    Masks a phone number for safe display in UI e.g. '+919876543210' -> '+91 ******3210'.
+    """
+    if not phone:
+        return ""
+    clean = phone.strip()
+    digits = re.sub(r"\D", "", clean)
+    if len(digits) <= 4:
+        return clean
+    last_four = digits[-4:]
+    has_plus = clean.startswith("+")
+    country_prefix = "+91 " if has_plus and digits.startswith("91") else ("+ " if has_plus else "")
+    return f"{country_prefix}******{last_four}"
+

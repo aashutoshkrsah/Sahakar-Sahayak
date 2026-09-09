@@ -176,6 +176,19 @@ export const AppProvider = ({ children }) => {
     return res;
   };
 
+  const completeAuthSession = (authData) => {
+    if (!authData || !authData.user || !authData.token) return;
+    setUser(authData.user);
+    setToken(authData.token);
+    setIsGuest(false);
+    localStorage.setItem('user', JSON.stringify(authData.user));
+    localStorage.setItem('token', authData.token);
+    localStorage.setItem('isGuest', 'false');
+    if (authData.user?.preferredLanguage && authData.user.preferredLanguage !== language) {
+      setLanguage(authData.user.preferredLanguage);
+    }
+  };
+
   const continueAsGuest = () => {
     const guestUser = {
       name: "Guest User",
@@ -446,7 +459,7 @@ const createNewChat = (title, category, firstMessage = null) => {
     <LanguageContext.Provider value={{ language, setLanguage, t }}>
       <ThemeContext.Provider value={{ theme, setTheme }}>
         <AccessibilityContext.Provider value={{ largerText, setLargerText, highContrast, setHighContrast }}>
-          <AuthContext.Provider value={{ user, token, isGuest, login, register, logout, continueAsGuest, updateProfile }}>
+          <AuthContext.Provider value={{ user, token, isGuest, login, register, completeAuthSession, logout, continueAsGuest, updateProfile }}>
             <AppDataContext.Provider value={{ 
               chatHistory, 
               savedAnswers, 

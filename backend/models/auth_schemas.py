@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Literal
 from pydantic import BaseModel, Field, field_validator
 import re
 
@@ -37,6 +37,59 @@ class UserRegisterRequest(BaseModel):
         return clean
 
 
+# Registration Initiate is identical in parameters to UserRegisterRequest
+RegistrationInitiateRequest = UserRegisterRequest
+
+
+class RegistrationInitiateResponse(BaseModel):
+    success: bool = True
+    sessionId: str
+    message: str
+    maskedEmail: str
+    maskedPhone: str
+    cooldownSeconds: int = 60
+    expiresInSeconds: int = 600
+    emailVerified: bool = False
+    phoneVerified: bool = False
+
+
+class VerifyOtpRequest(BaseModel):
+    sessionId: str = Field(..., min_length=10, description="Verification session token")
+    otp: str = Field(..., min_length=4, max_length=10, description="Numeric verification OTP code")
+
+    @field_validator("otp")
+    @classmethod
+    def clean_otp(cls, v: str) -> str:
+        clean = re.sub(r"\D", "", v.strip())
+        if len(clean) < 4:
+            raise ValueError("Please provide a valid numeric OTP code.")
+        return clean
+
+
+class ResendOtpRequest(BaseModel):
+    sessionId: str = Field(..., min_length=10, description="Verification session token")
+    target: Literal["email", "phone", "both"] = Field("email", description="Which channel to resend OTP for")
+
+
+class ResendOtpResponse(BaseModel):
+    success: bool = True
+    message: str
+    cooldownSeconds: int = 60
+    expiresInSeconds: int = 600
+
+
+class VerificationStatusResponse(BaseModel):
+    success: bool = True
+    sessionId: str
+    emailVerified: bool
+    phoneVerified: bool
+    maskedEmail: str
+    maskedPhone: str
+    emailAttemptsLeft: int
+    phoneAttemptsLeft: int
+    expiresInSeconds: int
+
+
 class UserLoginRequest(BaseModel):
     identifier: Optional[str] = Field(None, description="Email or phone number of the registered user")
     email: Optional[str] = Field(None, description="Optional email alias for identifier")
@@ -63,6 +116,9 @@ class UserResponse(BaseModel):
     phone: str
     userType: str
     preferredLanguage: str
+    emailVerified: Optional[bool] = True
+    phoneVerified: Optional[bool] = True
+    isActive: Optional[bool] = True
     createdAt: Optional[str] = None
     updatedAt: Optional[str] = None
 
@@ -72,3 +128,13 @@ class AuthResponse(BaseModel):
     token: str
     user: UserResponse
     message: Optional[str] = "Authentication successful"
+
+
+class VerifyOtpResponse(BaseModel):
+    success: bool = True
+    message: str
+    emailVerified: bool
+    phoneVerified: bool
+    registrationCompleted: bool = False
+    token: Optional[str] = None
+    user: Optional[UserResponse] = None

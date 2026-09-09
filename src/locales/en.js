@@ -130,6 +130,8 @@ export default {
 
   // Auth
   emailAddress: "Email Address",
+  phoneNumber: "Phone Number",
+  emailOrPhone: "Email or Phone Number",
   password: "Password",
   confirmPassword: "Confirm Password",
   fullName: "Full Name",

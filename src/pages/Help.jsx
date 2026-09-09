@@ -150,7 +150,7 @@ export const Help = () => {
                   <Mail className="h-4.5 w-4.5 text-primary-600 dark:text-primary-400 shrink-0" />
                   <div>
                     <p className="font-semibold text-slate-700 dark:text-slate-300">Email Support</p>
-                    <a href="mailto:support@sahakarsahayak.gov.np" className="text-[11px] text-slate-450 dark:text-slate-500 hover:underline">support@sahakarsahayak.gov.np</a>
+                    <a href="mailto:support@sahakarsahayak.gov.in" className="text-[11px] text-slate-450 dark:text-slate-500 hover:underline">support@sahakarsahayak.gov.in</a>
                   </div>
                 </div>
                 
@@ -158,7 +158,7 @@ export const Help = () => {
                   <Phone className="h-4.5 w-4.5 text-primary-600 dark:text-primary-400 shrink-0" />
                   <div>
                     <p className="font-semibold text-slate-700 dark:text-slate-350">Helpline Phone</p>
-                    <p className="text-[11px] text-slate-450 dark:text-slate-500">+977-1-4200000</p>
+                    <p className="text-[11px] text-slate-450 dark:text-slate-500">+91-11-23380000</p>
                   </div>
                 </div>
 
@@ -166,7 +166,7 @@ export const Help = () => {
                   <MapPin className="h-4.5 w-4.5 text-primary-600 dark:text-primary-400 shrink-0" />
                   <div>
                     <p className="font-semibold text-slate-700 dark:text-slate-350">Administrative Division</p>
-                    <p className="text-[11px] text-slate-450 dark:text-slate-500">Ministry of Cooperatives, Kathmandu, Nepal</p>
+                    <p className="text-[11px] text-slate-450 dark:text-slate-500">Ministry of Cooperation, New Delhi, India</p>
                   </div>
                 </div>
               </div>

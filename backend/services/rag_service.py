@@ -1,20 +1,29 @@
 import os
-import google.generativeai as genai
 from dotenv import load_dotenv
 
 load_dotenv()
 
-if os.getenv("GEMINI_API_KEY"):
-    genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+try:
+    import google.generativeai as genai
+    if os.getenv("GEMINI_API_KEY"):
+        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+    model = genai.GenerativeModel('gemini-1.5-flash')
+except Exception:
+    genai = None
+    model = None
 
-# Updated to the exact model identifier specified by the error message
-model = genai.GenerativeModel('gemini-3.6-flash')
 
 def get_answer(query: str, language: str = "en", intent: str = "general") -> dict:
+    if model is None:
+        return {
+            "answer": "Sahakar Sahayak assistant is active. Please configure GEMINI_API_KEY to enable full generative responses."
+        }
+
     try:
         lang_instructions = {
             "kn": "Please respond in Kannada (ಕನ್ನಡ).",
             "hi": "Please respond in Hindi (हिंदी).",
+            "ne": "Please respond in Nepali (नेपाली).",
             "en": "Please respond in English."
         }
         instruction = lang_instructions.get(language, "Please respond in English.")

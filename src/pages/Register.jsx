@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth, useLanguage } from '../context/AppContext';
 import { Logo } from '../components/common/Logo';
-import { ArrowRight, User, Mail, Lock, UserPlus, Globe, HelpCircle } from 'lucide-react';
+import { ArrowRight, User, Mail, Phone, Lock, UserPlus, Globe, HelpCircle } from 'lucide-react';
 
 export const Register = () => {
   const { register, continueAsGuest } = useAuth();
@@ -11,6 +11,7 @@ export const Register = () => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [userType, setUserType] = useState("Citizen");
@@ -22,7 +23,7 @@ export const Register = () => {
     e.preventDefault();
     setError("");
 
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name.trim() || !email.trim() || !phone.trim() || !password || !confirmPassword) {
       setError("Please fill in all fields.");
       return;
     }
@@ -32,13 +33,24 @@ export const Register = () => {
       return;
     }
 
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+
     setIsLoading(true);
     try {
-      // Mock registration
-      register(name, email, password, userType);
+      await register({
+        name,
+        email,
+        phone,
+        password,
+        userType,
+        preferredLanguage,
+      });
       navigate('/dashboard');
     } catch (err) {
-      setError("Failed to register. Try again.");
+      setError(err.message || "Failed to register. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -92,7 +104,7 @@ export const Register = () => {
               </div>
             </div>
 
-            {/* Email */}
+            {/* Email Address */}
             <div className="space-y-1.5">
               <label htmlFor="email" className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                 {t('emailAddress')}
@@ -105,7 +117,26 @@ export const Register = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.gov.np"
+                  placeholder="name@example.gov.in"
+                  className="w-full pl-9.5 pr-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-800 dark:text-slate-100 placeholder-slate-450 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-400 text-sm transition-all"
+                />
+              </div>
+            </div>
+
+            {/* Phone Number */}
+            <div className="space-y-1.5">
+              <label htmlFor="phone" className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                {t('phoneNumber')}
+              </label>
+              <div className="relative flex items-center">
+                <Phone className="absolute left-3 h-4 w-4 text-slate-400" />
+                <input
+                  id="phone"
+                  type="tel"
+                  required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="+91 9876543210 or 9876543210"
                   className="w-full pl-9.5 pr-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-800 dark:text-slate-100 placeholder-slate-450 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-400 text-sm transition-all"
                 />
               </div>
@@ -181,7 +212,7 @@ export const Register = () => {
               {/* Confirm Password */}
               <div className="space-y-1.5">
                 <label htmlFor="confirm-password" className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                  Confirm Password
+                  {t('confirmPassword')}
                 </label>
                 <div className="relative flex items-center">
                   <Lock className="absolute left-3 h-4 w-4 text-slate-400" />
@@ -202,10 +233,10 @@ export const Register = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full inline-flex items-center justify-center gap-2 py-2.5 border border-transparent rounded-lg text-sm font-bold text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700 shadow-md shadow-primary-500/10 hover:translate-y-[-1px] active:translate-y-[0] transition-all cursor-pointer"
+              className="w-full inline-flex items-center justify-center gap-2 py-2.5 border border-transparent rounded-lg text-sm font-bold text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700 shadow-md shadow-primary-500/10 hover:translate-y-[-1px] active:translate-y-[0] transition-all cursor-pointer disabled:opacity-60"
             >
               <UserPlus className="h-4.5 w-4.5" />
-              <span>{isLoading ? "Creating..." : t('register')}</span>
+              <span>{isLoading ? "Creating Account..." : t('register')}</span>
             </button>
           </form>
 
@@ -215,8 +246,8 @@ export const Register = () => {
               <div className="w-full border-t border-slate-200 dark:border-slate-800" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-white dark:bg-slate-900 px-3 text-slate-400 dark:text-slate-500">
-                Or bypass credentials
+              <span className="bg-white dark:bg-slate-900 px-3 text-slate-400 dark:text-slate-550">
+                Or explore without credentials
               </span>
             </div>
           </div>
@@ -232,7 +263,7 @@ export const Register = () => {
 
           {/* Login Link */}
           <div className="text-center mt-5">
-            <Link to="/login" className="text-xs font-bold text-primary-655 hover:text-primary-700 dark:text-primary-400">
+            <Link to="/login" className="text-xs font-bold text-primary-600 hover:text-primary-700 dark:text-primary-400">
               {t('alreadyHaveAccount')}
             </Link>
           </div>
@@ -242,4 +273,5 @@ export const Register = () => {
     </div>
   );
 };
+
 export default Register;

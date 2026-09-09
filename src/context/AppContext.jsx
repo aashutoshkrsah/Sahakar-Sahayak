@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { translations } from '../locales/translation';
+import { authService } from '../services/authService';
 
 // Create individual Contexts
 const LanguageContext = createContext();
@@ -107,65 +108,126 @@ export const AppProvider = ({ children }) => {
     const savedUser = localStorage.getItem('user');
     return savedUser ? JSON.parse(savedUser) : null;
   });
+  const [token, setToken] = useState(() => {
+    return localStorage.getItem('token') || null;
+  });
   const [isGuest, setIsGuest] = useState(() => {
     return localStorage.getItem('isGuest') === 'true';
   });
 
-  const login = (email, password, name = 'Sita Ram', userType = 'Citizen') => {
-    const mockUser = {
-      name,
-      email,
-      userType,
-      preferredLanguage: language,
-    };
-    setUser(mockUser);
+  // Verify and sync session on initial load if token exists
+  useEffect(() => {
+    if (token && !isGuest) {
+      authService.getMe(token).then((userData) => {
+        setUser(userData);
+        localStorage.setItem('user', JSON.stringify(userData));
+      }).catch((err) => {
+        console.warn('Session check:', err.message);
+      });
+    }
+  }, [token, isGuest]);
+
+  const login = async (identifier, password) => {
+    const res = await authService.login(identifier, password);
+    setUser(res.user);
+    setToken(res.token);
     setIsGuest(false);
-    localStorage.setItem('user', JSON.stringify(mockUser));
+    localStorage.setItem('user', JSON.stringify(res.user));
+    localStorage.setItem('token', res.token);
     localStorage.setItem('isGuest', 'false');
-    return true;
+    if (res.user?.preferredLanguage && res.user.preferredLanguage !== language) {
+      setLanguage(res.user.preferredLanguage);
+    }
+    return res;
   };
 
-  const register = (name, email, password, userType) => {
-    const mockUser = {
-      name,
-      email,
-      userType,
-      preferredLanguage: language,
-    };
-    setUser(mockUser);
+  const register = async (nameOrObj, email, phone, password, userType, preferredLanguage) => {
+    let payload;
+    if (typeof nameOrObj === 'object' && nameOrObj !== null) {
+      payload = {
+        name: nameOrObj.name,
+        email: nameOrObj.email,
+        phone: nameOrObj.phone,
+        password: nameOrObj.password,
+        userType: nameOrObj.userType || 'Citizen',
+        preferredLanguage: nameOrObj.preferredLanguage || language,
+      };
+    } else {
+      payload = {
+        name: nameOrObj,
+        email,
+        phone,
+        password,
+        userType: userType || 'Citizen',
+        preferredLanguage: preferredLanguage || language,
+      };
+    }
+
+    const res = await authService.register(payload);
+    setUser(res.user);
+    setToken(res.token);
     setIsGuest(false);
-    localStorage.setItem('user', JSON.stringify(mockUser));
+    localStorage.setItem('user', JSON.stringify(res.user));
+    localStorage.setItem('token', res.token);
     localStorage.setItem('isGuest', 'false');
-    return true;
+    if (res.user?.preferredLanguage && res.user.preferredLanguage !== language) {
+      setLanguage(res.user.preferredLanguage);
+    }
+    return res;
   };
 
   const continueAsGuest = () => {
-    setUser({
+    const guestUser = {
       name: "Guest User",
-      email: "guest@sahakarsahayak.gov.np",
+      email: "guest@sahakarsahayak.gov.in",
+      phone: "0000000000",
       userType: "Citizen",
       preferredLanguage: language
-    });
+    };
+    setUser(guestUser);
+    setToken(null);
     setIsGuest(true);
     localStorage.setItem('isGuest', 'true');
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
   };
 
   const logout = () => {
     setUser(null);
+    setToken(null);
     setIsGuest(false);
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
     localStorage.setItem('isGuest', 'false');
   };
 
-  const updateProfile = (name, email, prefLang, uType) => {
-    const updatedUser = { ...user, name, email, preferredLanguage: prefLang, userType: uType };
-    setUser(updatedUser);
-    if (!isGuest) {
-      localStorage.setItem('user', JSON.stringify(updatedUser));
+  const updateProfile = async (name, email, phone, prefLang, uType) => {
+    if (isGuest) {
+      const updatedUser = { ...user, name, email, phone, preferredLanguage: prefLang, userType: uType };
+      setUser(updatedUser);
+      if (prefLang !== language) setLanguage(prefLang);
+      return updatedUser;
     }
-    if (prefLang !== language) {
-      setLanguage(prefLang);
+
+    if (token) {
+      const res = await authService.updateProfile(
+        { name, email, phone, preferredLanguage: prefLang, userType: uType },
+        token
+      );
+      setUser(res.user);
+      if (res.token) {
+        setToken(res.token);
+        localStorage.setItem('token', res.token);
+      }
+      localStorage.setItem('user', JSON.stringify(res.user));
+      if (prefLang !== language) setLanguage(prefLang);
+      return res.user;
+    } else {
+      const updatedUser = { ...user, name, email, phone, preferredLanguage: prefLang, userType: uType };
+      setUser(updatedUser);
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      if (prefLang !== language) setLanguage(prefLang);
+      return updatedUser;
     }
   };
 
@@ -384,7 +446,7 @@ const createNewChat = (title, category, firstMessage = null) => {
     <LanguageContext.Provider value={{ language, setLanguage, t }}>
       <ThemeContext.Provider value={{ theme, setTheme }}>
         <AccessibilityContext.Provider value={{ largerText, setLargerText, highContrast, setHighContrast }}>
-          <AuthContext.Provider value={{ user, isGuest, login, register, logout, continueAsGuest, updateProfile }}>
+          <AuthContext.Provider value={{ user, token, isGuest, login, register, logout, continueAsGuest, updateProfile }}>
             <AppDataContext.Provider value={{ 
               chatHistory, 
               savedAnswers, 

@@ -130,6 +130,8 @@ export default {
 
   // Auth
   emailAddress: "ಇಮೇಲ್ ವಿಳಾಸ",
+  phoneNumber: "ದೂರವಾಣಿ ಸಂಖ್ಯೆ",
+  emailOrPhone: "ಇಮೇಲ್ ಅಥವಾ ದೂರವಾಣಿ ಸಂಖ್ಯೆ",
   password: "ಪಾಸ್ವರ್ಡ್",
   confirmPassword: "ಪಾಸ್ವರ್ಡ್ ದೃಢೀಕರಿಸಿ",
   fullName: "ಪೂರ್ಣ ಹೆಸರು",

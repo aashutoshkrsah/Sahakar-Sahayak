@@ -132,6 +132,8 @@ export default {
 
   // Auth
   emailAddress: "ईमेल पता",
+  phoneNumber: "फ़ोन नंबर",
+  emailOrPhone: "ईमेल या फ़ोन नंबर",
   password: "पासवर्ड",
   confirmPassword: "पासवर्ड की पुष्टि करें",
   fullName: "पूरा नाम",

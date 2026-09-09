@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth, useLanguage } from '../context/AppContext';
 import { Logo } from '../components/common/Logo';
-import { ArrowRight, Mail, Lock, LogIn, UserCheck } from 'lucide-react';
+import { ArrowRight, UserCheck, Lock, LogIn, Contact } from 'lucide-react';
 
 export const Login = () => {
   const { login, continueAsGuest } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
@@ -19,18 +19,17 @@ export const Login = () => {
     e.preventDefault();
     setError("");
 
-    if (!email || !password) {
+    if (!identifier.trim() || !password) {
       setError("Please fill in all fields.");
       return;
     }
 
     setIsLoading(true);
     try {
-      // Mock login validation
-      login(email, password, "Sita Ram", "Citizen");
+      await login(identifier, password);
       navigate('/dashboard');
     } catch (err) {
-      setError("Invalid credentials. Try guest mode.");
+      setError(err.message || "Invalid credentials. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -65,20 +64,20 @@ export const Login = () => {
           )}
 
           <form className="space-y-5" onSubmit={handleSubmit}>
-            {/* Email Input */}
+            {/* Email or Phone Number Input */}
             <div className="space-y-1.5">
-              <label htmlFor="email" className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                {t('emailAddress')}
+              <label htmlFor="identifier" className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                {t('emailOrPhone')}
               </label>
               <div className="relative flex items-center">
-                <Mail className="absolute left-3 h-4 w-4 text-slate-400" />
+                <Contact className="absolute left-3 h-4 w-4 text-slate-400" />
                 <input
-                  id="email"
-                  type="email"
+                  id="identifier"
+                  type="text"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.gov.np"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  placeholder="name@example.gov.in or +91 9876543210"
                   className="w-full pl-9.5 pr-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-800 dark:text-slate-100 placeholder-slate-450 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-400 text-sm transition-all"
                 />
               </div>
@@ -126,7 +125,7 @@ export const Login = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full inline-flex items-center justify-center gap-2 py-2.5 border border-transparent rounded-lg text-sm font-bold text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700 shadow-md shadow-primary-500/10 hover:translate-y-[-1px] active:translate-y-[0] transition-all cursor-pointer"
+              className="w-full inline-flex items-center justify-center gap-2 py-2.5 border border-transparent rounded-lg text-sm font-bold text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700 shadow-md shadow-primary-500/10 hover:translate-y-[-1px] active:translate-y-[0] transition-all cursor-pointer disabled:opacity-60"
             >
               <LogIn className="h-4.5 w-4.5" />
               <span>{isLoading ? "Signing in..." : t('login')}</span>
@@ -157,7 +156,7 @@ export const Login = () => {
 
           {/* Register Link */}
           <div className="text-center mt-6">
-            <Link to="/register" className="text-xs font-bold text-primary-655 hover:text-primary-700 dark:text-primary-400">
+            <Link to="/register" className="text-xs font-bold text-primary-600 hover:text-primary-700 dark:text-primary-400">
               {t('dontHaveAccount')}
             </Link>
           </div>
@@ -167,4 +166,5 @@ export const Login = () => {
     </div>
   );
 };
+
 export default Login;

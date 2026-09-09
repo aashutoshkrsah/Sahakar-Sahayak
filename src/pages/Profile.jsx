@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth, useLanguage, useAppData } from '../context/AppContext';
 import { LayoutWrapper } from '../components/layout/LayoutWrapper';
-import { User, Mail, Globe, Users, Save, HelpCircle } from 'lucide-react';
+import { User, Mail, Phone, Globe, Users, Save, HelpCircle } from 'lucide-react';
 
 export const Profile = () => {
   const { user, isGuest, updateProfile } = useAuth();
@@ -10,11 +10,12 @@ export const Profile = () => {
 
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
+  const [phone, setPhone] = useState(user?.phone || "");
   const [prefLang, setPrefLang] = useState(user?.preferredLanguage || "en");
   const [userType, setUserType] = useState(user?.userType || "Citizen");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
     if (isGuest) {
       showToast("Profile edits are disabled in Guest Mode.", "error");
@@ -22,11 +23,14 @@ export const Profile = () => {
     }
 
     setIsLoading(true);
-    setTimeout(() => {
-      updateProfile(name, email, prefLang, userType);
+    try {
+      await updateProfile(name, email, phone, prefLang, userType);
       showToast("Profile details updated successfully", "success");
+    } catch (err) {
+      showToast(err.message || "Failed to update profile", "error");
+    } finally {
       setIsLoading(false);
-    }, 400);
+    }
   };
 
   return (
@@ -59,7 +63,7 @@ export const Profile = () => {
             {/* Display Initials Badge */}
             <div className="flex items-center gap-4">
               <div className="h-16 w-16 rounded-2xl bg-primary-100 dark:bg-primary-950 flex items-center justify-center text-primary-700 dark:text-primary-300 font-black font-display text-xl border border-primary-200 dark:border-primary-900/60 shadow-sm shrink-0">
-                {name ? name.charAt(0) : "U"}
+                {name ? name.charAt(0).toUpperCase() : "U"}
               </div>
               <div>
                 <h3 className="text-base font-bold font-display text-slate-850 dark:text-white leading-none">
@@ -86,7 +90,7 @@ export const Profile = () => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     disabled={isGuest}
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-205 dark:border-slate-800 rounded-xl text-slate-850 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-400 text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-850 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-400 text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
                   />
                 </div>
               </div>
@@ -104,29 +108,27 @@ export const Profile = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={isGuest}
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-205 dark:border-slate-800 rounded-xl text-slate-855 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-400 text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-850 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-400 text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
                   />
                 </div>
               </div>
 
-              {/* Preferred Language selection */}
+              {/* Phone Number */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                  {t('preferredLang')}
+                  {t('phoneNumber')}
                 </label>
                 <div className="relative flex items-center">
-                  <Globe className="absolute left-3.5 h-4.5 w-4.5 text-slate-400 pointer-events-none" />
-                  <select
-                    value={prefLang}
-                    onChange={(e) => setPrefLang(e.target.value)}
+                  <Phone className="absolute left-3.5 h-4.5 w-4.5 text-slate-400" />
+                  <input
+                    type="tel"
+                    required
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     disabled={isGuest}
-                    className="w-full pl-10 pr-8 py-2.5 bg-slate-50 dark:bg-slate-955 border border-slate-205 dark:border-slate-800 rounded-xl text-slate-850 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-400 text-sm transition-all appearance-none disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-sm"
-                  >
-                    <option value="en">English</option>
-                    <option value="kn">ಕನ್ನಡ</option>
-                    <option value="hi">हिन्दी</option>
-                    <option value="ne">नेपाली</option>
-                  </select>
+                    placeholder="+91 9876543210"
+                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-850 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-400 text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                  />
                 </div>
               </div>
 
@@ -141,7 +143,7 @@ export const Profile = () => {
                     value={userType}
                     onChange={(e) => setUserType(e.target.value)}
                     disabled={isGuest}
-                    className="w-full pl-10 pr-8 py-2.5 bg-slate-50 dark:bg-slate-955 border border-slate-205 dark:border-slate-800 rounded-xl text-slate-850 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-400 text-sm transition-all appearance-none disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-sm"
+                    className="w-full pl-10 pr-8 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-850 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-400 text-sm transition-all appearance-none disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-sm"
                   >
                     <option value="Citizen">{t('typeCitizen')}</option>
                     <option value="Cooperative Member">{t('typeMember')}</option>
@@ -151,15 +153,36 @@ export const Profile = () => {
                   </select>
                 </div>
               </div>
+
+              {/* Preferred Language selection */}
+              <div className="space-y-1.5 sm:col-span-2">
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  {t('preferredLang')}
+                </label>
+                <div className="relative flex items-center">
+                  <Globe className="absolute left-3.5 h-4.5 w-4.5 text-slate-400 pointer-events-none" />
+                  <select
+                    value={prefLang}
+                    onChange={(e) => setPrefLang(e.target.value)}
+                    disabled={isGuest}
+                    className="w-full pl-10 pr-8 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-850 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-400 text-sm transition-all appearance-none disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-sm"
+                  >
+                    <option value="en">English</option>
+                    <option value="kn">ಕನ್ನಡ</option>
+                    <option value="hi">हिन्दी</option>
+                    <option value="ne">नेपाली</option>
+                  </select>
+                </div>
+              </div>
             </div>
 
             {/* Save Button */}
             {!isGuest && (
-              <div className="pt-4 border-t border-slate-100 dark:border-slate-850 flex justify-end">
+              <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end">
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="inline-flex items-center gap-1.5 px-5 py-2.5 border border-transparent rounded-xl text-sm font-bold text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700 shadow-md shadow-primary-500/10 hover:translate-y-[-1px] active:translate-y-0 transition-all cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-5 py-2.5 border border-transparent rounded-xl text-sm font-bold text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700 shadow-md shadow-primary-500/10 hover:translate-y-[-1px] active:translate-y-0 transition-all cursor-pointer disabled:opacity-60"
                 >
                   <Save className="h-4.5 w-4.5" />
                   <span>{isLoading ? "Saving Changes..." : "Save Details"}</span>
@@ -175,4 +198,5 @@ export const Profile = () => {
     </LayoutWrapper>
   );
 };
+
 export default Profile;

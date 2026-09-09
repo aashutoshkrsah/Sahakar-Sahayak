@@ -1,17 +1,8 @@
 // Authentication Service communicating with FastAPI Backend
-// Endpoints:
-// - POST /api/auth/register/initiate (Step 1: Validate, generate Email & Phone OTPs)
-// - POST /api/auth/register/verify-email (Step 2a: Verify Email OTP)
-// - POST /api/auth/register/verify-phone (Step 2b: Verify Phone OTP)
-// - POST /api/auth/register/resend-otp (Resend OTP with cooldown)
-// - GET  /api/auth/register/status/:sessionId (Check verification status)
-// - POST /api/auth/login (Dual Email OR Phone + Password)
-// - GET  /api/auth/me (Current user info)
-// - PUT  /api/auth/profile (Update profile)
 
-const API_BASE = import.meta.env.VITE_API_URL 
-  ? `${import.meta.env.VITE_API_URL.replace(/\/$/, '')}/api/auth` 
-  : '/api/auth';
+// FIXED: Forced the absolute URL to your Python backend so it never talks to itself
+const BACKEND_URL = import.meta.env.VITE_API_URL || "https://sahakar-sahayak-2.onrender.com";
+const API_BASE = `${BACKEND_URL.replace(/\/$/, '')}/api/auth`;
 
 const getUrl = (path) => `${API_BASE}${path}`;
 

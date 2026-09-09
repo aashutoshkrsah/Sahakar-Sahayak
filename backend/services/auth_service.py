@@ -155,9 +155,19 @@ def send_sms_otp(target_phone: str, otp: str) -> bool:
     if not sms_key: return True
 
     try:
-        payload = {"route": "q", "message": f"Your Sahakar Sahayak OTP is {otp}", "numbers": clean_digits, "flash": 0}
-        headers = {"authorization": sms_key}
+        # Automatically injects dynamic OTP and phone digits matching Fast2SMS POST schema
+        payload = {
+            "route": "otp",
+            "variables_values": str(otp),
+            "schedule_time": "",
+            "numbers": clean_digits
+        }
+        headers = {
+            "authorization": sms_key,
+            "Content-Type": "application/json"
+        }
         response = requests.post("https://www.fast2sms.com/dev/bulkV2", json=payload, headers=headers, timeout=5)
+        print(f"📱 Fast2SMS Response: Status {response.status_code}, Body: {response.text}")
         return response.status_code == 200
     except Exception as e:
         print(f"❌ SMS error: {e}")

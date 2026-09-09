@@ -7,7 +7,7 @@ try:
     import google.generativeai as genai
     if os.getenv("GEMINI_API_KEY"):
         genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    model = genai.GenerativeModel('gemini-3.6-flash')
 except Exception:
     genai = None
     model = None

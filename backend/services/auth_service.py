@@ -3,8 +3,6 @@ import re
 import secrets
 import hashlib
 import hmac
-import smtplib
-from email.mime.text import MIMEText
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
@@ -118,22 +116,34 @@ def mask_phone(phone: str) -> str:
     prefix = "+91 " if clean.startswith("+") and digits.startswith("91") else ("+ " if clean.startswith("+") else "")
     return f"{prefix}******{digits[-4:]}"
 
-# --- DISPATCH LOGIC ---
+# ==============================================================================
+# DISPATCH MECHANISMS (EMAIL API & SMS API)
+# ==============================================================================
 
 def send_email_otp(target_email: str, otp: str) -> bool:
-    smtp_user, smtp_pass = os.getenv("SMTP_EMAIL"), os.getenv("SMTP_PASSWORD")
+    email_api_key = os.getenv("EMAIL_API_KEY")
+    sender_email = os.getenv("SENDER_EMAIL", "sahakarsahayaksih@gmail.com") 
+    
     print(f"🔑 [AUTH EMAIL] Target: {target_email} | OTP: {otp}")
-    if not smtp_user or not smtp_pass: return True
+    if not email_api_key: return True # Fail-safe for console testing
 
     try:
-        msg = MIMEText(f"Your Sahakar Sahayak verification code is: {otp}\nValid for 5 minutes.")
-        msg["Subject"], msg["From"], msg["To"] = f"Verification Code: {otp}", smtp_user, target_email
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10) as server:
-            server.login(smtp_user, smtp_pass)
-            server.sendmail(smtp_user, [target_email], msg.as_string())
-        return True
+        url = "https://api.brevo.com/v3/smtp/email"
+        payload = {
+            "sender": {"name": "Sahakar Sahayak", "email": sender_email},
+            "to": [{"email": target_email}],
+            "subject": f"Sahakar Sahayak - Verification Code: {otp}",
+            "htmlContent": f"<h3>Welcome to Sahakar Sahayak</h3><p>Your secure verification code is: <strong>{otp}</strong></p><p>This code is valid for 5 minutes.</p>"
+        }
+        headers = {
+            "accept": "application/json",
+            "api-key": email_api_key,
+            "content-type": "application/json"
+        }
+        response = requests.post(url, json=payload, headers=headers, timeout=5)
+        return response.status_code in [200, 201]
     except Exception as e:
-        print(f"❌ Email error: {e}")
+        print(f"❌ Email API error: {e}")
         return False
 
 def send_sms_otp(target_phone: str, otp: str) -> bool:
@@ -147,8 +157,8 @@ def send_sms_otp(target_phone: str, otp: str) -> bool:
     try:
         payload = {"route": "q", "message": f"Your Sahakar Sahayak OTP is {otp}", "numbers": clean_digits, "flash": 0}
         headers = {"authorization": sms_key}
-        return requests.post("https://www.fast2sms.com/dev/bulkV2", json=payload, headers=headers, timeout=5).status_code == 200
+        response = requests.post("https://www.fast2sms.com/dev/bulkV2", json=payload, headers=headers, timeout=5)
+        return response.status_code == 200
     except Exception as e:
         print(f"❌ SMS error: {e}")
         return False
-

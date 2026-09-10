@@ -161,13 +161,18 @@ def send_sms_otp(target_phone: str, otp: str) -> bool:
         return True
 
     try:
-        url = "https://api.smsgateway.simpapp.com/v1/send" 
+        # The exact Google Cloud Function URL from the app
+        url = "https://europe-west1-sms-gateway-api-simpapp.cloudfunctions.net/api_sms_send"
+        
+        # Matches the exact JSON structure the app expects
         payload = {
-            "phone": clean_digits,
+            "phoneNumber": clean_digits,
             "message": f"Your Sahakar Sahayak verification code is {otp}"
         }
+        
+        # Matches the exact header the app expects (X-API-Key instead of Bearer)
         headers = {
-            "Authorization": f"Bearer {gateway_api_key}",
+            "X-API-Key": gateway_api_key,
             "Content-Type": "application/json"
         }
         

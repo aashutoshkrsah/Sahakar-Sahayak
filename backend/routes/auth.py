@@ -40,7 +40,7 @@ from backend.services.auth_service import (
     mask_email,
     mask_phone,
     send_email_otp,
-    send_sms_otp, # Renamed to match the new dispatch logic
+    send_sms_otp, 
 )
 
 router = APIRouter()
@@ -105,7 +105,7 @@ def initiate_registration(request: UserRegisterRequest, db: Session = Depends(ge
     db.add(pending)
     db.commit()
 
-    # Dispatch using the Brevo & Fast2SMS logic from auth_service
+    # Dispatch using the Brevo & Local Android Gateway logic from auth_service
     send_email_otp(clean_email, email_otp)
     send_sms_otp(clean_phone, phone_otp)
 
@@ -288,7 +288,7 @@ def update_profile(update_data: UserProfileUpdateRequest, current_user: User = D
     )
 
 # ==============================================================================
-# 7. ADDED: FORGOT PASSWORD FLOW (Using Brevo & Fast2SMS)
+# 7. ADDED: FORGOT PASSWORD FLOW (Using Brevo & Local Android Gateway)
 # ==============================================================================
 
 class ResetPasswordSendRequest(BaseModel):

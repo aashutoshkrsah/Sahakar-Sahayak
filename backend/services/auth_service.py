@@ -147,28 +147,34 @@ def send_email_otp(target_email: str, otp: str) -> bool:
         return False
 
 def send_sms_otp(target_phone: str, otp: str) -> bool:
-    sms_key = os.getenv("SMS_API_KEY")
+    gateway_api_key = os.getenv("GATEWAY_API_KEY")
     clean_digits = extract_phone_digits(target_phone)
-    if clean_digits.startswith("91") and len(clean_digits) == 12: clean_digits = clean_digits[2:]
     
-    print(f"🔑 [AUTH SMS] Target: {clean_digits} | OTP: {otp}")
-    if not sms_key: return True
+    # Ensures it's in standard international format for the Gateway app
+    if not clean_digits.startswith("+91"):
+        clean_digits = f"+91{clean_digits[-10:]}" 
+        
+    print(f"🔑 [AUTH SMS] Sending via Local Gateway to: {clean_digits} | OTP: {otp}")
+    
+    if not gateway_api_key: 
+        print("⚠️ GATEWAY_API_KEY not found in env variables. Bypassing...")
+        return True
 
     try:
-        # Automatically injects dynamic OTP and phone digits matching Fast2SMS POST schema
+        url = "https://api.smsgateway.simpapp.com/v1/send" 
         payload = {
-            "route": "otp",
-            "variables_values": str(otp),
-            "schedule_time": "",
-            "numbers": clean_digits
+            "phone": clean_digits,
+            "message": f"Your Sahakar Sahayak verification code is {otp}"
         }
         headers = {
-            "authorization": sms_key,
+            "Authorization": f"Bearer {gateway_api_key}",
             "Content-Type": "application/json"
         }
-        response = requests.post("https://www.fast2sms.com/dev/bulkV2", json=payload, headers=headers, timeout=5)
-        print(f"📱 Fast2SMS Response: Status {response.status_code}, Body: {response.text}")
-        return response.status_code == 200
+        
+        response = requests.post(url, json=payload, headers=headers, timeout=10)
+        print(f"📱 Gateway Response: Status {response.status_code}, Body: {response.text}")
+        
+        return response.status_code in [200, 201]
     except Exception as e:
-        print(f"❌ SMS error: {e}")
+        print(f"❌ Local Gateway error: {e}")
         return False

@@ -8,14 +8,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 print("=======================================================")
-print("🧠 SAHAKAAR KIOSK HEURISTIC RAG ENGINE INITIALIZING 🧠")
+print("🧠 SAHAKAAR KIOSK RAG ENGINE INITIALIZING 🧠")
 print("=======================================================")
 
 try:
     from sarvamai import SarvamAI
     api_key = os.getenv("SARVAM_API_KEY", "").strip()
     client = SarvamAI(api_subscription_key=api_key) if api_key else None
-    
+
     MODEL_NAME = "sarvam-105b"
     if client:
         print(f"[SARVAM LOG] ✅ Engine Online: Model '{MODEL_NAME}' connected.")
@@ -31,48 +31,46 @@ OFFICIAL_SCHEME_LEXICON = {
     r"\b(soil card|mitti|urvarak|fertilizer|khad|dap|urea)\b": "Soil Health Card Scheme nutrient management",
     r"\b(sinchai|irrigation|paani|drip|sprinkler|borewell)\b": "PMKSY Pradhan Mantri Krishi Sinchayee Yojana irrigation",
     r"\b(mandi|enam|e-nam|bhav|bechna|msp|rate)\b": "e-NAM National Agriculture Market MSP procurement",
-    r"\b(samiti|cooperative|society|pacs|dairy|sahakar|sangh)\b": "PACS Primary Agricultural Credit Societies Cooperative Governance"
+    r"\b(samiti|cooperative|society|pacs|dairy|sahakar|sangh)\b": "PACS Primary Agricultural Credit Societies Cooperative Governance",
 }
 
-class RogueLLMParser:
+# Extend this as your frontend's language dropdown grows. Keys must match
+# whatever `language` code the frontend sends. Sarvam supports all of these.
+LANG_MAP = {
+    "en": "English",
+    "hi": "Hindi",
+    "kn": "Kannada",
+    "ta": "Tamil",
+    "te": "Telugu",
+    "ml": "Malayalam",
+    "mr": "Marathi",
+    "bn": "Bengali",
+    "gu": "Gujarati",
+    "pa": "Punjabi",
+    "or": "Odia",
+}
+
+
+def _clean_model_text(message_obj) -> str:
     """
-    Heavy-duty Python heuristic parser. 
-    Mathematically rips apart the LLM's raw text to extract only the final human-readable answer.
+    Return ONLY the final answer from a Sarvam chat message.
+
+    Sarvam puts chain-of-thought in a SEPARATE `reasoning_content` field on
+    the message object -- it never mixes it into `content`. We simply never
+    read `reasoning_content`, so there is nothing to "un-mix" after the
+    fact. That merge-then-guess step is what was leaking reasoning text
+    into your answers before. We also call the API with
+    reasoning_effort=None (below), so reasoning_content won't even be
+    populated.
+
+    The regex here is only a defensive net in case a model/SDK version
+    ever inlines a <think> block directly into `content`.
     """
-    @staticmethod
-    def extract_answer(message_obj) -> str:
-        if not message_obj:
-            return ""
-            
-        content = getattr(message_obj, 'content', '') or ""
-        reasoning = getattr(message_obj, 'reasoning_content', '') or ""
-        text = f"{reasoning}\n{content}".strip()
-
-        # 1. Universal Bracket Ripper (Destroys <think>, <ಆಲೋಚನೆ>, and anything else in brackets)
-        text = re.sub(r'<[^>]+>.*?</[^>]+>', '', text, flags=re.DOTALL)
-        # Catch any stray, unclosed tags that got left behind
-        text = re.sub(r'<[^>]+>', '', text)
-
-        # 2. Hallucination Eraser (Destroys prompt echoes and placeholders)
-        hallucinations = [
-            r"Let me reconsider.*?\n",
-            r"The user hasn't asked.*?\n",
-            r"Base your answer purely on.*?\n",
-            r"\(Write your final, concise answer.*?\)",
-            r"Answer:",
-            r"```.*?```"
-        ]
-        for h in hallucinations:
-            text = re.sub(h, '', text, flags=re.IGNORECASE | re.DOTALL)
-
-        # 3. Bottom-Up Mathematical Slicer
-        # If the text is still a massive wall of reasoning, we slice it into blocks.
-        # We only keep the last 2 blocks (which is always the final answer).
-        blocks = [b.strip() for b in text.split('\n\n') if b.strip()]
-        if len(blocks) > 2:
-            text = "\n\n".join(blocks[-2:])
-
-        return text.strip()
+    if not message_obj:
+        return ""
+    content = (getattr(message_obj, "content", "") or "").strip()
+    content = re.sub(r"<think>.*?</think>", "", content, flags=re.DOTALL | re.IGNORECASE).strip()
+    return content
 
 
 def normalize_query_to_english(raw_query: str) -> str:
@@ -83,29 +81,35 @@ def normalize_query_to_english(raw_query: str) -> str:
         return _apply_lexicon_fallback(raw_query)
 
     print(f"\n[SARVAM LOG] 🔄 Normalizing Query: '{raw_query}'")
-    
-    try:
-        normalization_prompt = (
-            "Extract the main agricultural topic into 3 English search keywords.\n"
-            "If the query is about sports, movies, or non-agriculture topics, output the exact word: OUT_OF_DOMAIN\n"
-            f"Query: {raw_query}\n"
-            "Keywords:"
-        )
 
+    try:
         response = client.chat.completions(
             model=MODEL_NAME,
-            messages=[{"role": "user", "content": normalization_prompt}],
-            temperature=0.1
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "Extract the main agricultural topic from the user's message "
+                        "into 3 concise English search keywords. If the message is "
+                        "about sports, movies, politics, or anything unrelated to "
+                        "agriculture or farming, reply with exactly: OUT_OF_DOMAIN. "
+                        "Reply with ONLY the keywords (or OUT_OF_DOMAIN) -- no "
+                        "preamble, no explanation, no punctuation."
+                    ),
+                },
+                {"role": "user", "content": raw_query},
+            ],
+            temperature=0.1,
+            max_tokens=60,
+            reasoning_effort=None,  # keyword extraction needs zero "thinking"
         )
 
         message_obj = response.choices[0].message if response.choices else None
-        
-        # Route through the Heuristic Parser
-        clean_content = RogueLLMParser.extract_answer(message_obj)
-        
-        cleaned_search_terms = clean_content if clean_content else _apply_lexicon_fallback(raw_query)
+        cleaned_search_terms = _clean_model_text(message_obj)
+
         lexicon_boost = _apply_lexicon_fallback(raw_query)
         final_search_query = f"{cleaned_search_terms} {lexicon_boost}".strip()
+        final_search_query = final_search_query or raw_query
 
         print(f"[SARVAM LOG] ✅ Search Keywords: '{final_search_query}'")
         return final_search_query
@@ -124,10 +128,10 @@ def _apply_lexicon_fallback(text: str) -> str:
 
 
 def get_answer(
-    query: str, 
-    language: str = "en", 
+    query: str,
+    language: str = "en",
     intent: str = "general",
-    retrieved_docs: list = None
+    retrieved_docs: list = None,
 ) -> dict:
     sources = []
     context_chunks = []
@@ -156,11 +160,11 @@ def get_answer(
                 link_url = f"/documents/{urllib.parse.quote(doc_name)}"
                 if page_val is not None:
                     link_url += f"#page={page_val}"
-                
+
                 sources.append({
                     "document": doc_name,
                     "page": page_val,
-                    "link": link_url
+                    "link": link_url,
                 })
 
     context_block = "\n\n---\n\n".join(context_chunks[:5])
@@ -173,50 +177,55 @@ def get_answer(
             "sources": sources,
             "confidence": 0.0,
             "action_url": None,
-            "qr_code_base64": None
+            "qr_code_base64": None,
         }
 
-    lang_map = {
-        "kn": "Kannada",
-        "hi": "Hindi",
-        "en": "English"
-    }
-    target_lang = lang_map.get(language, "English")
+    target_lang = LANG_MAP.get(language, "English")
 
-    # Bare-bones prompt. We are not giving it formatting rules to panic over. 
-    # We let it speak, and we let the Python parser rip out the trash.
-    master_prompt = (
-        f"You are Sahakar Sahayak, answering a farmer's question naturally in {target_lang}.\n"
-        "1. Base your answer entirely on the Context provided below. If Context is empty, give general farming advice.\n"
-        "2. If the user asks about cricket, movies, politics, or non-farming topics, reply ONLY with: 'I can only assist with agriculture and farming schemes.'\n\n"
-        f"Context:\n{context_block if context_block else 'None'}\n\n"
-        f"Farmer Query: {query}\n"
+    system_prompt = (
+        f"You are Sahakar Sahayak, a farmer-assistance chatbot. Always reply "
+        f"naturally in {target_lang}, in plain prose -- no headers, no markdown, "
+        f"no meta-commentary about what you are doing.\n"
+        "Rules:\n"
+        "1. Base your answer entirely on the Context below when it is relevant. "
+        "If the Context is empty or not relevant to the question, answer from "
+        "general farming knowledge instead.\n"
+        "2. If the farmer's question is about cricket, movies, politics, or any "
+        "non-farming topic, reply with ONLY this sentence, translated into "
+        f"{target_lang}: 'I can only assist with agriculture and farming schemes.'\n"
+        "3. Never show your reasoning, thinking, or notes -- output only the "
+        "final answer meant for the farmer to read."
     )
+
+    user_prompt = f"Context:\n{context_block if context_block else 'None'}\n\nFarmer Query: {query}"
 
     try:
         print(f"\n[SARVAM LOG] 🧠 Executing Master Synthesis for '{language}'")
-        
+
         response = client.chat.completions(
             model=MODEL_NAME,
-            messages=[{"role": "user", "content": master_prompt}],
-            temperature=0.3
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            temperature=0.3,
+            max_tokens=1024,
+            reasoning_effort=None,  # closed-book extraction + translation --
+                                    # keep the whole token budget for the
+                                    # actual answer, not chain-of-thought
         )
 
         message_obj = response.choices[0].message if response.choices else None
-        
-        # 🚀 ROUTE THROUGH THE HEURISTIC PARSER 🚀
-        clean_content = RogueLLMParser.extract_answer(message_obj)
-        print(f"[SARVAM LOG] 🔍 Final extracted length: {len(clean_content)}")
-        
-        if clean_content:
-            answer_text = clean_content
-        else:
+        answer_text = _clean_model_text(message_obj)
+        print(f"[SARVAM LOG] 🔍 Final extracted length: {len(answer_text)}")
+
+        if not answer_text:
             answer_text = "I apologize, but I could not synthesize an answer at this moment. Please try asking again."
 
         print("[SARVAM LOG] ✅ Answer Synthesis Completed.")
 
         is_refusal = "can only assist with agriculture" in answer_text.lower() or "out_of_domain" in answer_text.lower()
-        has_documents = len(sources) > 0 and context_block
+        has_documents = len(sources) > 0 and bool(context_block)
 
         if is_refusal:
             sources = []
@@ -236,7 +245,7 @@ def get_answer(
             "sources": sources,
             "confidence": confidence,
             "action_url": action_url,
-            "qr_code_base64": qr_code_base64
+            "qr_code_base64": qr_code_base64,
         }
 
     except Exception as e:
@@ -248,8 +257,9 @@ def get_answer(
             "sources": sources,
             "confidence": 0.0,
             "action_url": None,
-            "qr_code_base64": None
+            "qr_code_base64": None,
         }
+
 
 def _generate_share_qr(query: str, answer: str, sources: list, confidence: float):
     if confidence <= 0.0:

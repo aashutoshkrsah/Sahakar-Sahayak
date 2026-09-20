@@ -34,11 +34,10 @@ OFFICIAL_SCHEME_LEXICON = {
     r"\b(samiti|cooperative|society|pacs|dairy|sahakar|sangh)\b": "PACS Primary Agricultural Credit Societies Cooperative Governance"
 }
 
-def clean_ai_text(message_obj, tag_name="FINAL_ANSWER") -> str:
+def clean_ai_text(message_obj) -> str:
     """
-    The Ultimate XML Enclosure Extractor.
-    Instead of fighting the AI's reasoning, we let it think, but FORCE it 
-    to place the actual output inside specific XML tags. This is 100% bulletproof.
+    The Untranslatable Delimiter Extractor.
+    Bypasses the LLM Tag Translation Bug by using pure symbols (@@@).
     """
     if not message_obj:
         return ""
@@ -46,29 +45,22 @@ def clean_ai_text(message_obj, tag_name="FINAL_ANSWER") -> str:
     content_str = getattr(message_obj, 'content', '') or ""
     reasoning_str = getattr(message_obj, 'reasoning_content', '') or ""
     
-    # Combine everything so we can search the entire payload regardless of where Sarvam hides it
     raw_text = f"{reasoning_str}\n{content_str}".strip()
     
-    # 1. Look for the exact XML tags (The Golden Path - This will hit 99.9% of the time)
-    pattern = f"<{tag_name}>(.*?)</{tag_name}>"
-    match = re.search(pattern, raw_text, flags=re.DOTALL | re.IGNORECASE)
+    # 1. The Indestructible Split (Looks for @@@)
+    if "@@@" in raw_text:
+        parts = raw_text.split("@@@")
+        if len(parts) >= 3:
+            return parts[1].strip()  # Grabs everything safely inside @@@ and @@@
+        if len(parts) == 2:
+            return parts[1].strip()  # Grabs everything after the first @@@
+            
+    # 2. The Universal Tag Destroyer (Fallback)
+    # If the AI hallucinates translated tags like <ಅಂತಿಮ_ಉತ್ತರ>, this regex 
+    # aggressively deletes ANY text trapped inside < and >, leaving only the pure answer.
+    clean_text = re.sub(r'<[^>]+>', '', raw_text).strip()
     
-    if match:
-        return match.group(1).strip()
-        
-    # 2. Fallback: The AI started the tag but hit a token limit and forgot to close it
-    if f"<{tag_name}>" in raw_text:
-        return raw_text.split(f"<{tag_name}>")[-1].strip()
-        
-    # 3. Last Resort Fallback: The AI completely ignored XML. Apply old chainsaws.
-    clean_text = re.sub(r'<think>.*?</think>', '', raw_text, flags=re.DOTALL | re.IGNORECASE)
-    if "</think>" in clean_text:
-        parts = clean_text.split("</think>")
-        clean_text = parts[-2] if parts[-1].strip() == "" else parts[-1]
-    if "<think>" in clean_text:
-        clean_text = clean_text.split("<think>")[0]
-        
-    return clean_text.strip()
+    return clean_text
 
 
 def normalize_query_to_english(raw_query: str) -> str:
@@ -78,20 +70,19 @@ def normalize_query_to_english(raw_query: str) -> str:
     if client is None:
         return _apply_lexicon_fallback(raw_query)
 
-    print(f"\n[SARVAM LOG] 🔄 Disambiguating & Normalizing Query: '{raw_query}'")
+    print(f"\n[SARVAM LOG] 🔄 Disambiguating Query: '{raw_query}'")
     
     try:
         normalization_prompt = (
-            "You are a linguistic pre-processor for Indian Agricultural search.\n"
-            "Extract the core agricultural intent from the user's mixed-language text. Map informal scheme names "
-            "(e.g., 'kishan' -> 'PM-KISAN', 'bima' -> 'PMFBY') to official acronyms.\n"
+            "Extract the core agricultural intent from the user's mixed-language text.\n"
+            "Map informal scheme names to official acronyms (e.g., 'kishan' -> 'PM-KISAN').\n"
             "Output a space-separated list of clean English search keywords optimized for BM25.\n"
             "If the query is completely unrelated to agriculture, output 'OUT_OF_DOMAIN'.\n\n"
-            "CRITICAL INSTRUCTION (XML ENCLOSURE):\n"
-            "You may think step-by-step. However, you MUST output your final keywords strictly inside <KEYWORDS> and </KEYWORDS> XML tags. Do not put anything else inside those tags.\n\n"
+            "CRITICAL INSTRUCTION:\n"
+            "You MUST place your final English keywords between three at-signs (@@@). Place nothing else inside them.\n\n"
             f"User Input: {raw_query}\n\n"
             "Output Format:\n"
-            "<KEYWORDS>\n(keywords here)\n</KEYWORDS>"
+            "@@@\n(keywords here)\n@@@"
         )
 
         response = client.chat.completions(
@@ -101,16 +92,13 @@ def normalize_query_to_english(raw_query: str) -> str:
         )
 
         message_obj = response.choices[0].message if response.choices else None
-        
-        # Pass through the bulletproof extractor targeting <KEYWORDS>
-        clean_content = clean_ai_text(message_obj, tag_name="KEYWORDS")
+        clean_content = clean_ai_text(message_obj)
         
         cleaned_search_terms = clean_content if clean_content else _apply_lexicon_fallback(raw_query)
-
         lexicon_boost = _apply_lexicon_fallback(raw_query)
         final_search_query = f"{cleaned_search_terms} {lexicon_boost}".strip()
 
-        print(f"[SARVAM LOG] ✅ Search Keywords Generated: '{final_search_query}'")
+        print(f"[SARVAM LOG] ✅ Search Keywords: '{final_search_query}'")
         return final_search_query
 
     except Exception as e:
@@ -120,9 +108,8 @@ def normalize_query_to_english(raw_query: str) -> str:
 
 def _apply_lexicon_fallback(text: str) -> str:
     boosters = []
-    text_lower = text.lower()
     for pattern, official_term in OFFICIAL_SCHEME_LEXICON.items():
-        if re.search(pattern, text_lower, re.IGNORECASE):
+        if re.search(pattern, text.lower(), re.IGNORECASE):
             boosters.append(official_term)
     return " ".join(boosters) if boosters else text
 
@@ -181,34 +168,30 @@ def get_answer(
         }
 
     lang_instructions = {
-        "kn": "Respond strictly in clear, respectful, natural Kannada (ಕನ್ನಡ).",
-        "hi": "Respond strictly in clear, respectful, natural Hindi (हिंदी).",
-        "en": "Respond strictly in clear, structured, professional English."
+        "kn": "Respond strictly in clear, respectful Kannada (ಕನ್ನಡ).",
+        "hi": "Respond strictly in clear, respectful Hindi (हिंदी).",
+        "en": "Respond strictly in clear, professional English."
     }
     target_lang_instruction = lang_instructions.get(language, "Respond in clear English.")
 
     master_prompt = (
-        "You are Sahakar Sahayak, an official, empathetic digital assistant for Indian farmers.\n"
+        "You are Sahakar Sahayak, an official digital assistant for Indian farmers.\n"
         f"{target_lang_instruction}\n\n"
         "GUIDELINES:\n"
-        "1. You ONLY answer questions concerning agriculture, farming practices, and government schemes. "
-        "If asked about non-agricultural topics, politely refuse.\n"
-        "2. If Context is provided below, ground your answer directly in those facts and cite the document names.\n"
-        "3. If Context is missing or empty, use your general knowledge of Indian agriculture to help the farmer. "
-        "Mention politely that you are providing general guidance.\n\n"
-        "CRITICAL INSTRUCTION FOR AI (XML ENCLOSURE):\n"
-        "You are a reasoning model. You may analyze the context and think step-by-step.\n"
-        "However, your final spoken answer meant for the farmer MUST be enclosed exactly within <FINAL_ANSWER> and </FINAL_ANSWER> XML tags.\n"
-        "The text inside <FINAL_ANSWER> must be clean, concise, free of any internal constraints, and optimized for Text-to-Speech (TTS).\n"
-        "DO NOT put your reasoning or thought process inside the <FINAL_ANSWER> tags.\n\n"
+        "1. Answer ONLY agricultural questions and cite the provided context.\n"
+        "2. If Context is empty, provide general agricultural guidance politely.\n"
+        "3. Refuse non-agricultural questions.\n\n"
+        "CRITICAL INSTRUCTION:\n"
+        "You may think step-by-step. However, your final spoken answer MUST be placed exactly between three at-signs (@@@).\n"
+        "Do NOT translate the @@@ symbols. Ensure the text inside is concise for Text-to-Speech playback.\n\n"
         f"Context:\n{context_block if context_block else 'None'}\n\n"
         f"Farmer Query: {query}\n\n"
         "Response Format:\n"
-        "<FINAL_ANSWER>\n(Your TTS-friendly answer here)\n</FINAL_ANSWER>"
+        "@@@\n(Your final answer here)\n@@@"
     )
 
     try:
-        print(f"\n[SARVAM LOG] 🧠 Executing Master Synthesis for language: '{language}'")
+        print(f"\n[SARVAM LOG] 🧠 Executing Master Synthesis for '{language}'")
         
         response = client.chat.completions(
             model=MODEL_NAME,
@@ -218,9 +201,9 @@ def get_answer(
 
         message_obj = response.choices[0].message if response.choices else None
         
-        # Pass through the bulletproof extractor targeting <FINAL_ANSWER>
-        clean_content = clean_ai_text(message_obj, tag_name="FINAL_ANSWER")
-        print(f"[SARVAM LOG] 🔍 Final extracted output length: {len(clean_content)}")
+        # Extract via the Untranslatable Delimiter
+        clean_content = clean_ai_text(message_obj)
+        print(f"[SARVAM LOG] 🔍 Final extracted length: {len(clean_content)}")
         
         if clean_content:
             answer_text = clean_content
@@ -270,12 +253,12 @@ def _generate_share_qr(query: str, answer: str, sources: list, confidence: float
         return None, None
 
     try:
-        primary_doc = sources[0]["document"] if sources else "General Agricultural Guidelines"
+        primary_doc = sources[0]["document"] if sources else "General Guidelines"
         clean_excerpt = answer[:600].replace("\n", " ").strip()
         if len(answer) > 600:
             clean_excerpt += "..."
 
-        share_text = f"🌾 *Sahakar Sahayak Assistance Receipt*\n\n*Query:* {query}\n\n*Guidance:* {clean_excerpt}\n\n*Source Reference:* {primary_doc}"
+        share_text = f"🌾 *Sahakar Sahayak Receipt*\n\n*Query:* {query}\n\n*Guidance:* {clean_excerpt}\n\n*Source:* {primary_doc}"
         encoded_message = urllib.parse.quote(share_text)
         action_url = f"https://wa.me/?text={encoded_message}"
 

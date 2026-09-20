@@ -34,33 +34,27 @@ OFFICIAL_SCHEME_LEXICON = {
     r"\b(samiti|cooperative|society|pacs|dairy|sahakar|sangh)\b": "PACS Primary Agricultural Credit Societies Cooperative Governance"
 }
 
-def clean_ai_text(message_obj) -> str:
+def extract_markdown_block(raw_text: str, block_name: str) -> str:
     """
-    The Untranslatable Delimiter Extractor.
-    Bypasses the LLM Tag Translation Bug by using pure symbols (@@@).
+    Expert Extractor: LLMs never translate markdown backticks. 
+    This searches for ```block_name ... ``` and extracts the pure text safely.
     """
-    if not message_obj:
+    if not raw_text:
         return ""
+    
+    # 1. Look for the strictly named markdown block (e.g., ```tts ... ```)
+    pattern = rf"```{block_name}\n(.*?)\n```"
+    match = re.search(pattern, raw_text, flags=re.DOTALL | re.IGNORECASE)
+    if match:
+        return match.group(1).strip()
+    
+    # 2. Fallback: If the model forgot the block name, grab any code block
+    fallback_match = re.search(r"```(.*?)```", raw_text, flags=re.DOTALL)
+    if fallback_match:
+        return fallback_match.group(1).strip()
         
-    content_str = getattr(message_obj, 'content', '') or ""
-    reasoning_str = getattr(message_obj, 'reasoning_content', '') or ""
-    
-    raw_text = f"{reasoning_str}\n{content_str}".strip()
-    
-    # 1. The Indestructible Split (Looks for @@@)
-    if "@@@" in raw_text:
-        parts = raw_text.split("@@@")
-        if len(parts) >= 3:
-            return parts[1].strip()  # Grabs everything safely inside @@@ and @@@
-        if len(parts) == 2:
-            return parts[1].strip()  # Grabs everything after the first @@@
-            
-    # 2. The Universal Tag Destroyer (Fallback)
-    # If the AI hallucinates translated tags like <ಅಂತಿಮ_ಉತ್ತರ>, this regex 
-    # aggressively deletes ANY text trapped inside < and >, leaving only the pure answer.
-    clean_text = re.sub(r'<[^>]+>', '', raw_text).strip()
-    
-    return clean_text
+    # 3. Absolute Fallback: Strip XML tags if it ignored markdown
+    return re.sub(r'<[^>]+>', '', raw_text).strip()
 
 
 def normalize_query_to_english(raw_query: str) -> str:
@@ -73,16 +67,18 @@ def normalize_query_to_english(raw_query: str) -> str:
     print(f"\n[SARVAM LOG] 🔄 Disambiguating Query: '{raw_query}'")
     
     try:
+        # EXPERT PROMPT: Using Markdown Syntax Locking
         normalization_prompt = (
-            "Extract the core agricultural intent from the user's mixed-language text.\n"
-            "Map informal scheme names to official acronyms (e.g., 'kishan' -> 'PM-KISAN').\n"
-            "Output a space-separated list of clean English search keywords optimized for BM25.\n"
+            "You are an API component for an agricultural search engine.\n"
+            "Analyze the user's input (which may be in English, Hindi, or Kannada) and extract the core intent into English search keywords.\n"
             "If the query is completely unrelated to agriculture, output 'OUT_OF_DOMAIN'.\n\n"
-            "CRITICAL INSTRUCTION:\n"
-            "You MUST place your final English keywords between three at-signs (@@@). Place nothing else inside them.\n\n"
+            "CRITICAL SYSTEM RULE:\n"
+            "You must output your final keywords inside a markdown code block named 'keywords'. Do not add conversational text.\n\n"
             f"User Input: {raw_query}\n\n"
-            "Output Format:\n"
-            "@@@\n(keywords here)\n@@@"
+            "Output exactly in this format:\n"
+            "```keywords\n"
+            "keyword1 keyword2 keyword3\n"
+            "```"
         )
 
         response = client.chat.completions(
@@ -92,7 +88,13 @@ def normalize_query_to_english(raw_query: str) -> str:
         )
 
         message_obj = response.choices[0].message if response.choices else None
-        clean_content = clean_ai_text(message_obj)
+        
+        # Merge fields just in case Sarvam hides text in reasoning_content
+        content_str = getattr(message_obj, 'content', '') or ""
+        reasoning_str = getattr(message_obj, 'reasoning_content', '') or ""
+        raw_output = f"{reasoning_str}\n{content_str}".strip()
+        
+        clean_content = extract_markdown_block(raw_output, "keywords")
         
         cleaned_search_terms = clean_content if clean_content else _apply_lexicon_fallback(raw_query)
         lexicon_boost = _apply_lexicon_fallback(raw_query)
@@ -168,26 +170,28 @@ def get_answer(
         }
 
     lang_instructions = {
-        "kn": "Respond strictly in clear, respectful Kannada (ಕನ್ನಡ).",
-        "hi": "Respond strictly in clear, respectful Hindi (हिंदी).",
-        "en": "Respond strictly in clear, professional English."
+        "kn": "Respond strictly in clear, respectful, natural Kannada (ಕನ್ನಡ).",
+        "hi": "Respond strictly in clear, respectful, natural Hindi (हिंदी).",
+        "en": "Respond strictly in clear, structured, professional English."
     }
     target_lang_instruction = lang_instructions.get(language, "Respond in clear English.")
 
+    # EXPERT PROMPT: Structuring the output mathematically so the model cannot break it.
     master_prompt = (
         "You are Sahakar Sahayak, an official digital assistant for Indian farmers.\n"
         f"{target_lang_instruction}\n\n"
         "GUIDELINES:\n"
-        "1. Answer ONLY agricultural questions and cite the provided context.\n"
-        "2. If Context is empty, provide general agricultural guidance politely.\n"
-        "3. Refuse non-agricultural questions.\n\n"
-        "CRITICAL INSTRUCTION:\n"
-        "You may think step-by-step. However, your final spoken answer MUST be placed exactly between three at-signs (@@@).\n"
-        "Do NOT translate the @@@ symbols. Ensure the text inside is concise for Text-to-Speech playback.\n\n"
+        "1. Answer ONLY agricultural questions. Refuse non-agricultural topics.\n"
+        "2. Base your answer heavily on the provided Context.\n\n"
+        "CRITICAL SYSTEM RULE - OUTPUT FORMAT:\n"
+        "You are permitted to think step-by-step. However, your final, TTS-friendly answer meant for the farmer MUST be provided inside a Markdown code block named 'tts'.\n"
+        "Do NOT translate the word 'tts' or the backticks. The code block acts as a system barrier.\n\n"
         f"Context:\n{context_block if context_block else 'None'}\n\n"
         f"Farmer Query: {query}\n\n"
-        "Response Format:\n"
-        "@@@\n(Your final answer here)\n@@@"
+        "Output your response exactly like this:\n\n"
+        "```tts\n"
+        "(Write your final, concise answer here in the requested language)\n"
+        "```"
     )
 
     try:
@@ -196,13 +200,18 @@ def get_answer(
         response = client.chat.completions(
             model=MODEL_NAME,
             messages=[{"role": "user", "content": master_prompt}],
-            temperature=0.3
+            temperature=0.2 # Dropped to 0.2 to enforce strict format compliance
         )
 
         message_obj = response.choices[0].message if response.choices else None
         
-        # Extract via the Untranslatable Delimiter
-        clean_content = clean_ai_text(message_obj)
+        # Merge fields just in case Sarvam hides text in reasoning_content
+        content_str = getattr(message_obj, 'content', '') or ""
+        reasoning_str = getattr(message_obj, 'reasoning_content', '') or ""
+        raw_output = f"{reasoning_str}\n{content_str}".strip()
+        
+        # Use the Markdown Extractor
+        clean_content = extract_markdown_block(raw_output, "tts")
         print(f"[SARVAM LOG] 🔍 Final extracted length: {len(clean_content)}")
         
         if clean_content:
@@ -260,7 +269,7 @@ def _generate_share_qr(query: str, answer: str, sources: list, confidence: float
 
         share_text = f"🌾 *Sahakar Sahayak Receipt*\n\n*Query:* {query}\n\n*Guidance:* {clean_excerpt}\n\n*Source:* {primary_doc}"
         encoded_message = urllib.parse.quote(share_text)
-        action_url = f"https://wa.me/?text={encoded_message}"
+        action_url = f"[https://wa.me/?text=](https://wa.me/?text=){encoded_message}"
 
         import qrcode
         qr = qrcode.QRCode(version=None, box_size=4, border=2)

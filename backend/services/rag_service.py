@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 print("=======================================================")
-print("🧠 SAHAKAAR KIOSK ADVANCED RAG ENGINE INITIALIZING 🧠")
+print("🧠 SAHAKAAR KIOSK HEURISTIC RAG ENGINE INITIALIZING 🧠")
 print("=======================================================")
 
 try:
@@ -36,9 +36,8 @@ OFFICIAL_SCHEME_LEXICON = {
 
 class RogueLLMParser:
     """
-    Advanced heuristic parser. Assumes the LLM is broken and hostile.
-    Uses regex and structural slicing to isolate the final answer, ignoring 
-    translated tags, missing tags, and prompt hallucinations.
+    Heavy-duty Python heuristic parser. 
+    Mathematically rips apart the LLM's raw text to extract only the final human-readable answer.
     """
     @staticmethod
     def extract_answer(message_obj) -> str:
@@ -49,40 +48,32 @@ class RogueLLMParser:
         reasoning = getattr(message_obj, 'reasoning_content', '') or ""
         text = f"{reasoning}\n{content}".strip()
 
-        # 1. The Universal Tag Destroyer
-        # Finds any block that looks like <tag>...</tag> (even in Kannada/Hindi) and deletes it.
+        # 1. Universal Bracket Ripper (Destroys <think>, <ಆಲೋಚನೆ>, and anything else in brackets)
         text = re.sub(r'<[^>]+>.*?</[^>]+>', '', text, flags=re.DOTALL)
-        
-        # 2. The Orphaned Closing Tag Sever
-        # If the model forgot the opening tag but printed the closing tag (e.g. </ಆಲೋಚನೆ>)
-        # We chop off EVERYTHING before that last closing tag. The answer is always after it.
-        last_close_tags = list(re.finditer(r'</[^>]+>', text))
-        if last_close_tags:
-            cut_index = last_close_tags[-1].end()
-            text = text[cut_index:]
+        # Catch any stray, unclosed tags that got left behind
+        text = re.sub(r'<[^>]+>', '', text)
 
-        # 3. Prompt Echo Annihilation
-        # Destroys the exact placeholder phrases the model keeps hallucinating.
+        # 2. Hallucination Eraser (Destroys prompt echoes and placeholders)
         hallucinations = [
+            r"Let me reconsider.*?\n",
+            r"The user hasn't asked.*?\n",
+            r"Base your answer purely on.*?\n",
             r"\(Write your final, concise answer.*?\)",
-            r"Sahakar Sahayak's Direct Answer:",
-            r"Output exactly in this format:",
+            r"Answer:",
             r"```.*?```"
         ]
         for h in hallucinations:
             text = re.sub(h, '', text, flags=re.IGNORECASE | re.DOTALL)
 
-        # 4. Bottom-Up Extraction (The Human Jugaad)
-        # If the text is still massive, the reasoning leaked without any tags.
-        # Reasoning models naturally separate their final answer at the very bottom with double newlines.
+        # 3. Bottom-Up Mathematical Slicer
+        # If the text is still a massive wall of reasoning, we slice it into blocks.
+        # We only keep the last 2 blocks (which is always the final answer).
         blocks = [b.strip() for b in text.split('\n\n') if b.strip()]
-        if len(blocks) > 3:
-            # We grab only the last 2 coherent paragraphs. This saves the TTS engine from reading essays.
+        if len(blocks) > 2:
             text = "\n\n".join(blocks[-2:])
 
-        # Clean up any residual markdown symbols
-        text = text.replace("```", "").replace("@@@", "").strip()
-        return text
+        return text.strip()
+
 
 def normalize_query_to_english(raw_query: str) -> str:
     if not raw_query or not raw_query.strip():
@@ -94,9 +85,8 @@ def normalize_query_to_english(raw_query: str) -> str:
     print(f"\n[SARVAM LOG] 🔄 Normalizing Query: '{raw_query}'")
     
     try:
-        # We removed all complex JSON/XML formatting instructions to stop hallucinations.
         normalization_prompt = (
-            "Extract the main agricultural topic from the user's query into 3 English search keywords.\n"
+            "Extract the main agricultural topic into 3 English search keywords.\n"
             "If the query is about sports, movies, or non-agriculture topics, output the exact word: OUT_OF_DOMAIN\n"
             f"Query: {raw_query}\n"
             "Keywords:"
@@ -109,6 +99,8 @@ def normalize_query_to_english(raw_query: str) -> str:
         )
 
         message_obj = response.choices[0].message if response.choices else None
+        
+        # Route through the Heuristic Parser
         clean_content = RogueLLMParser.extract_answer(message_obj)
         
         cleaned_search_terms = clean_content if clean_content else _apply_lexicon_fallback(raw_query)
@@ -122,12 +114,14 @@ def normalize_query_to_english(raw_query: str) -> str:
         print(f"[SARVAM LOG] ❌ Normalization failed: {e}")
         return _apply_lexicon_fallback(raw_query)
 
+
 def _apply_lexicon_fallback(text: str) -> str:
     boosters = []
     for pattern, official_term in OFFICIAL_SCHEME_LEXICON.items():
         if re.search(pattern, text.lower(), re.IGNORECASE):
             boosters.append(official_term)
     return " ".join(boosters) if boosters else text
+
 
 def get_answer(
     query: str, 
@@ -189,11 +183,11 @@ def get_answer(
     }
     target_lang = lang_map.get(language, "English")
 
-    # The prompt is now bare-bones conversational. 
-    # By NOT telling it to format, we stop it from hallucinating the formatting rules.
+    # Bare-bones prompt. We are not giving it formatting rules to panic over. 
+    # We let it speak, and we let the Python parser rip out the trash.
     master_prompt = (
-        f"You are Sahakar Sahayak, answering a farmer's question in {target_lang}.\n"
-        "1. Base your answer purely on the Context provided below. If Context is empty, give general farming advice.\n"
+        f"You are Sahakar Sahayak, answering a farmer's question naturally in {target_lang}.\n"
+        "1. Base your answer entirely on the Context provided below. If Context is empty, give general farming advice.\n"
         "2. If the user asks about cricket, movies, politics, or non-farming topics, reply ONLY with: 'I can only assist with agriculture and farming schemes.'\n\n"
         f"Context:\n{context_block if context_block else 'None'}\n\n"
         f"Farmer Query: {query}\n"
@@ -210,7 +204,7 @@ def get_answer(
 
         message_obj = response.choices[0].message if response.choices else None
         
-        # Route through the advanced Python parser, completely ignoring prompt templates
+        # 🚀 ROUTE THROUGH THE HEURISTIC PARSER 🚀
         clean_content = RogueLLMParser.extract_answer(message_obj)
         print(f"[SARVAM LOG] 🔍 Final extracted length: {len(clean_content)}")
         
@@ -269,7 +263,7 @@ def _generate_share_qr(query: str, answer: str, sources: list, confidence: float
 
         share_text = f"🌾 *Sahakar Sahayak Receipt*\n\n*Query:* {query}\n\n*Guidance:* {clean_excerpt}\n\n*Source:* {primary_doc}"
         encoded_message = urllib.parse.quote(share_text)
-        action_url = f"[https://wa.me/?text=](https://wa.me/?text=){encoded_message}"
+        action_url = f"https://wa.me/?text={encoded_message}"
 
         import qrcode
         qr = qrcode.QRCode(version=None, box_size=4, border=2)

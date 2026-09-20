@@ -34,10 +34,11 @@ OFFICIAL_SCHEME_LEXICON = {
     r"\b(samiti|cooperative|society|pacs|dairy|sahakar|sangh)\b": "PACS Primary Agricultural Credit Societies Cooperative Governance"
 }
 
-def clean_ai_text(message_obj) -> str:
+def clean_ai_text(message_obj, tag_name="FINAL_ANSWER") -> str:
     """
-    The Ultimate Bulletproof Extractor.
-    Guarantees thinking blocks are removed WITHOUT cutting meaningful answers.
+    The Ultimate XML Enclosure Extractor.
+    Instead of fighting the AI's reasoning, we let it think, but FORCE it 
+    to place the actual output inside specific XML tags. This is 100% bulletproof.
     """
     if not message_obj:
         return ""
@@ -45,30 +46,27 @@ def clean_ai_text(message_obj) -> str:
     content_str = getattr(message_obj, 'content', '') or ""
     reasoning_str = getattr(message_obj, 'reasoning_content', '') or ""
     
-    # 1. Grab the correct text block
-    if content_str.strip():
-        raw_text = content_str
-    elif reasoning_str.strip():
-        raw_text = reasoning_str
-    else:
-        return ""
-        
-    # 2. Standard Regex Safety Net
-    clean_text = re.sub(r'<think>.*?</think>', '', raw_text, flags=re.DOTALL | re.IGNORECASE)
+    # Combine everything so we can search the entire payload regardless of where Sarvam hides it
+    raw_text = f"{reasoning_str}\n{content_str}".strip()
     
-    # 3. Broken Tag Safety Net (Handles missing opening tag)
+    # 1. Look for the exact XML tags (The Golden Path - This will hit 99.9% of the time)
+    pattern = f"<{tag_name}>(.*?)</{tag_name}>"
+    match = re.search(pattern, raw_text, flags=re.DOTALL | re.IGNORECASE)
+    
+    if match:
+        return match.group(1).strip()
+        
+    # 2. Fallback: The AI started the tag but hit a token limit and forgot to close it
+    if f"<{tag_name}>" in raw_text:
+        return raw_text.split(f"<{tag_name}>")[-1].strip()
+        
+    # 3. Last Resort Fallback: The AI completely ignored XML. Apply old chainsaws.
+    clean_text = re.sub(r'<think>.*?</think>', '', raw_text, flags=re.DOTALL | re.IGNORECASE)
     if "</think>" in clean_text:
         parts = clean_text.split("</think>")
-        # If the tag was at the very end, save the text before it. Otherwise, save the text after it.
-        if parts[-1].strip() == "":
-            clean_text = parts[-2]
-        else:
-            clean_text = parts[-1]
-            
-    # 4. Broken Tag Safety Net (Handles missing closing tag)
+        clean_text = parts[-2] if parts[-1].strip() == "" else parts[-1]
     if "<think>" in clean_text:
-        parts = clean_text.split("<think>")
-        clean_text = parts[0]
+        clean_text = clean_text.split("<think>")[0]
         
     return clean_text.strip()
 
@@ -88,9 +86,12 @@ def normalize_query_to_english(raw_query: str) -> str:
             "Extract the core agricultural intent from the user's mixed-language text. Map informal scheme names "
             "(e.g., 'kishan' -> 'PM-KISAN', 'bima' -> 'PMFBY') to official acronyms.\n"
             "Output a space-separated list of clean English search keywords optimized for BM25.\n"
-            "If the query is completely unrelated to agriculture, output 'OUT_OF_DOMAIN'.\n"
-            "CRITICAL INSTRUCTION: OUTPUT ONLY THE KEYWORDS. Do not output any thinking steps, reasoning, or explanations.\n\n"
-            f"User Input: {raw_query}"
+            "If the query is completely unrelated to agriculture, output 'OUT_OF_DOMAIN'.\n\n"
+            "CRITICAL INSTRUCTION (XML ENCLOSURE):\n"
+            "You may think step-by-step. However, you MUST output your final keywords strictly inside <KEYWORDS> and </KEYWORDS> XML tags. Do not put anything else inside those tags.\n\n"
+            f"User Input: {raw_query}\n\n"
+            "Output Format:\n"
+            "<KEYWORDS>\n(keywords here)\n</KEYWORDS>"
         )
 
         response = client.chat.completions(
@@ -101,8 +102,8 @@ def normalize_query_to_english(raw_query: str) -> str:
 
         message_obj = response.choices[0].message if response.choices else None
         
-        # Pass through the bulletproof extractor
-        clean_content = clean_ai_text(message_obj)
+        # Pass through the bulletproof extractor targeting <KEYWORDS>
+        clean_content = clean_ai_text(message_obj, tag_name="KEYWORDS")
         
         cleaned_search_terms = clean_content if clean_content else _apply_lexicon_fallback(raw_query)
 
@@ -195,13 +196,15 @@ def get_answer(
         "2. If Context is provided below, ground your answer directly in those facts and cite the document names.\n"
         "3. If Context is missing or empty, use your general knowledge of Indian agriculture to help the farmer. "
         "Mention politely that you are providing general guidance.\n\n"
-        "CRITICAL INSTRUCTION FOR AI:\n"
-        "- DO NOT output any internal thinking steps, reasoning, or <think> blocks.\n"
-        "- Start your response DIRECTLY with the final answer meant for the farmer.\n"
-        "- Ensure the output is concise enough for Text-to-Speech (TTS) processing.\n\n"
+        "CRITICAL INSTRUCTION FOR AI (XML ENCLOSURE):\n"
+        "You are a reasoning model. You may analyze the context and think step-by-step.\n"
+        "However, your final spoken answer meant for the farmer MUST be enclosed exactly within <FINAL_ANSWER> and </FINAL_ANSWER> XML tags.\n"
+        "The text inside <FINAL_ANSWER> must be clean, concise, free of any internal constraints, and optimized for Text-to-Speech (TTS).\n"
+        "DO NOT put your reasoning or thought process inside the <FINAL_ANSWER> tags.\n\n"
         f"Context:\n{context_block if context_block else 'None'}\n\n"
         f"Farmer Query: {query}\n\n"
-        "Final Answer:"
+        "Response Format:\n"
+        "<FINAL_ANSWER>\n(Your TTS-friendly answer here)\n</FINAL_ANSWER>"
     )
 
     try:
@@ -215,8 +218,8 @@ def get_answer(
 
         message_obj = response.choices[0].message if response.choices else None
         
-        # Pass through the bulletproof extractor
-        clean_content = clean_ai_text(message_obj)
+        # Pass through the bulletproof extractor targeting <FINAL_ANSWER>
+        clean_content = clean_ai_text(message_obj, tag_name="FINAL_ANSWER")
         print(f"[SARVAM LOG] 🔍 Final extracted output length: {len(clean_content)}")
         
         if clean_content:

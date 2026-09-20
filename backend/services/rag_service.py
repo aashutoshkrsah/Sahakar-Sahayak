@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 print("=======================================================")
-print("🧠 ENTERPRISE MULTI-STAGE RAG ENGINE INITIALIZING 🧠")
+print("🧠 SAHAKAAR KIOSK ADVANCED RAG ENGINE INITIALIZING 🧠")
 print("=======================================================")
 
 try:
@@ -34,28 +34,55 @@ OFFICIAL_SCHEME_LEXICON = {
     r"\b(samiti|cooperative|society|pacs|dairy|sahakar|sangh)\b": "PACS Primary Agricultural Credit Societies Cooperative Governance"
 }
 
-def extract_markdown_block(raw_text: str, block_name: str) -> str:
+class RogueLLMParser:
     """
-    Expert Extractor: LLMs never translate markdown backticks. 
-    This searches for ```block_name ... ``` and extracts the pure text safely.
+    Advanced heuristic parser. Assumes the LLM is broken and hostile.
+    Uses regex and structural slicing to isolate the final answer, ignoring 
+    translated tags, missing tags, and prompt hallucinations.
     """
-    if not raw_text:
-        return ""
-    
-    # 1. Look for the strictly named markdown block (e.g., ```tts ... ```)
-    pattern = rf"```{block_name}\n(.*?)\n```"
-    match = re.search(pattern, raw_text, flags=re.DOTALL | re.IGNORECASE)
-    if match:
-        return match.group(1).strip()
-    
-    # 2. Fallback: If the model forgot the block name, grab any code block
-    fallback_match = re.search(r"```(.*?)```", raw_text, flags=re.DOTALL)
-    if fallback_match:
-        return fallback_match.group(1).strip()
-        
-    # 3. Absolute Fallback: Strip XML tags if it ignored markdown
-    return re.sub(r'<[^>]+>', '', raw_text).strip()
+    @staticmethod
+    def extract_answer(message_obj) -> str:
+        if not message_obj:
+            return ""
+            
+        content = getattr(message_obj, 'content', '') or ""
+        reasoning = getattr(message_obj, 'reasoning_content', '') or ""
+        text = f"{reasoning}\n{content}".strip()
 
+        # 1. The Universal Tag Destroyer
+        # Finds any block that looks like <tag>...</tag> (even in Kannada/Hindi) and deletes it.
+        text = re.sub(r'<[^>]+>.*?</[^>]+>', '', text, flags=re.DOTALL)
+        
+        # 2. The Orphaned Closing Tag Sever
+        # If the model forgot the opening tag but printed the closing tag (e.g. </ಆಲೋಚನೆ>)
+        # We chop off EVERYTHING before that last closing tag. The answer is always after it.
+        last_close_tags = list(re.finditer(r'</[^>]+>', text))
+        if last_close_tags:
+            cut_index = last_close_tags[-1].end()
+            text = text[cut_index:]
+
+        # 3. Prompt Echo Annihilation
+        # Destroys the exact placeholder phrases the model keeps hallucinating.
+        hallucinations = [
+            r"\(Write your final, concise answer.*?\)",
+            r"Sahakar Sahayak's Direct Answer:",
+            r"Output exactly in this format:",
+            r"```.*?```"
+        ]
+        for h in hallucinations:
+            text = re.sub(h, '', text, flags=re.IGNORECASE | re.DOTALL)
+
+        # 4. Bottom-Up Extraction (The Human Jugaad)
+        # If the text is still massive, the reasoning leaked without any tags.
+        # Reasoning models naturally separate their final answer at the very bottom with double newlines.
+        blocks = [b.strip() for b in text.split('\n\n') if b.strip()]
+        if len(blocks) > 3:
+            # We grab only the last 2 coherent paragraphs. This saves the TTS engine from reading essays.
+            text = "\n\n".join(blocks[-2:])
+
+        # Clean up any residual markdown symbols
+        text = text.replace("```", "").replace("@@@", "").strip()
+        return text
 
 def normalize_query_to_english(raw_query: str) -> str:
     if not raw_query or not raw_query.strip():
@@ -64,21 +91,15 @@ def normalize_query_to_english(raw_query: str) -> str:
     if client is None:
         return _apply_lexicon_fallback(raw_query)
 
-    print(f"\n[SARVAM LOG] 🔄 Disambiguating Query: '{raw_query}'")
+    print(f"\n[SARVAM LOG] 🔄 Normalizing Query: '{raw_query}'")
     
     try:
-        # EXPERT PROMPT: Using Markdown Syntax Locking
+        # We removed all complex JSON/XML formatting instructions to stop hallucinations.
         normalization_prompt = (
-            "You are an API component for an agricultural search engine.\n"
-            "Analyze the user's input (which may be in English, Hindi, or Kannada) and extract the core intent into English search keywords.\n"
-            "If the query is completely unrelated to agriculture, output 'OUT_OF_DOMAIN'.\n\n"
-            "CRITICAL SYSTEM RULE:\n"
-            "You must output your final keywords inside a markdown code block named 'keywords'. Do not add conversational text.\n\n"
-            f"User Input: {raw_query}\n\n"
-            "Output exactly in this format:\n"
-            "```keywords\n"
-            "keyword1 keyword2 keyword3\n"
-            "```"
+            "Extract the main agricultural topic from the user's query into 3 English search keywords.\n"
+            "If the query is about sports, movies, or non-agriculture topics, output the exact word: OUT_OF_DOMAIN\n"
+            f"Query: {raw_query}\n"
+            "Keywords:"
         )
 
         response = client.chat.completions(
@@ -88,13 +109,7 @@ def normalize_query_to_english(raw_query: str) -> str:
         )
 
         message_obj = response.choices[0].message if response.choices else None
-        
-        # Merge fields just in case Sarvam hides text in reasoning_content
-        content_str = getattr(message_obj, 'content', '') or ""
-        reasoning_str = getattr(message_obj, 'reasoning_content', '') or ""
-        raw_output = f"{reasoning_str}\n{content_str}".strip()
-        
-        clean_content = extract_markdown_block(raw_output, "keywords")
+        clean_content = RogueLLMParser.extract_answer(message_obj)
         
         cleaned_search_terms = clean_content if clean_content else _apply_lexicon_fallback(raw_query)
         lexicon_boost = _apply_lexicon_fallback(raw_query)
@@ -107,14 +122,12 @@ def normalize_query_to_english(raw_query: str) -> str:
         print(f"[SARVAM LOG] ❌ Normalization failed: {e}")
         return _apply_lexicon_fallback(raw_query)
 
-
 def _apply_lexicon_fallback(text: str) -> str:
     boosters = []
     for pattern, official_term in OFFICIAL_SCHEME_LEXICON.items():
         if re.search(pattern, text.lower(), re.IGNORECASE):
             boosters.append(official_term)
     return " ".join(boosters) if boosters else text
-
 
 def get_answer(
     query: str, 
@@ -169,29 +182,21 @@ def get_answer(
             "qr_code_base64": None
         }
 
-    lang_instructions = {
-        "kn": "Respond strictly in clear, respectful, natural Kannada (ಕನ್ನಡ).",
-        "hi": "Respond strictly in clear, respectful, natural Hindi (हिंदी).",
-        "en": "Respond strictly in clear, structured, professional English."
+    lang_map = {
+        "kn": "Kannada",
+        "hi": "Hindi",
+        "en": "English"
     }
-    target_lang_instruction = lang_instructions.get(language, "Respond in clear English.")
+    target_lang = lang_map.get(language, "English")
 
-    # EXPERT PROMPT: Structuring the output mathematically so the model cannot break it.
+    # The prompt is now bare-bones conversational. 
+    # By NOT telling it to format, we stop it from hallucinating the formatting rules.
     master_prompt = (
-        "You are Sahakar Sahayak, an official digital assistant for Indian farmers.\n"
-        f"{target_lang_instruction}\n\n"
-        "GUIDELINES:\n"
-        "1. Answer ONLY agricultural questions. Refuse non-agricultural topics.\n"
-        "2. Base your answer heavily on the provided Context.\n\n"
-        "CRITICAL SYSTEM RULE - OUTPUT FORMAT:\n"
-        "You are permitted to think step-by-step. However, your final, TTS-friendly answer meant for the farmer MUST be provided inside a Markdown code block named 'tts'.\n"
-        "Do NOT translate the word 'tts' or the backticks. The code block acts as a system barrier.\n\n"
+        f"You are Sahakar Sahayak, answering a farmer's question in {target_lang}.\n"
+        "1. Base your answer purely on the Context provided below. If Context is empty, give general farming advice.\n"
+        "2. If the user asks about cricket, movies, politics, or non-farming topics, reply ONLY with: 'I can only assist with agriculture and farming schemes.'\n\n"
         f"Context:\n{context_block if context_block else 'None'}\n\n"
-        f"Farmer Query: {query}\n\n"
-        "Output your response exactly like this:\n\n"
-        "```tts\n"
-        "(Write your final, concise answer here in the requested language)\n"
-        "```"
+        f"Farmer Query: {query}\n"
     )
 
     try:
@@ -200,18 +205,13 @@ def get_answer(
         response = client.chat.completions(
             model=MODEL_NAME,
             messages=[{"role": "user", "content": master_prompt}],
-            temperature=0.2 # Dropped to 0.2 to enforce strict format compliance
+            temperature=0.3
         )
 
         message_obj = response.choices[0].message if response.choices else None
         
-        # Merge fields just in case Sarvam hides text in reasoning_content
-        content_str = getattr(message_obj, 'content', '') or ""
-        reasoning_str = getattr(message_obj, 'reasoning_content', '') or ""
-        raw_output = f"{reasoning_str}\n{content_str}".strip()
-        
-        # Use the Markdown Extractor
-        clean_content = extract_markdown_block(raw_output, "tts")
+        # Route through the advanced Python parser, completely ignoring prompt templates
+        clean_content = RogueLLMParser.extract_answer(message_obj)
         print(f"[SARVAM LOG] 🔍 Final extracted length: {len(clean_content)}")
         
         if clean_content:
@@ -221,7 +221,7 @@ def get_answer(
 
         print("[SARVAM LOG] ✅ Answer Synthesis Completed.")
 
-        is_refusal = "I am Sahakar Sahayak" in answer_text
+        is_refusal = "can only assist with agriculture" in answer_text.lower() or "out_of_domain" in answer_text.lower()
         has_documents = len(sources) > 0 and context_block
 
         if is_refusal:

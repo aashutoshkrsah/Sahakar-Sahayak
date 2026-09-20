@@ -34,6 +34,45 @@ OFFICIAL_SCHEME_LEXICON = {
     r"\b(samiti|cooperative|society|pacs|dairy|sahakar|sangh)\b": "PACS Primary Agricultural Credit Societies Cooperative Governance"
 }
 
+def clean_ai_text(message_obj) -> str:
+    """
+    The Ultimate Bulletproof Extractor.
+    Guarantees thinking blocks are removed WITHOUT cutting meaningful answers.
+    """
+    if not message_obj:
+        return ""
+        
+    content_str = getattr(message_obj, 'content', '') or ""
+    reasoning_str = getattr(message_obj, 'reasoning_content', '') or ""
+    
+    # 1. Grab the correct text block
+    if content_str.strip():
+        raw_text = content_str
+    elif reasoning_str.strip():
+        raw_text = reasoning_str
+    else:
+        return ""
+        
+    # 2. Standard Regex Safety Net
+    clean_text = re.sub(r'<think>.*?</think>', '', raw_text, flags=re.DOTALL | re.IGNORECASE)
+    
+    # 3. Broken Tag Safety Net (Handles missing opening tag)
+    if "</think>" in clean_text:
+        parts = clean_text.split("</think>")
+        # If the tag was at the very end, save the text before it. Otherwise, save the text after it.
+        if parts[-1].strip() == "":
+            clean_text = parts[-2]
+        else:
+            clean_text = parts[-1]
+            
+    # 4. Broken Tag Safety Net (Handles missing closing tag)
+    if "<think>" in clean_text:
+        parts = clean_text.split("<think>")
+        clean_text = parts[0]
+        
+    return clean_text.strip()
+
+
 def normalize_query_to_english(raw_query: str) -> str:
     if not raw_query or not raw_query.strip():
         return ""
@@ -46,7 +85,7 @@ def normalize_query_to_english(raw_query: str) -> str:
     try:
         normalization_prompt = (
             "You are a linguistic pre-processor for Indian Agricultural search.\n"
-            "Extract the core agricultural intent from the user's text. Map informal scheme names "
+            "Extract the core agricultural intent from the user's mixed-language text. Map informal scheme names "
             "(e.g., 'kishan' -> 'PM-KISAN', 'bima' -> 'PMFBY') to official acronyms.\n"
             "Output a space-separated list of clean English search keywords optimized for BM25.\n"
             "If the query is completely unrelated to agriculture, output 'OUT_OF_DOMAIN'.\n"
@@ -61,14 +100,10 @@ def normalize_query_to_english(raw_query: str) -> str:
         )
 
         message_obj = response.choices[0].message if response.choices else None
-        raw_content = getattr(message_obj, 'content', '') or ""
         
-        # BRUTAL EXTRACTION: If closing tag exists, take ONLY what comes after it
-        if "</think>" in raw_content:
-            clean_content = raw_content.split("</think>")[-1].strip()
-        else:
-            clean_content = re.sub(r'<think>.*?</think>', '', raw_content, flags=re.DOTALL).strip()
-            
+        # Pass through the bulletproof extractor
+        clean_content = clean_ai_text(message_obj)
+        
         cleaned_search_terms = clean_content if clean_content else _apply_lexicon_fallback(raw_query)
 
         lexicon_boost = _apply_lexicon_fallback(raw_query)
@@ -81,6 +116,7 @@ def normalize_query_to_english(raw_query: str) -> str:
         print(f"[SARVAM LOG] ❌ Normalization failed: {e}")
         return _apply_lexicon_fallback(raw_query)
 
+
 def _apply_lexicon_fallback(text: str) -> str:
     boosters = []
     text_lower = text.lower()
@@ -88,6 +124,7 @@ def _apply_lexicon_fallback(text: str) -> str:
         if re.search(pattern, text_lower, re.IGNORECASE):
             boosters.append(official_term)
     return " ".join(boosters) if boosters else text
+
 
 def get_answer(
     query: str, 
@@ -178,20 +215,12 @@ def get_answer(
 
         message_obj = response.choices[0].message if response.choices else None
         
-        if message_obj:
-            raw_content = getattr(message_obj, 'content', '') or ""
-            print(f"[SARVAM LOG] 🔍 Final output length: {len(raw_content)}")
-            
-            if raw_content.strip():
-                # BRUTAL EXTRACTION: Chop the string in half if </think> exists
-                if "</think>" in raw_content:
-                    clean_content = raw_content.split("</think>")[-1].strip()
-                else:
-                    clean_content = re.sub(r'<think>.*?</think>', '', raw_content, flags=re.DOTALL).strip()
-                
-                answer_text = clean_content if clean_content else raw_content.strip()
-            else:
-                answer_text = "I apologize, but I could not synthesize an answer at this moment. Please try asking again."
+        # Pass through the bulletproof extractor
+        clean_content = clean_ai_text(message_obj)
+        print(f"[SARVAM LOG] 🔍 Final extracted output length: {len(clean_content)}")
+        
+        if clean_content:
+            answer_text = clean_content
         else:
             answer_text = "I apologize, but I could not synthesize an answer at this moment. Please try asking again."
 

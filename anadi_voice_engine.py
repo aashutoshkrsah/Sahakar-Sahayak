@@ -11,8 +11,8 @@ print("🎙️ INITIATING TRIPLE-TIER VOICE ENGINE (SARVAM -> BHASHINI -> GOOGLE
 print("=======================================================")
 
 SARVAM_API_KEY = os.getenv("SARVAM_API_KEY", "").strip()
-BHASHINI_USER_ID = os.getenv("BHASHINI_USER_ID", "")
-BHASHINI_API_KEY = os.getenv("BHASHINI_API_KEY", "")
+BHASHINI_USER_ID = os.getenv("BHASHINI_USER_ID", "455ebbb51e-8be8-41c7-b1c4-97139e071887")
+BHASHINI_API_KEY = os.getenv("BHASHINI_API_KEY", "GNSK-fU7d1X0zBT20yFRch9YBUCeZ93goVEcN1LcC1cWND_oI2FGQLqjpv6g0nEM")
 BHASHINI_URL = "https://dhruva-api.bhashini.gov.in/services/inference/pipeline"
 
 def get_google_lang_code(lang_code):

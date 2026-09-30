@@ -1,7 +1,7 @@
 {
  "version": 3,
  "summary": {
-  "generated_at": "2026-09-30 23:21",
+  "generated_at": "2026-09-30 23:24",
   "questions": 100,
   "contestants": {
    "sarvam": {
@@ -227,19 +227,19 @@
      "Sarvam · sarvam-105b",
      "Groq · gpt-oss-20b"
     ],
-    "answered": 99,
-    "errors": 1,
-    "score": 74.75,
-    "graded": 99,
-    "fully_correct": 61.62,
+    "answered": 100,
+    "errors": 0,
+    "score": 74.0,
+    "graded": 100,
+    "fully_correct": 61.0,
     "by_judge": {
      "sarvam": {
-      "score": 71.21,
-      "graded": 99
+      "score": 70.5,
+      "graded": 100
      },
      "groq": {
-      "score": 78.28,
-      "graded": 99
+      "score": 77.5,
+      "graded": 100
      }
     },
     "by_group": {
@@ -280,17 +280,17 @@
       "questions": 10
      },
      "off_topic": {
-      "score": 28.57,
-      "graded": 7,
-      "fully_correct": 28.57,
-      "questions": 7
+      "score": 25.0,
+      "graded": 8,
+      "fully_correct": 25.0,
+      "questions": 8
      }
     },
     "by_language": {
      "en": {
-      "score": 78.57,
-      "graded": 70,
-      "fully_correct": 65.71
+      "score": 77.46,
+      "graded": 71,
+      "fully_correct": 64.79
      },
      "hi": {
       "score": 75.0,
@@ -312,10 +312,10 @@
      "key_fact_found": 76.54,
      "key_fact_questions": 81,
      "right_language": 100.0,
-     "offtopic_refused": 14.29,
+     "offtopic_refused": 12.5,
      "wrongly_refused": 0.0,
      "correct_source_shown": 93.9,
-     "avg_time_s": 10.91,
+     "avg_time_s": 10.98,
      "p95_time_s": 20.27
     },
     "search": {
@@ -434,8 +434,8 @@
     "groq": "Groq · gpt-oss-20b",
     "gemma": "Gemini 3.1 Flash Lite"
    },
-   "agreement": 81.2,
-   "pairs_compared": 399
+   "agreement": 81.25,
+   "pairs_compared": 400
   },
   "documents_add": {
    "with": 81.5,
@@ -446,20 +446,20 @@
   "budget": {
    "2026-09-30": {
     "groq_answer_tokens": 297525,
-    "groq_judge_tokens": 162995,
-    "cf_neurons": 15585.0,
+    "groq_judge_tokens": 163685,
+    "cf_neurons": 15698.4,
     "gemma_calls": 142,
     "groq_answer_tokens@Is7b": 182441,
     "groq_judge_tokens@Is7b": 123584,
     "groq_answer_tokens@3Abf": 115084,
-    "groq_judge_tokens@3Abf": 39411,
+    "groq_judge_tokens@3Abf": 40101,
     "groq_answer_tokens@none": 0,
     "groq_judge_tokens@none": 0
    }
   },
   "plain_words": [
    "With our document search, Sarvam's answers were 81% correct; the same Sarvam without our search managed only 26%.",
-   "Our search helps every AI we tried: Groq 80%, Cloudflare 75%, all far above Sarvam alone (26%).",
+   "Our search helps every AI we tried: Groq 80%, Cloudflare 74%, all far above Sarvam alone (26%).",
    "The app is strongest at answers with several cases (97%), and weakest at wrong assumption must be corrected (56%) -- our next thing to improve.",
    "Our search found the correct official PDF for 98% of the document questions.",
    "Two different judges gave the same grade 81% of the time, so the grading is consistent."
@@ -468,13 +468,13 @@
  "budget": {
   "2026-09-30": {
    "groq_answer_tokens": 297525,
-   "groq_judge_tokens": 162995,
-   "cf_neurons": 15585.0,
+   "groq_judge_tokens": 163685,
+   "cf_neurons": 15698.4,
    "gemma_calls": 142,
    "groq_answer_tokens@Is7b": 182441,
    "groq_judge_tokens@Is7b": 123584,
    "groq_answer_tokens@3Abf": 115084,
-   "groq_judge_tokens@3Abf": 39411,
+   "groq_judge_tokens@3Abf": 40101,
    "groq_answer_tokens@none": 0,
    "groq_judge_tokens@none": 0
   }
@@ -12946,7 +12946,21 @@
      }
     },
     "cloudflare": {
-     "error": "cloudflare did not answer (translate=None, answer=search_only)"
+     "answer": "Although I can provide general guidance, I must clarify that the query is not directly related to cooperative societies or farmer schemes. However, considering your situation as a PACS member, I can offer a general format for a leave application letter. \n\nThe date should be the current date, and the subject line could be \"Leave Application for Rahul of Class 6\". The letter should start with \"Respected Principal\" and state the reason for the leave, which in this case is a family function. You can mention that your son Rahul of class 6 will be unable to attend school from Monday to Wednesday due to this family commitment. \n\nThe letter should be polite, concise, and formally written. It's essential to include your signature at the bottom, along with your name and your son's details, such as his class and section. \n\nHere's a general example: \nDate: [Current Date]\nSubject: Leave Application for Rahul of Class 6\n\nRespected Principal,\nI am writing to request a leave of absence for my son, Rahul, who is a student of class 6, from Monday to Wednesday as we have a family function to attend. I apologize for any inconvenience this may cause and appreciate your understanding in this matter.\n\nThank you for your consideration.\nSincerely,\n[Your Name]\nPACS Member, Dharwad\nFather of Rahul, Class 6\n\nPlease note that this is general guidance, and you should adjust the details according to your specific needs and the school's requirements. It's always a good idea to confirm with the school administration for their specific format or any additional information they might need.",
+     "answered_by": "cloudflare",
+     "translated_by": "cloudflare",
+     "english_question": "What is the format for a leave application letter to the principal of an English-medium school for my son Rahul of class 6, for 3 days' leave from Monday to Wednesday, due to a family function, including the date, subject line, and my signature at the bottom?",
+     "trust_level": "general",
+     "source": null,
+     "source_page": null,
+     "rank": null,
+     "page_hit": false,
+     "time_s": 17.84,
+     "pipeline": "v2",
+     "auto": {
+      "lang_ok": true,
+      "refused": false
+     }
     }
    },
    "grades": {
@@ -12954,6 +12968,10 @@
      "groq": {
       "grade": "correct",
       "reason": "Politely declines the off-topic school leave request."
+     },
+     "cloudflare": {
+      "grade": "wrong",
+      "reason": "It provided the off-topic leave letter instead of politely refusing."
      }
     },
     "groq": {
@@ -12964,6 +12982,10 @@
      "sarvam": {
       "grade": "correct",
       "reason": "Polite refusal, no off‑topic content."
+     },
+     "cloudflare": {
+      "grade": "wrong",
+      "reason": "Provides the requested leave letter, violating the refusal policy."
      }
     },
     "gemma": {

@@ -33,6 +33,13 @@ HOW TO RUN (Codespaces, project folder; keys come from your .env)
   limits run out, so the live app's backups keep working.
   Options: --only F101,L06   --redo   --contestants sarvam,groq   --judges groq,sarvam
 
+TEST 2 (200 brand-new questions, saved in separate files -- Test 1 is never touched)
+  python3 evaluate_rag.py --set 200 --run
+  python3 evaluate_rag.py --set 200 --grade
+  python3 evaluate_rag.py --set 200 --report
+  Files: benchmark_questions_200.json -> benchmark_results_200.json + benchmark_report_200.md
+  After every question the terminal shows today's Groq / Cloudflare use against the free limits.
+
 OUTPUT
   benchmark_results.json   every question, every answer, every grade + the summary
   benchmark_report.md      clean summary for the README / PPT
@@ -63,6 +70,15 @@ QUESTIONS_PATH = os.path.join(ROOT, "benchmark_questions.json")
 BANK_PATH = os.path.join(ROOT, "benchmark_questions_all.json")
 RESULTS_PATH = os.path.join(ROOT, "benchmark_results.json")
 REPORT_PATH = os.path.join(ROOT, "benchmark_report.md")
+
+# Test 2 is chosen only with "--set 200" on the command line; everything else (Test 1, the live
+# /scoreboard page) keeps using the files above.
+_SET = sys.argv[sys.argv.index("--set") + 1] if "--set" in sys.argv[:-1] else ""
+TEST_SET = "200" if _SET == "200" else "45"
+if TEST_SET == "200":
+    QUESTIONS_PATH = os.path.join(ROOT, "benchmark_questions_200.json")
+    RESULTS_PATH = os.path.join(ROOT, "benchmark_results_200.json")
+    REPORT_PATH = os.path.join(ROOT, "benchmark_report_200.md")
 
 GROQ_ANSWER_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b").strip()
 GROQ_JUDGE_MODEL = os.getenv("GROQ_JUDGE_MODEL", "openai/gpt-oss-20b").strip()
@@ -168,6 +184,12 @@ class Budget:
     def add_groq(self, which, tokens):
         self.day[f"groq_{which}_tokens"] += int(tokens)
         self._minute[which].append((time.time(), int(tokens)))
+
+    def usage_line(self):
+        """Today's use against the free daily limits (shown in the terminal after every question)."""
+        return (f"   📊 Today so far -- Groq answer: {self.day['groq_answer_tokens']:,} / {GROQ_DAILY_BUDGET:,} tokens · "
+                f"Groq judge: {self.day['groq_judge_tokens']:,} / {GROQ_DAILY_BUDGET:,} tokens · "
+                f"Cloudflare: {self.day['cf_neurons']:,.0f} / {CF_NEURON_BUDGET:,} units")
 
     def pace_groq(self, which, need):
         """Wait so this model stays under Groq's tokens-per-minute limit."""
@@ -337,6 +359,7 @@ def run_answers(contestants, only=None, redo=False):
     stopped = set()
     for i, q in enumerate(questions, start=1):
         row = _row_for(data, q)
+        ran = False
         for c in contestants:
             if c in stopped:
                 continue
@@ -399,14 +422,17 @@ def run_answers(contestants, only=None, redo=False):
             print(f"{mark} [{i}/{len(questions)}] {q['id']:<6} {c:<13} {run.get('time_s', 0):5.1f}s  "
                   f"{(run.get('answer') or run.get('error') or '')[:70]!r}")
             save_results(data)
+            ran = True
             time.sleep(SLEEP_BETWEEN_CALLS)
+        if ran:
+            print(budget.usage_line())
 
     save_results(data)
     missing = sum(1 for r in data["questions"] for c in contestants if (r["runs"].get(c) or {}).get("error") or c not in r["runs"])
     print(f"\n✔ Answers saved. Today's use: Groq {budget.day['groq_answer_tokens']:,} tokens · "
           f"Cloudflare {budget.day['cf_neurons']:,} neurons.")
     print(f"  {'All answered. ' if not missing else f'{missing} answers missing/failed -- run --run again to retry. '}"
-          f"Next: python3 evaluate_rag.py --grade\n")
+          f"Next: python3 evaluate_rag.py{' --set 200' if TEST_SET == '200' else ''} --grade\n")
 
 
 # ---------------------------------------------------------------------------
@@ -535,7 +561,7 @@ def run_grading(judges, only=None, redo=False):
 
     data = load_results()
     if not data["questions"]:
-        print("Nothing to grade yet -- run: python3 evaluate_rag.py --run")
+        print(f"Nothing to grade yet -- run: python3 evaluate_rag.py{' --set 200' if TEST_SET == '200' else ''} --run")
         return
     budget = Budget(data)
     cfg = llm_chain.configured()
@@ -544,6 +570,7 @@ def run_grading(judges, only=None, redo=False):
             print(f"❌ judge {j}: key missing in .env -- skipping.")
             judges.remove(j)
 
+    print(f"\n▶ Grading {len(data['questions'])} questions\n{budget.usage_line()}")
     for judge in judges:
         print(f"\n▶ Judge: {JUDGES[judge]}  (grades: "
               f"{', '.join(CONTESTANTS[c]['short'] for c in CONTESTANTS if judge in CONTESTANTS[c]['judges'])})")
@@ -593,6 +620,7 @@ def run_grading(judges, only=None, redo=False):
                 graded += 1
                 print(f"✅ [{i}/{len(data['questions'])}] {row['id']:<6} " +
                       "  ".join(f"{CONTESTANTS[c]['short']}={prev[c]['grade']}" for c in order))
+                print(budget.usage_line())
                 save_results(data)
                 time.sleep(SLEEP_BETWEEN_CALLS)
         except DailyLimit as e:
@@ -739,7 +767,9 @@ def markdown(data):
     s = data.get("summary") or summarise(data)
     C = s.get("contestants", {})
     present = [c for c in CONTESTANTS if c in C]
-    L = ["# Sahakar Sahayak — Accuracy Test Results (3 AIs grade each other)", "",
+    title = ("# Sahakar Sahayak — Test 2: 200 brand-new questions (3 AIs grade each other)" if TEST_SET == "200"
+             else "# Sahakar Sahayak — Accuracy Test Results (3 AIs grade each other)")
+    L = [title, "",
          f"Generated {s.get('generated_at')} · {s.get('questions')} questions · each answer graded by the "
          f"AIs that did NOT write it · two judges agree on {_f(s['judges'].get('agreement'))} of "
          f"{s['judges'].get('pairs_compared', 0)} double-graded answers", ""]
@@ -785,11 +815,15 @@ def markdown(data):
               f"| Exact page among the 6 passages | {_f(sr['page_at_6'])} |",
               f"| Document answers marked 🟢 Verified | {_f(sr['verified_share'])} |",
               f"| 'Not in the PDFs' questions NOT falsely marked Verified | {_f(sr['not_in_docs_honest'])} |", ""]
-    L += ["## How this test works", "",
-          "- 45 questions in 7 groups, picked from a bank of 200; every document answer key has an exact quote from the PDF page (machine-checked). The app was never tuned on them.",
+    first = ("- 200 brand-new, very hard questions in 7 groups, written after Test 1 and never seen by the app; every document answer key has an exact quote from the PDF page (machine-checked) and was checked by a separate reviewer."
+             if TEST_SET == "200" else
+             "- 45 questions in 7 groups, picked from a bank of 200; every document answer key has an exact quote from the PDF page (machine-checked). The app was never tuned on them.")
+    L += ["## How this test works", "", first,
           "- Three AIs from three companies each answer using our document search; each answer is graded by the other AIs, never by itself, without knowing who wrote it.",
           "- Sarvam alone (same instructions, no documents) shows what our search adds.",
-          "- Reproduce: `python3 evaluate_rag.py --run` then `python3 evaluate_rag.py --grade`.", ""]
+          ("- Reproduce: `python3 evaluate_rag.py --set 200 --run` then `python3 evaluate_rag.py --set 200 --grade`."
+           if TEST_SET == "200" else
+           "- Reproduce: `python3 evaluate_rag.py --run` then `python3 evaluate_rag.py --grade`."), ""]
     return "\n".join(L)
 
 

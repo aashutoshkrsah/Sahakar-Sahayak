@@ -29,8 +29,14 @@ BASE = "https://generativelanguage.googleapis.com/v1beta"
 
 _http = requests.Session()
 _lock = threading.Lock()
-_last_call = {}                              # model -> time of the last call (gentle per-minute pacing)
-MIN_GAP = {GEMMA_MODEL: 2.1, LITE_MODEL: 4.1, EMBED_MODEL: 0.7}
+# Free-tier limits per key (AI Studio): requests per minute and tokens per minute. We stay a bit under both.
+LIMITS = {GEMMA_MODEL: (30, 16000), LITE_MODEL: (15, 250000), EMBED_MODEL: (100, 30000)}
+SAFETY = 0.85
+_window = {}                                 # model -> [(time, tokens)] in the last 60 seconds
+
+
+def _tokens(text_len):
+    return int(text_len / 3.2) + 50          # rough token estimate (Indian-language text counts heavier)
 
 
 def key() -> str:
@@ -48,13 +54,21 @@ class GeminiError(RuntimeError):
         self.daily = daily
 
 
-def _pace(model):
-    gap = MIN_GAP.get(model, 0)
-    with _lock:
-        wait = _last_call.get(model, 0) + gap - time.time()
-        _last_call[model] = max(time.time(), _last_call.get(model, 0) + gap)
-    if wait > 0:
-        time.sleep(min(wait, 10))
+def _pace(model, tokens):
+    """Wait until this call fits under the model's per-minute request AND token limits."""
+    rpm, tpm = LIMITS.get(model, (60, 10 ** 9))
+    rpm, tpm = int(rpm * SAFETY), int(tpm * SAFETY)
+    tokens = min(tokens, tpm)
+    while True:
+        with _lock:
+            now = time.time()
+            w = [(t, n) for t, n in _window.get(model, []) if now - t < 60]
+            _window[model] = w
+            if len(w) < rpm and sum(n for _, n in w) + tokens <= tpm:
+                w.append((now, tokens))
+                return
+            wait = 60 - (now - w[0][0]) + 0.2 if w else 1
+        time.sleep(max(0.2, min(wait, 60)))
 
 
 def _post(path, payload, timeout):
@@ -80,7 +94,7 @@ def chat(messages, model=None, temperature=0.0, max_tokens=800, timeout=40):
                "generationConfig": {"temperature": temperature, "maxOutputTokens": max_tokens}}
     if system:
         payload["systemInstruction"] = {"parts": [{"text": system}]}
-    _pace(model)
+    _pace(model, _tokens(sum(len(m["content"]) for m in messages)) + max_tokens // 2)
     data = _post(f"models/{model}:generateContent", payload, timeout)
     cands = data.get("candidates") or []
     if not cands:
@@ -96,7 +110,7 @@ def embed(texts, task="RETRIEVAL_QUERY", timeout=30):
     """Meaning-numbers for a list of texts (unit length, EMBED_DIM numbers each). Raises on failure."""
     reqs = [{"model": f"models/{EMBED_MODEL}", "content": {"parts": [{"text": t[:8000]}]},
              "taskType": task, "outputDimensionality": EMBED_DIM} for t in texts]
-    _pace(EMBED_MODEL)
+    _pace(EMBED_MODEL, sum(_tokens(len(t[:8000])) for t in texts))
     data = _post(f"models/{EMBED_MODEL}:batchEmbedContents", {"requests": reqs}, timeout)
     embs = data.get("embeddings") or []
     if len(embs) != len(texts):

@@ -12,7 +12,7 @@
 Every answer tells the user **where it came from**: an official government PDF (with a clickable link to the exact page) or general guidance that should be confirmed with the cooperative office.
 
 - 🌐 **Live app:** https://sahakar-sahayak-frontend.onrender.com
-- 📊 **Accuracy test results:** https://sahakar-sahayak-4.onrender.com/scoreboard
+- 📊 **Accuracy test results:** Test 1 (45 questions) https://sahakar-sahayak-4.onrender.com/scoreboard · Test 2 (200 new questions) https://sahakar-sahayak-4.onrender.com/scoreboard/test2
 - 🔐 **Admin dashboard (for SIH judges):** https://sahakar-sahayak-frontend.onrender.com/admin — password `sih2026demo`, or click **Open with demo password** (view-only; phone numbers and e-mails are hidden)
 - ⚙️ **API docs (Swagger):** https://sahakar-sahayak-4.onrender.com/docs
 
@@ -20,6 +20,7 @@ Every answer tells the user **where it came from**: an official government PDF (
 
 ### 🏆 Results at a glance
 - **Our document search more than doubles accuracy:** Sarvam answers **30.56%** correctly on its own and **72.78%** with Sahakar Sahayak's search.
+- **Confirmed on 200 brand-new, much harder questions (Test 2):** Sarvam alone **26.50%** → with our search **62.00%**.
 - **Tested fairly:** 45 hard questions in 4 languages; three AIs from three companies (Sarvam, Groq, Cloudflare) grade **each other's** answers, never their own.
 - **100%** of off-topic and trick questions refused · correct official PDF found for **86%** of questions · answers in about **1 second**.
 
@@ -148,11 +149,29 @@ The chat shows which AI answered (a small note appears when a backup was used), 
 
 Full tables: [`benchmark_report.md`](benchmark_report.md) · every question, answer and grade: [accuracy test results page](https://sahakar-sahayak-4.onrender.com/scoreboard).
 
+### Test 2: 200 brand-new, very hard questions
+
+Written after Test 1 and never seen by the app (the app was not changed while it ran). Same 7 question types, same judges and rules. Every document answer key has an exact quote from the cited PDF page (machine-checked) and was checked by a separate reviewer.
+
+| Contestant | Score | Fully correct |
+|---|---|---|
+| **Sarvam + our documents (the live app)** | **62.00%** | 52.00% |
+| Groq gpt-oss-120b + our documents | 58.25% | 47.50% |
+| Cloudflare Llama 3.3 70B + our documents | 62.75% | 43.50% |
+| Sarvam alone (no documents) | 26.50% | 20.50% |
+
+- **Our search still makes Sarvam more than twice as accurate** on much harder questions: 26.50% → 62.00% (same judge: 26.88% → 64.07%, **+37 points**).
+- Correct official PDF found for **87%** of document questions; off-topic and rule-breaking tricks refused **100%** (judges).
+- Weaker areas (next steps): on-topic questions that are not in the PDFs (40%), Kannada (52%), single hard facts (49%).
+- The two judges agree on **77%** of double-graded answers; the Cloudflare judge is the strictest.
+
+Full tables: [`benchmark_report_200.md`](benchmark_report_200.md) · every question, answer and grade: [Test 2 results page](https://sahakar-sahayak-4.onrender.com/scoreboard/test2).
+
 **Contestants.** Three AIs from three companies each answer every question **using our document search**: Sarvam (`sarvam-105b`), Groq (`gpt-oss-120b`) and Cloudflare (Llama 3.3 70B). A fourth contestant, **Sarvam alone** with the same instructions but no documents, shows what our search adds.
 
 **Judges — nobody grades its own work.** Sarvam's answers are graded by Groq and Cloudflare, Groq's by Sarvam and Cloudflare, Cloudflare's by Sarvam and Groq (Sarvam-alone by Groq and Cloudflare). Judges see shuffled labels, so they don't know who wrote which answer. Grades: correct / partial / wrong against the answer key. Free automatic checks run too: key fact present, answer script matches the chosen language, off-topic refused, no wrong refusals, correct PDF shown, search rank.
 
-**See it live:** **https://sahakar-sahayak-4.onrender.com/scoreboard** — every question, every answer and every grade. Visitors can only re-run the free search check, so nobody can spend the team's AI credits from that page. Latest numbers are also in [`benchmark_report.md`](benchmark_report.md).
+**See it live:** **https://sahakar-sahayak-4.onrender.com/scoreboard** (Test 1) and **https://sahakar-sahayak-4.onrender.com/scoreboard/test2** (Test 2) — every question, every answer and every grade. Visitors can only re-run the free search check (254 English-text document questions from both question banks), so nobody can spend the team's AI credits from that page. Latest numbers are also in [`benchmark_report.md`](benchmark_report.md).
 
 Run it yourself (keys are read from a local `.env`, never committed):
 
@@ -161,6 +180,10 @@ python3 evaluate_rag.py --run      # 1) all contestants answer (~30-40 min)
 python3 evaluate_rag.py --grade    # 2) the judges grade (~20-30 min)
 python3 evaluate_rag.py --report   # rebuild the report from what is saved
 python3 evaluate_rag.py            # free search-only check, no AI at all
+
+# Test 2 (200 new questions, saved to benchmark_results_200.json / benchmark_report_200.md)
+python3 evaluate_rag.py --set 200 --run
+python3 evaluate_rag.py --set 200 --grade
 ```
 
 Both steps save after every question and continue where they stopped. A budget guard keeps Groq and Cloudflare inside their free daily limits.
@@ -240,6 +263,8 @@ flowchart TD
 | `GET` | `/health` | Health check (used by the uptime pinger) |
 | `GET` | `/scoreboard` | Live accuracy scoreboard page (run tests from the browser) |
 | `GET` | `/scoreboard.json` | Last scoreboard result as JSON |
+| `GET` | `/scoreboard/test2` | Test 2 results page (200 new questions) |
+| `GET` | `/scoreboard_200.json` | Test 2 result as JSON |
 | `POST` | `/judge` | Live AI check of one answer (body `{"request_id": "…"}`), called by the website after each answer |
 | `GET` | `/insights?key=…` | Admin insights page (password = `INSIGHTS_KEY`) |
 | `GET` | `/insights.json` · `/insights.csv` | Insights data / all logged questions (header `X-Insights-Key`) |

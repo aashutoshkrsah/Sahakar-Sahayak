@@ -68,6 +68,7 @@ except Exception:
 
 QUESTIONS_PATH = os.path.join(ROOT, "benchmark_questions.json")
 BANK_PATH = os.path.join(ROOT, "benchmark_questions_all.json")
+BANK2_PATH = os.path.join(ROOT, "benchmark_questions_200.json")    # Test 2 questions (also used by the free search check)
 RESULTS_PATH = os.path.join(ROOT, "benchmark_results.json")
 REPORT_PATH = os.path.join(ROOT, "benchmark_report.md")
 
@@ -830,23 +831,21 @@ def markdown(data):
 # ---------------------------------------------------------------------------
 # Free search-only check (used by the /scoreboard button -- no AI at all)
 # ---------------------------------------------------------------------------
-def run_benchmark(full=False, log=print, progress=None):
-    """Search-only check on the English document questions of the 200-question bank. Never calls an AI."""
-    from backend.services import retriever
-    from backend.services.retriever import search
-    from backend.services.rag_service import lexicon_terms
+def _searchable(q):
+    """A question the free check can search without any AI: it has a PDF answer and its text is English
+    (English questions, plus 'reply in another language' ones, which are asked in English)."""
+    return bool(q.get("doc")) and (q["language"] == "en" or q.get("group") == "reply_language")
 
-    path = BANK_PATH if os.path.exists(BANK_PATH) else QUESTIONS_PATH
-    qs = [q for q in load_questions(path) if q["doc"] and q["language"] == "en"]
+
+def _search_summary(qs, search, lexicon_terms, retriever, tick):
     ranks, page_hits, times = [], 0, []
-    for n, q in enumerate(qs, start=1):
+    for q in qs:
         res, stats = search(q["q"], boost_terms=lexicon_terms(q["q"]))
         ranks.append(_rank(res, q["doc"]))
         page_hits += bool(q["pages"] and any(q["doc"].lower() in r["document"].lower() and r["page"] in q["pages"] for r in res))
         times.append(stats.get("search_time_ms", 0.0))
-        if progress:
-            progress(n, len(qs))
-    summary = {
+        tick()
+    return {
         "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "questions": len(qs),
         "meaning_search": retriever._vectors is not None,
         "hit_at_1": _pct(sum(1 for k in ranks if k == 1), len(ranks)),
@@ -857,11 +856,49 @@ def run_benchmark(full=False, log=print, progress=None):
         "avg_search_ms": round(statistics.mean(times), 2) if times else 0.0,
         "p95_search_ms": _p95(times),
     }
-    log(f"Search check on {len(qs)} English document questions: Hit@1 {_f(summary['hit_at_1'])}  "
-        f"Hit@3 {_f(summary['hit_at_3'])}  Hit@6 {_f(summary['hit_at_6'])}  MRR {summary['mrr']}  "
-        f"Page@6 {_f(summary['page_at_6'])}  avg {summary['avg_search_ms']} ms  "
-        f"meaning search {'ON' if summary['meaning_search'] else 'OFF'}")
-    return {"summary": summary}
+
+
+def run_benchmark(full=False, log=print, progress=None):
+    """Search-only check (the /scoreboard button). Never calls an AI.
+    Uses every searchable question (see _searchable) of the old 200-question bank and of Test 2's 200 new questions;
+    returns the combined result as "summary" and each bank separately under "banks"."""
+    from backend.services import retriever
+    from backend.services.retriever import search
+    from backend.services.rag_service import lexicon_terms
+
+    banks = {}
+    old_path = BANK_PATH if os.path.exists(BANK_PATH) else os.path.join(ROOT, "benchmark_questions.json")
+    banks["old"] = [q for q in load_questions(old_path) if _searchable(q)]
+    if os.path.exists(BANK2_PATH):
+        banks["new"] = [q for q in load_questions(BANK2_PATH) if _searchable(q)]
+    total = sum(len(v) for v in banks.values())
+    done = {"n": 0}
+
+    def tick():
+        done["n"] += 1
+        if progress:
+            progress(done["n"], total)
+
+    per = {name: _search_summary(qs, search, lexicon_terms, retriever, tick) for name, qs in banks.items()}
+    per_q = [q for qs in banks.values() for q in qs]
+    # the combined numbers, weighted by question (no second search needed)
+    def comb(key):
+        vals = [(per[n][key], per[n]["questions"]) for n in per if per[n][key] is not None]
+        return round(sum(v * c for v, c in vals) / sum(c for _, c in vals), 2) if vals else None
+    summary = {"generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "questions": len(per_q),
+               "meaning_search": retriever._vectors is not None}
+    for key in ("hit_at_1", "hit_at_3", "hit_at_6", "page_at_6", "avg_search_ms"):
+        summary[key] = comb(key)
+    summary["mrr"] = round(sum(per[n]["mrr"] * per[n]["questions"] for n in per if per[n]["mrr"] is not None) / len(per_q), 4) if per_q else None
+    summary["p95_search_ms"] = max((per[n]["p95_search_ms"] or 0) for n in per) if per else None
+    for name, label in (("old", "Old bank"), ("new", "Test 2 bank"), (None, "All")):
+        s = per[name] if name else summary
+        if name and name not in per:
+            continue
+        log(f"Search check · {label}: {s['questions']} English-text document questions: Hit@1 {_f(s['hit_at_1'])}  "
+            f"Hit@3 {_f(s['hit_at_3'])}  Hit@6 {_f(s['hit_at_6'])}  MRR {s['mrr']}  Page@6 {_f(s['page_at_6'])}  "
+            f"avg {s['avg_search_ms']} ms  meaning search {'ON' if s['meaning_search'] else 'OFF'}")
+    return {"summary": summary, "banks": per}
 
 
 # ---------------------------------------------------------------------------

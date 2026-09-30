@@ -9,9 +9,11 @@ What it shows
      test (no AI answers at all), so nobody -- including judges -- can spend
      your Sarvam / Groq / Cloudflare credits from this page.
 
-  GET  /scoreboard         -> the page
-  POST /scoreboard/run     -> free search re-check (max once a minute)
-  GET  /scoreboard.json    -> official saved result as JSON
+  GET  /scoreboard          -> Test 1 page (45 questions)
+  GET  /scoreboard/test2    -> Test 2 page (200 brand-new questions, benchmark_results_200.json)
+  POST /scoreboard/run      -> free search re-check (max once a minute); /scoreboard/test2/run does the same
+  GET  /scoreboard.json     -> Test 1 saved result as JSON
+  GET  /scoreboard_200.json -> Test 2 saved result as JSON
 """
 
 import os
@@ -36,9 +38,9 @@ _lock = threading.Lock()
 _state = {"running": False, "done": 0, "total": 0, "last_run": 0.0, "error": None, "live": None}
 
 
-def _load_official():
+def _load_official(name="benchmark_results.json"):
     try:
-        with open(os.path.join(ROOT, "benchmark_results.json"), "r", encoding="utf-8") as f:
+        with open(os.path.join(ROOT, name), "r", encoding="utf-8") as f:
             data = json.load(f)
         if isinstance(data, dict) and ("summary" in data or data.get("version") in (2, 3)):
             return data
@@ -63,20 +65,34 @@ def _worker():
         _state["running"] = False
 
 
-@router.post("/scoreboard/run", include_in_schema=False)
-def run_search_check():
+def _start_check(back):
     with _lock:
         now = time.time()
         if _state["running"] or now - _state["last_run"] < SEARCH_COOLDOWN_S:
-            return RedirectResponse("/scoreboard", status_code=303)
+            return RedirectResponse(back, status_code=303)
         _state.update({"running": True, "done": 0, "total": 0, "last_run": now, "error": None})
     threading.Thread(target=_worker, daemon=True).start()
-    return RedirectResponse("/scoreboard", status_code=303)
+    return RedirectResponse(back, status_code=303)
+
+
+@router.post("/scoreboard/run", include_in_schema=False)
+def run_search_check():
+    return _start_check("/scoreboard")
+
+
+@router.post("/scoreboard/test2/run", include_in_schema=False)
+def run_search_check_test2():
+    return _start_check("/scoreboard/test2")
 
 
 @router.get("/scoreboard.json", include_in_schema=False)
 def scoreboard_json():
     return JSONResponse(_load_official() or {})
+
+
+@router.get("/scoreboard_200.json", include_in_schema=False)
+def scoreboard_200_json():
+    return JSONResponse(_load_official("benchmark_results_200.json") or {})
 
 
 # ---------------------------------------------------------------------------
@@ -201,7 +217,7 @@ def _official_section(result):
     return "".join(out)
 
 
-def _live_section():
+def _live_section(action="/scoreboard/run"):
     running, live = _state["running"], _state["live"]
     disabled = "disabled" if running else ""
     out = ['<h2>Re-check our search now</h2>']
@@ -212,17 +228,53 @@ def _live_section():
         out.append(f'<div class="banner warn">Check failed: {_e(_state["error"])}</div>')
     elif live:
         s = live["summary"]
-        out.append(f'<div class="banner ok-bg">Live search check on {s["questions"]} English document questions: '
-                   f'correct PDF #1 <b>{_pct(s["hit_at_1"])}</b> · in top 6 <b>{_pct(s["hit_at_6"])}</b> · '
-                   f'exact page {_pct(s["page_at_6"])} · avg search {s["avg_search_ms"]:.2f} ms · '
-                   f'meaning search {"on" if s.get("meaning_search") else "off"} · run {_e(s["generated_at"])}</div>')
+        banks = live.get("banks") or {}
+        rows = [(label, banks[k]) for k, label in (("old", "Old question bank"), ("new", "Test 2 questions")) if k in banks]
+        rows.append(("All", s))
+        lines = "".join(f'<div>{_e(label)} · {b["questions"]} questions: correct PDF #1 <b>{_pct(b["hit_at_1"])}</b> · '
+                        f'in top 6 <b>{_pct(b["hit_at_6"])}</b> · exact page {_pct(b["page_at_6"])}</div>' for label, b in rows)
+        out.append(f'<div class="banner ok-bg">Live search check on every English-text question that has a PDF answer:'
+                   f'{lines}<div class="small muted">avg search {s["avg_search_ms"]:.2f} ms · '
+                   f'meaning search {"on" if s.get("meaning_search") else "off"} · run {_e(s["generated_at"])}</div></div>')
     out.append(f'''
-    <form method="post" action="/scoreboard/run" class="actions">
-      <button class="primary" {disabled}>Re-check search now <span>about a minute · free, no AI answers are generated</span></button>
+    <form method="post" action="{action}" class="actions">
+      <button class="primary" {disabled}>Re-check search now <span>about 1–2 minutes · free, no AI answers are generated</span></button>
     </form>
-    <p class="muted small">This button re-runs only the document search part, live, for free. The full result above was
-    produced once by the team, because writing and grading the AI answers uses the team's credits.</p>''')
+    <p class="muted small">This button re-runs only the document search part, live, for free, on the English-text document
+    questions of both tests (Hindi / Kannada / Nepali questions need an AI to translate them first, so they are not in this
+    free check). The full result above was produced once by the team, because writing and grading the AI answers uses the
+    team's credits.</p>''')
     return "".join(out)
+
+
+def _nav(active):
+    tabs = [("test1", "/scoreboard", "Test 1 · 45 questions"), ("test2", "/scoreboard/test2", "Test 2 · 200 new questions")]
+    return '<nav class="tabs">' + "".join(
+        f'<a class="tab{" on" if k == active else ""}" href="{href}">{label}</a>' for k, href, label in tabs) + "</nav>"
+
+
+INTRO_TEST2 = """<div class="muted">A second test with 200 brand-new, very hard questions, written after Test 1 and never seen by
+the app. Every answer key has an exact quote from an official government PDF: Sarvam, Groq and Cloudflare answer, and grade
+each other · <a href="/scoreboard_200.json">raw JSON</a></div>
+<p class="muted small">Not the same as the <b>Scorecard</b> and <b>AI check</b> under each answer in the app: those grade one live
+answer; this page tests the whole system on a fixed set of questions.</p>"""
+
+
+@router.get("/scoreboard/test2", response_class=HTMLResponse, include_in_schema=False)
+def scoreboard_test2_page():
+    result = _load_official("benchmark_results_200.json")
+    if result and result.get("version") == 3:
+        main = _official_section(result)
+    else:
+        main = '<p class="muted">Test 2 results are not published yet.</p>'
+    return _page("test2", "Sahakar Sahayak · Test 2 Results", "🌾 Sahakar Sahayak · Test 2: 200 new questions",
+                 INTRO_TEST2, main, _live_section("/scoreboard/test2/run"))
+
+
+INTRO_TEST1 = """<div class="muted">A one-time test of 45 hard questions with answer keys from official government PDFs: Sarvam, Groq and
+Cloudflare answer, and grade each other · <a href="/scoreboard.json">raw JSON</a></div>
+<p class="muted small">Not the same as the <b>Scorecard</b> and <b>AI check</b> under each answer in the app: those grade one live
+answer; this page tests the whole system on a fixed set of questions.</p>"""
 
 
 @router.get("/scoreboard", response_class=HTMLResponse, include_in_schema=False)
@@ -236,10 +288,15 @@ def scoreboard_page():
                 f'{o.get("passed", "—")}/{o.get("total", "—")} passed.</p>')
     else:
         main = '<p class="muted">No saved result yet.</p>'
+    return _page("test1", "Sahakar Sahayak · Accuracy Test Results", "🌾 Sahakar Sahayak · Accuracy Test Results",
+                 INTRO_TEST1, main, _live_section())
+
+
+def _page(active, title, h1, intro, main, live):
     refresh = '<meta http-equiv="refresh" content="4">' if _state["running"] else ""
     return HTMLResponse(f'''<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">{refresh}
-<title>Sahakar Sahayak · Accuracy Test Results</title>
+<title>{title}</title>
 <style>
 :root{{--bg:#f7f8f6;--card:#fff;--ink:#16211b;--muted:#5f6b64;--line:#e3e7e4;--brand:#15803d;--ok:#15803d;--bad:#b91c1c;--run:#e0f2fe;--warn:#fef3c7;--okbg:#dcfce7}}
 @media (prefers-color-scheme:dark){{:root{{--bg:#0e1411;--card:#151d18;--ink:#e6ede8;--muted:#9aa8a0;--line:#26312b;--brand:#4ade80;--ok:#4ade80;--bad:#f87171;--run:#0c2a3a;--warn:#3a2f0c;--okbg:#0f2e1b}}}}
@@ -271,12 +328,13 @@ summary{{cursor:pointer;font-size:15px;line-height:1.6}}.tag{{display:inline-blo
 .plain{{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--brand);border-radius:12px;padding:12px 16px;margin:14px 0}}
 .plain ul{{margin:6px 0 0;padding-left:20px}}.plain li{{margin:4px 0}}
 .chip.ok{{background:var(--okbg);color:var(--ok)}}.chip.mid{{background:var(--warn)}}.chip.bad{{color:var(--bad);border:1px solid var(--bad)}}
+.tabs{{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}}
+.tab{{text-decoration:none;font-weight:700;font-size:15px;border:1px solid var(--brand);border-radius:999px;padding:7px 16px;color:var(--brand);background:var(--card)}}
+.tab.on{{background:var(--brand);color:var(--bg)}}
 </style></head><body><main>
-<h1>🌾 Sahakar Sahayak · Accuracy Test Results</h1>
-<div class="muted">A one-time test of 45 hard questions with answer keys from official government PDFs: Sarvam, Groq and
-Cloudflare answer, and grade each other · <a href="/scoreboard.json">raw JSON</a></div>
-<p class="muted small">Not the same as the <b>Scorecard</b> and <b>AI check</b> under each answer in the app: those grade one live
-answer; this page tests the whole system on a fixed set of questions.</p>
+{_nav(active)}
+<h1>{h1}</h1>
+{intro}
 {main}
-{_live_section()}
+{live}
 </main></body></html>''')

@@ -1,7 +1,7 @@
 {
  "version": 3,
  "summary": {
-  "generated_at": "2026-09-30 22:57",
+  "generated_at": "2026-09-30 23:01",
   "questions": 100,
   "contestants": {
    "sarvam": {
@@ -428,7 +428,9 @@
     "groq_answer_tokens@Is7b": 182441,
     "groq_judge_tokens@Is7b": 123584,
     "groq_answer_tokens@3Abf": 115084,
-    "groq_judge_tokens@3Abf": 11361
+    "groq_judge_tokens@3Abf": 11361,
+    "groq_answer_tokens@none": 0,
+    "groq_judge_tokens@none": 0
    }
   },
   "plain_words": [
@@ -448,7 +450,9 @@
    "groq_answer_tokens@Is7b": 182441,
    "groq_judge_tokens@Is7b": 123584,
    "groq_answer_tokens@3Abf": 115084,
-   "groq_judge_tokens@3Abf": 11361
+   "groq_judge_tokens@3Abf": 11361,
+   "groq_answer_tokens@none": 0,
+   "groq_judge_tokens@none": 0
   }
  },
  "questions": [

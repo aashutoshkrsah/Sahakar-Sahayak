@@ -2,7 +2,7 @@
 
 System tested: **v2 -- gold pieces (AI-cut sections with full labels) + re-ranker + stricter answer rules + number check**
 
-Generated 2026-09-30 22:57 · 100 questions · each answer graded by the AIs that did NOT write it · two judges agree on 81.99% of 361 double-graded answers
+Generated 2026-09-30 23:01 · 100 questions · each answer graded by the AIs that did NOT write it · two judges agree on 81.99% of 361 double-graded answers
 
 ## Headline
 

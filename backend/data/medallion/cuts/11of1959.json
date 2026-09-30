@@ -1,0 +1,1430 @@
+{
+"doc_key": "11of1959",
+"made_by": "AI cutter (Claude), reviewed by check_cuts.py",
+"cuts": [
+{
+"at": "P1.L1",
+"label": "Table of contents – Arrangement of sections: Chapter I Preliminary, Chapter IA Authorities, Chapter II Registration (sections 1–14A)"
+},
+{
+"at": "P2.L1",
+"label": "Table of contents – Chapter II (sections 14B–15), Chapter III Members, Chapter IV Management (sections 16–29)"
+},
+{
+"at": "P3.L1",
+"label": "Table of contents – Chapter IV (sections 29A–31A), Chapter V Privileges, Chapter VA Elections (sections 39A–39D)"
+},
+{
+"at": "P4.L1",
+"label": "Table of contents – Chapter VA (sections 39E–39K), Chapter VI State Aid, Chapter VII Properties and Funds (sections 56–57A)"
+},
+{
+"at": "P5.L1",
+"label": "Table of contents – Chapter VII (sections 58–62), Chapter VIII Audit, Chapter IX Disputes, Chapter X Winding up"
+},
+{
+"at": "P6.L1",
+"label": "Table of contents – Chapter XI Agriculture and Rural Development Banks (sections 76–89B)"
+},
+{
+"at": "P7.L1",
+"label": "Table of contents – Chapter XI (sections 89C–98), Chapter XII Execution of Awards (sections 99–104A)"
+},
+{
+"at": "P8.L1",
+"label": "Table of contents – Chapter XIII Appeals, Chapter XIV Offences, Chapter XV Miscellaneous (sections 105–132)"
+},
+{
+"at": "P9.L16",
+"label": "Statement of Objects and Reasons › I – Act 11 of 1959 › Rural Credit Survey and Model Co-operative Societies Bill"
+},
+{
+"at": "P10.L10",
+"label": "Statement of Objects and Reasons › I – Act 11 of 1959 › Decision to introduce a uniform Bill"
+},
+{
+"at": "P10.L17",
+"label": "Statement of Objects and Reasons › II – Amending Act 40 of 1964"
+},
+{
+"at": "P10.L28",
+"label": "Statement of Objects and Reasons › III–IV – Amending Acts 27 of 1966 and 16 of 1967"
+},
+{
+"at": "P11.L22",
+"label": "Statement of Objects and Reasons › V – Amending Act 1 of 1972 › High Court ruling on claims by non-members (section 101)"
+},
+{
+"at": "P12.L10",
+"label": "Statement of Objects and Reasons › V – Amending Act 1 of 1972 › Ordinance and replacement Bill"
+},
+{
+"at": "P12.L21",
+"label": "Statement of Objects and Reasons › VI–VII – Amending Acts 14 of 1973 (Additional Registrars) and 2 of 1975"
+},
+{
+"at": "P13.L11",
+"label": "Statement of Objects and Reasons › VIII – Amending Act 39 of 1975 (deposit insurance, co-operative banks) › Background"
+},
+{
+"at": "P14.L1",
+"label": "Statement of Objects and Reasons › VIII – Amending Act 39 of 1975 › Purposes of the amending Bill"
+},
+{
+"at": "P14.L33",
+"label": "Statement of Objects and Reasons › IX – Amending Act 19 of 1976 › Matters amended (reorganisation, special officers, directions)"
+},
+{
+"at": "P15.L15",
+"label": "Statement of Objects and Reasons › IX – Amending Act 19 of 1976 › Reasons for urgency and Ordinances"
+},
+{
+"at": "P16.L1",
+"label": "Statement of Objects and Reasons › X – Amending Act 70 of 1976 › Matters amended (reorganisation, special officers, directions)"
+},
+{
+"at": "P16.L18",
+"label": "Statement of Objects and Reasons › X – Amending Act 70 of 1976 › Reasons for urgency and Ordinances"
+},
+{
+"at": "P17.L3",
+"label": "Statement of Objects and Reasons › XI – Amending Act 71 of 1976 (membership, voting rights, penalties)"
+},
+{
+"at": "P17.L24",
+"label": "Statement of Objects and Reasons › XII – Amending Act 14 of 1978 (validation of section 14A reorganisation)"
+},
+{
+"at": "P18.L14",
+"label": "Statement of Objects and Reasons › XIII – Amending Act 16 of 1979"
+},
+{
+"at": "P18.L27",
+"label": "Statement of Objects and Reasons › XIV – Amending Act 3 of 1980 (separate audit wing, Chief Auditor)"
+},
+{
+"at": "P19.L8",
+"label": "Statement of Objects and Reasons › XV – Amending Act 4 of 1980 (proviso to section 14A)"
+},
+{
+"at": "P19.L24",
+"label": "Statement of Objects and Reasons › XVI – Amending Act 5 of 1984 (audit board, Land Development Bank, penalties)"
+},
+{
+"at": "P20.L4",
+"label": "Statement of Objects and Reasons › XVII – Amending Act 34 of 1985 (Government bidding in auctions of defaulters' property)"
+},
+{
+"at": "P20.L16",
+"label": "Statement of Objects and Reasons › XVIII – Amending Act 34 of 1991 (omission of section 101-C)"
+},
+{
+"at": "P20.L24",
+"label": "Statement of Objects and Reasons › XIX – Amending Act 25 of 1998 (K. H. Patil Committee amendments)"
+},
+{
+"at": "P22.L1",
+"label": "Statement of Objects and Reasons › XX – Amending Act 2 of 2000"
+},
+{
+"at": "P22.L11",
+"label": "Statement of Objects and Reasons › XXI – Amending Act 13 of 2000 (nominated members, directions, section 52A)"
+},
+{
+"at": "P23.L12",
+"label": "Statement of Objects and Reasons › XXII – Amending Act 6 of 2001"
+},
+{
+"at": "P23.L18",
+"label": "Statement of Objects and Reasons › XXIII – Amending Act 24 of 2001 › Items (1) to (10)"
+},
+{
+"at": "P24.L13",
+"label": "Statement of Objects and Reasons › XXIII – Amending Act 24 of 2001 › Items (11) to (21)"
+},
+{
+"at": "P25.L7",
+"label": "Statement of Objects and Reasons › XXIV – Amending Act 13 of 2004 (Souharda conversion, voting rights, appeals)"
+},
+{
+"at": "P25.L29",
+"label": "Statement of Objects and Reasons › XXV – Amending Act 6 of 2010 › Viswanathan Committee and Vaidyanathan task force"
+},
+{
+"at": "P26.L22",
+"label": "Statement of Objects and Reasons › XXV – Amending Act 6 of 2010 › Revival package MoU with GoI and NABARD"
+},
+{
+"at": "P27.L1",
+"label": "Statement of Objects and Reasons › XXV – Amending Act 6 of 2010 › Proposed amendments 1–10 (sections 2 to 29C)"
+},
+{
+"at": "P28.L1",
+"label": "Statement of Objects and Reasons › XXV – Amending Act 6 of 2010 › Proposed amendments 11–17 (sections 29F to 56)"
+},
+{
+"at": "P28.L21",
+"label": "Statement of Objects and Reasons › XXV – Amending Act 6 of 2010 › Proposed amendments 18–23 (sections 58 to 65)"
+},
+{
+"at": "P29.L1",
+"label": "Statement of Objects and Reasons › XXV – Amending Act 6 of 2010 › Proposed amendments 24–29 (sections 69 to 98Y)"
+},
+{
+"at": "P29.L18",
+"label": "Statement of Objects and Reasons › XXV – Amending Act 6 of 2010 › Proposed amendments 30–34 (sections 100 to 128A) and Ordinance"
+},
+{
+"at": "P30.L8",
+"label": "Statement of Objects and Reasons › XXVI – Amending Act 04 of 2011 (section 97A common cadre, section 98Q elections)"
+},
+{
+"at": "P30.L24",
+"label": "Statement of Objects and Reasons › XXVII – Amending Act 28 of 2012 (section 14A compulsory amalgamation)"
+},
+{
+"at": "P31.L19",
+"label": "Statement of Objects and Reasons › XXVIII – Amending Act 3 of 2013 (97th Constitutional Amendment)"
+},
+{
+"at": "P31.L27",
+"label": "Statement of Objects and Reasons › XXIX – Amending Act 35 of 2014 (reservation, elections, re-audit, appeals)"
+},
+{
+"at": "P32.L17",
+"label": "Statement of Objects and Reasons › XXX – Amending Act 07 of 2017 (co-operative education fund, Sahakari Academy)"
+},
+{
+"at": "P33.L1",
+"label": "Act title, amending Acts list, long title and preamble"
+},
+{
+"at": "P33.L34",
+"label": "Chapter I – Preliminary › Section 1 – Short title, extent and commencement"
+},
+{
+"at": "P33.L49",
+"label": "Chapter I – Preliminary › Section 2 – Definitions › Clauses (a) to (a-2-1) (Apex Society to Backward Classes)"
+},
+{
+"at": "P34.L36",
+"label": "Chapter I – Preliminary › Section 2 – Definitions › Clauses (a3) to (b-5) (Chief Executive to Cooperative Election Authority)"
+},
+{
+"at": "P35.L33",
+"label": "Chapter I – Preliminary › Section 2 – Definitions › Clauses (c) to (e-2-1) (co-operative society to Director)"
+},
+{
+"at": "P37.L1",
+"label": "Chapter I – Preliminary › Section 2 – Definitions › Clauses (e3) to (f-2) (employee to National Bank)"
+},
+{
+"at": "P38.L1",
+"label": "Chapter I – Preliminary › Section 2 – Definitions › Clauses (f-3) to (h-2) (nominee to Primary Agricultural Credit Co-operative Society)"
+},
+{
+"at": "P38.L20",
+"label": "Chapter I – Preliminary › Section 2 – Definitions › Clauses (i) to (i-4) (Registrar to Representative General Meeting)"
+},
+{
+"at": "P39.L5",
+"label": "Chapter I – Preliminary › Section 2 – Definitions › Clauses (j) to (l) (rules to Tribunal)"
+},
+{
+"at": "P40.L1",
+"label": "Chapter IA – Authorities and Appellate Tribunal › Section 2A – Registrar, Additional, Joint, Deputy and Assistant Registrars › Sub-sections (1)–(4)"
+},
+{
+"at": "P40.L32",
+"label": "Chapter IA – Authorities and Appellate Tribunal › Section 2A › Sub-sections (5)–(7) (powers of Registrar conferred, accounts, State Representative)"
+},
+{
+"at": "P41.L8",
+"label": "Chapter IA – Authorities and Appellate Tribunal › Section 2AA – Director of Co-operative Audit and assisting officers › Sub-sections (1)–(2)"
+},
+{
+"at": "P41.L45",
+"label": "Chapter IA – Authorities and Appellate Tribunal › Section 2AA – Director of Co-operative Audit › Sub-sections (3)–(6); Section 2B (omitted)"
+},
+{
+"at": "P42.L33",
+"label": "Chapter II – Registration of Co-operative Societies › Section 4 – Societies which may be registered"
+},
+{
+"at": "P42.L47",
+"label": "Chapter II – Registration of Co-operative Societies › Section 5 – Registration with limited or unlimited liability"
+},
+{
+"at": "P43.L5",
+"label": "Chapter II – Registration of Co-operative Societies › Section 6 – Application for registration of co-operative societies"
+},
+{
+"at": "P44.L2",
+"label": "Chapter II – Registration of Co-operative Societies › Section 7 – Registration"
+},
+{
+"at": "P44.L36",
+"label": "Chapter II – Registration of Co-operative Societies › Section 8 – Registration certificate"
+},
+{
+"at": "P45.L1",
+"label": "Chapter II – Registration of Co-operative Societies › Section 9 – Co-operative societies to be bodies corporate"
+},
+{
+"at": "P45.L6",
+"label": "Chapter II – Registration of Co-operative Societies › Section 10 – Change of name of co-operative society"
+},
+{
+"at": "P45.L15",
+"label": "Chapter II – Registration of Co-operative Societies › Section 11 – Change of liability"
+},
+{
+"at": "P45.L31",
+"label": "Chapter II – Registration of Co-operative Societies › Section 11A – Bye-laws"
+},
+{
+"at": "P46.L2",
+"label": "Chapter II – Registration of Co-operative Societies › Section 12 – Amendment of bye-laws › Sub-sections (1) to (2A)"
+},
+{
+"at": "P46.L31",
+"label": "Chapter II – Registration of Co-operative Societies › Section 12 – Amendment of bye-laws › Sub-sections (3) to (6)"
+},
+{
+"at": "P47.L15",
+"label": "Chapter II – Registration of Co-operative Societies › Section 13 – When amendments of bye-laws come into force"
+},
+{
+"at": "P47.L19",
+"label": "Chapter II – Registration of Co-operative Societies › Section 14 – Amalgamation, transfer of assets and liabilities and division › Sub-sections (1)–(3)"
+},
+{
+"at": "P48.L1",
+"label": "Chapter II – Registration of Co-operative Societies › Section 14 – Amalgamation, transfer and division › Sub-sections (4)–(7)"
+},
+{
+"at": "P48.L21",
+"label": "Chapter II – Registration of Co-operative Societies › Section 14A (omitted); Section 14B – Registrar to prepare scheme for amalgamation of co-operative banks"
+},
+{
+"at": "P49.L1",
+"label": "Chapter II – Registration of Co-operative Societies › Section 14C – Liability of co-operative bank to the Deposit Insurance Corporation"
+},
+{
+"at": "P49.L11",
+"label": "Chapter II – Registration of Co-operative Societies › Section 15 – Cancellation of registration certificates of co-operative societies in certain cases"
+},
+{
+"at": "P49.L38",
+"label": "Chapter III – Members of Co-operative Societies and their Rights and Liabilities › Section 16 – Persons who may become members › Sub-section (1)"
+},
+{
+"at": "P50.L24",
+"label": "Chapter III – Members of Co-operative Societies › Section 16 – Persons who may become members › Sub-sections (2) to (8) (admission, application, deemed acceptance)"
+},
+{
+"at": "P51.L18",
+"label": "Chapter III – Members of Co-operative Societies › Section 17 – Disqualification for membership"
+},
+{
+"at": "P52.L21",
+"label": "Chapter III – Members of Co-operative Societies › Section 18 – Nominal or associate members"
+},
+{
+"at": "P53.L16",
+"label": "Chapter III – Members of Co-operative Societies › Section 18A – Cessation of membership"
+},
+{
+"at": "P53.L31",
+"label": "Chapter III – Members of Co-operative Societies › Section 18-B – Cessation of directorship"
+},
+{
+"at": "P54.L4",
+"label": "Chapter III – Members of Co-operative Societies › Section 19 – Member not to exercise rights till due payment made"
+},
+{
+"at": "P54.L12",
+"label": "Chapter III – Members of Co-operative Societies › Section 19A – Access to information"
+},
+{
+"at": "P54.L17",
+"label": "Chapter III – Members of Co-operative Societies › Section 20 – Votes of members › Sub-section (1) and (2)(a) (members without right to vote)"
+},
+{
+"at": "P55.L26",
+"label": "Chapter III – Members of Co-operative Societies › Section 20 – Votes of members › Sub-section (2)(b) societies without vote, defaulter Explanation, Sub-section (3)"
+},
+{
+"at": "P56.L24",
+"label": "Chapter III – Members of Co-operative Societies › Section 21 – Manner of exercising vote › Sub-section (1) (in person, not by proxy)"
+},
+{
+"at": "P56.L37",
+"label": "Chapter III – Members of Co-operative Societies › Section 21 – Manner of exercising vote › Sub-sections (2)–(3) (voting on behalf of member societies and bodies)"
+},
+{
+"at": "P57.L24",
+"label": "Chapter III – Members of Co-operative Societies › Section 22 (omitted); Section 23 – Restrictions on transfers of shares or interest"
+},
+{
+"at": "P57.L35",
+"label": "Chapter III – Members of Co-operative Societies › Section 23A – Refund of value of share"
+},
+{
+"at": "P58.L10",
+"label": "Chapter III – Members of Co-operative Societies › Section 24 – Transfer of interest on death of member"
+},
+{
+"at": "P59.L4",
+"label": "Chapter III – Members of Co-operative Societies › Section 25 – Liability of past member and estate of deceased member"
+},
+{
+"at": "P59.L16",
+"label": "Chapter IV – Management of Co-operative Societies › Section 26 – Final authority in a co-operative society"
+},
+{
+"at": "P60.L11",
+"label": "Chapter IV – Management of Co-operative Societies › Section 26A – Partnership of Co-operative Societies"
+},
+{
+"at": "P60.L29",
+"label": "Chapter IV – Management of Co-operative Societies › Section 26B – Collaboration by Co-operative Societies"
+},
+{
+"at": "P61.L16",
+"label": "Chapter IV – Management of Co-operative Societies › Section 27 – Annual General Meeting › Sub-section (1) (business of the meeting)"
+},
+{
+"at": "P62.L31",
+"label": "Chapter IV – Management of Co-operative Societies › Section 27 – Annual General Meeting › Sub-sections (2)–(4) (default, Registrar convening, quorum)"
+},
+{
+"at": "P63.L18",
+"label": "Chapter IV – Management of Co-operative Societies › Section 27A – Participation of members in the management"
+},
+{
+"at": "P63.L26",
+"label": "Chapter IV – Management of Co-operative Societies › Section 27B – Returns to be filed with the Registrar"
+},
+{
+"at": "P64.L7",
+"label": "Chapter IV – Management of Co-operative Societies › Section 28 – Special general meeting"
+},
+{
+"at": "P64.L25",
+"label": "Chapter IV – Management of Co-operative Societies › Section 28A – Management vests in the board › Sub-sections (1)–(2) (size of the board)"
+},
+{
+"at": "P65.L31",
+"label": "Chapter IV – Management of Co-operative Societies › Section 28A – Management vests in the board › Sub-sections (3)–(4) (reserved seats, term of office)"
+},
+{
+"at": "P66.L36",
+"label": "Chapter IV – Management of Co-operative Societies › Section 28A › Sub-sections (4A)–(4B) (co-opted and functional directors, Government nominee)"
+},
+{
+"at": "P68.L1",
+"label": "Chapter IV – Management of Co-operative Societies › Section 28A › Sub-sections (5)–(6) (Administrator, election of office bearers)"
+},
+{
+"at": "P68.L25",
+"label": "Chapter IV – Management of Co-operative Societies › Section 28B – Board to arrange for election"
+},
+{
+"at": "P69.L4",
+"label": "Chapter IV – Management of Co-operative Societies › Section 28C – Powers and functions of the board"
+},
+{
+"at": "P70.L19",
+"label": "Chapter IV – Management of Co-operative Societies › Section 28D – Foreign tours by members, directors, office-bearers and employees; Section 29 (omitted)"
+},
+{
+"at": "P70.L27",
+"label": "Chapter IV – Management of Co-operative Societies › Section 29A – Commencement of term of office"
+},
+{
+"at": "P71.L21",
+"label": "Chapter IV – Management of Co-operative Societies › Section 29B – Resignation of member of a board or office-bearer"
+},
+{
+"at": "P71.L35",
+"label": "Chapter IV – Management of Co-operative Societies › Section 29C – Disqualification for membership of the board › Sub-section (1) clauses (a)–(f)"
+},
+{
+"at": "P72.L46",
+"label": "Chapter IV – Management of Co-operative Societies › Section 29C – Disqualification for membership of the board › Sub-section (1) clauses (g)–(p)"
+},
+{
+"at": "P73.L29",
+"label": "Chapter IV – Management of Co-operative Societies › Section 29C – Disqualification for membership of the board › Sub-sections (2)–(7)"
+},
+{
+"at": "P74.L29",
+"label": "Chapter IV – Management of Co-operative Societies › Section 29C – Disqualification › Sub-sections (8)–(11) (removal by Registrar); Section 29D (omitted)"
+},
+{
+"at": "P75.L26",
+"label": "Chapter IV – Management of Co-operative Societies › Section 29E – Filling up of casual vacancy in the office of members of the board"
+},
+{
+"at": "P76.L6",
+"label": "Chapter IV – Management of Co-operative Societies › Section 29F – Election of President, Chairperson, Vice-President or Vice-Chairperson"
+},
+{
+"at": "P76.L34",
+"label": "Chapter IV – Management of Co-operative Societies › Section 29G – Appointment of Chief Executive › Sub-sections (1)–(3)"
+},
+{
+"at": "P77.L32",
+"label": "Chapter IV – Management of Co-operative Societies › Section 29G – Appointment of Chief Executive › Sub-section (4) (powers and duties)"
+},
+{
+"at": "P78.L23",
+"label": "Chapter IV – Management of Co-operative Societies › Section 29G – Chief Executive › Sub-sections (4A)–(4C) (attendance, board membership, no vote)"
+},
+{
+"at": "P79.L1",
+"label": "Chapter IV – Management of Co-operative Societies › Section 29G – Chief Executive › Sub-sections (5)–(6) (Apex Society, monthly accounts)"
+},
+{
+"at": "P79.L22",
+"label": "Chapter IV – Management of Co-operative Societies › Section 30 – Supersession or suspension of the board › Sub-sections (1)–(2)"
+},
+{
+"at": "P80.L21",
+"label": "Chapter IV – Management of Co-operative Societies › Section 30 – Supersession or suspension of the board › Sub-sections (3)–(5) (administrator, elections)"
+},
+{
+"at": "P80.L33",
+"label": "Chapter IV – Management of Co-operative Societies › Section 30 – Supersession › Sub-sections (6)–(7) (co-operative banks, administrator's pay)"
+},
+{
+"at": "P81.L20",
+"label": "Chapter IV – Management of Co-operative Societies › Section 30B – Powers to give direction in public interest"
+},
+{
+"at": "P82.L5",
+"label": "Chapter IV – Management of Co-operative Societies › Section 31 – Appointment of Special Officer by the Registrar"
+},
+{
+"at": "P83.L5",
+"label": "Chapter IV – Management of Co-operative Societies › Section 31A – Delivery of possession of records and properties of the co-operative societies"
+},
+{
+"at": "P83.L32",
+"label": "Chapter V – Privileges of Co-operative Societies › Section 32 – First charge of co-operative society on certain assets"
+},
+{
+"at": "P84.L20",
+"label": "Chapter V – Privileges of Co-operative Societies › Section 33 – Charge on land of members borrowing loans › Sub-section (1) clauses (i)–(iii) and provisos"
+},
+{
+"at": "P85.L17",
+"label": "Chapter V – Privileges of Co-operative Societies › Section 33 – Charge on land › Sub-section (1) clauses (iv)–(v) (void alienation, first charge)"
+},
+{
+"at": "P85.L25",
+"label": "Chapter V – Privileges of Co-operative Societies › Section 33 – Charge on land › Sub-section (2) (record of rights) and Explanation"
+},
+{
+"at": "P86.L11",
+"label": "Chapter V – Privileges of Co-operative Societies › Section 34 – Deduction from salary to meet society's claim in certain cases"
+},
+{
+"at": "P86.L36",
+"label": "Chapter V – Privileges of Co-operative Societies › Section 35 – Charge and set off in respect of shares or interest of members"
+},
+{
+"at": "P87.L8",
+"label": "Chapter V – Privileges of Co-operative Societies › Section 36 – Shares or interest not liable to attachment"
+},
+{
+"at": "P87.L14",
+"label": "Chapter V – Privileges of Co-operative Societies › Section 37 – Exemption from certain taxes, duties and fees"
+},
+{
+"at": "P88.L1",
+"label": "Chapter V – Privileges of Co-operative Societies › Section 38 – Exemption from compulsory registration of instruments"
+},
+{
+"at": "P88.L19",
+"label": "Chapter V – Privileges of Co-operative Societies › Section 39 – Registration of documents executed on behalf of co-operative societies"
+},
+{
+"at": "P88.L35",
+"label": "Chapter V-A – Election of Members of the Boards of Co-operative Societies › Section 39A – Conduct of elections"
+},
+{
+"at": "P89.L25",
+"label": "Chapter V-A – Election of Members of the Boards › Section 39AA – Co-operative Election Commission › Sub-sections (1)–(5) (constitution, Commissioner, Secretary)"
+},
+{
+"at": "P90.L11",
+"label": "Chapter V-A – Election of Members of the Boards › Section 39AA – Co-operative Election Commission › Sub-sections (6)–(8) (removal and suspension of Commissioner)"
+},
+{
+"at": "P90.L33",
+"label": "Chapter V-A – Election of Members of the Boards › Section 39AA – Co-operative Election Commission › Sub-sections (9)–(15) (staff, costs, duties of board)"
+},
+{
+"at": "P91.L29",
+"label": "Chapter V-A – Election of Members of the Boards › Section 39B – Cost of conducting elections"
+},
+{
+"at": "P91.L33",
+"label": "Chapter V-A – Election of Members of the Boards › Section 39C – Corrupt practices"
+},
+{
+"at": "P93.L1",
+"label": "Chapter V-A – Election of Members of the Boards › Section 39D – Maintenance of secrecy of voting"
+},
+{
+"at": "P93.L9",
+"label": "Chapter V-A – Election of Members of the Boards › Section 39E – Officers etc. at election not to act for candidates or to influence voting"
+},
+{
+"at": "P93.L23",
+"label": "Chapter V-A – Election of Members of the Boards › Section 39F – Prohibition of canvassing in or near polling station"
+},
+{
+"at": "P94.L1",
+"label": "Chapter V-A – Election of Members of the Boards › Section 39G – Penalty for disorderly conduct in or near polling station"
+},
+{
+"at": "P94.L19",
+"label": "Chapter V-A – Election of Members of the Boards › Section 39H – Penalty for misconduct at the polling station"
+},
+{
+"at": "P94.L31",
+"label": "Chapter V-A – Election of Members of the Boards › Section 39I – Breaches of official duty in connection with election"
+},
+{
+"at": "P95.L9",
+"label": "Chapter V-A – Election of Members of the Boards › Section 39J – Removal of ballot papers from polling station to be an offence"
+},
+{
+"at": "P95.L24",
+"label": "Chapter V-A – Election of Members of the Boards › Section 39K – Other offences and penalties › Sub-section (1)"
+},
+{
+"at": "P96.L1",
+"label": "Chapter VA – Election of Members of the Boards of Co-operative Societies › Section 39K – Other offences and penalties › Sub-sections (1)(f)-(4) (continued)"
+},
+{
+"at": "P96.L20",
+"label": "Chapter VI – State Aid to Co-operative Societies › Section 40 – Promotion of co-operative movement"
+},
+{
+"at": "P96.L25",
+"label": "Chapter VI – State Aid to Co-operative Societies › Section 41 – Direct partnership of State Government in co-operative societies"
+},
+{
+"at": "P96.L31",
+"label": "Chapter VI – State Aid to Co-operative Societies › Section 42 – Indirect partnership of State Government in co-operative societies"
+},
+{
+"at": "P97.L1",
+"label": "Chapter VI – State Aid to Co-operative Societies › Section 43 – Principal State Partnership Fund"
+},
+{
+"at": "P97.L14",
+"label": "Chapter VI – State Aid to Co-operative Societies › Section 44 – Subsidiary State Partnership Fund"
+},
+{
+"at": "P97.L22",
+"label": "Chapter VI – State Aid to Co-operative Societies › Section 45 – Approval of State Government for purchase of shares"
+},
+{
+"at": "P97.L26",
+"label": "Chapter VI – State Aid to Co-operative Societies › Section 46 – Liability to be limited in respect of certain shares"
+},
+{
+"at": "P97.L33",
+"label": "Chapter VI – State Aid to Co-operative Societies › Section 47 – Restriction on amount of dividend"
+},
+{
+"at": "P98.L4",
+"label": "Chapter VI – State Aid to Co-operative Societies › Section 48 – Indemnity of apex and central societies"
+},
+{
+"at": "P98.L16",
+"label": "Chapter VI – State Aid to Co-operative Societies › Section 49 – Disposal of share capital and dividend, etc."
+},
+{
+"at": "P98.L30",
+"label": "Chapter VI – State Aid to Co-operative Societies › Section 50 – Disposal of Principal and Subsidiary State Partnership Funds on winding up of an apex or central society"
+},
+{
+"at": "P99.L3",
+"label": "Chapter VI – State Aid to Co-operative Societies › Section 51 – Principal and Subsidiary State Partnership Funds not to form part of assets"
+},
+{
+"at": "P99.L7",
+"label": "Chapter VI – State Aid to Co-operative Societies › Section 52 – Agreement by State Government and apex societies"
+},
+{
+"at": "P99.L16",
+"label": "Chapter VI – State Aid to Co-operative Societies › Section 53 – Other forms of State aid to co-operative societies (with omitted sections 53A, 54)"
+},
+{
+"at": "P99.L35",
+"label": "Chapter VI – State Aid to Co-operative Societies › Section 55 – Provisions of this Chapter to override other laws"
+},
+{
+"at": "P100.L1",
+"label": "Chapter VII – Properties and Funds of Co-operative Societies › Section 56 – Mobilisation of Funds"
+},
+{
+"at": "P100.L23",
+"label": "Chapter VII – Properties and Funds of Co-operative Societies › Section 57 – Net profits and their disposal › Sub-sections (1)-(2B) (reserve fund, education fund)"
+},
+{
+"at": "P101.L8",
+"label": "Chapter VII – Properties and Funds of Co-operative Societies › Section 57 – Net profits and their disposal › Sub-sections (3)-(4) (bonus, dividend)"
+},
+{
+"at": "P101.L37",
+"label": "Chapter VII – Properties and Funds of Co-operative Societies › Section 57A – Cooperative Education and Training"
+},
+{
+"at": "P102.L14",
+"label": "Chapter VII – Properties and Funds of Co-operative Societies › Section 58 – Investment of funds"
+},
+{
+"at": "P103.L1",
+"label": "Chapter VII – Properties and Funds of Co-operative Societies › Section 59 – Restrictions on borrowings"
+},
+{
+"at": "P103.L17",
+"label": "Chapter VII – Properties and Funds of Co-operative Societies › Section 60 – Restrictions on loans"
+},
+{
+"at": "P103.L24",
+"label": "Chapter VII – Properties and Funds of Co-operative Societies › Section 61 – Restrictions on other transactions with non-members"
+},
+{
+"at": "P103.L27",
+"label": "Chapter VII – Properties and Funds of Co-operative Societies › Section 62 – Provident Fund"
+},
+{
+"at": "P104.L1",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 63 – Audit › Sub-sections (1)-(2) (annual audit, appointment of auditor)"
+},
+{
+"at": "P105.L1",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 63 – Audit › Sub-sections (3)-(6) (panel, scope of audit, access to books)"
+},
+{
+"at": "P105.L22",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 63 – Audit › Sub-sections (7)-(9) (financial statements, audit report, auditor at general meeting)"
+},
+{
+"at": "P106.L3",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 63 – Audit › Sub-sections (10)-(11) (rectification of defects, apex society reports)"
+},
+{
+"at": "P106.L16",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 63 – Audit › Sub-sections (12)-(13A) (re-audit and re-examination)"
+},
+{
+"at": "P107.L1",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 63 – Audit › Sub-section (14) (matters the auditor shall inquire into)"
+},
+{
+"at": "P107.L18",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 63 – Audit › Sub-sections (15)-(16) (auditor's report)"
+},
+{
+"at": "P108.L7",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 63 – Audit › Sub-sections (17)-(18) (contents of audit report)"
+},
+{
+"at": "P108.L26",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 63 – Audit › Sub-sections (19)-(20) (auditor's remuneration, list of societies)"
+},
+{
+"at": "P109.L1",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 63 – Audit › Explanation – meaning of 'Auditor' and 'Auditing firm'"
+},
+{
+"at": "P109.L25",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 64 – Inquiry by Registrar › Sub-sections (1)-(2A)"
+},
+{
+"at": "P110.L16",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 64 – Inquiry by Registrar › Sub-section (3) (powers of inquiry officer)"
+},
+{
+"at": "P111.L4",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 64 – Inquiry by Registrar › Sub-sections (4)-(4A) (inquiry report and action by board)"
+},
+{
+"at": "P111.L20",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 64 – Inquiry by Registrar › Sub-section (5) (rectification of defects)"
+},
+{
+"at": "P111.L32",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 65 – Inspection of books of a co-operative society › Sub-sections (1)-(2)"
+},
+{
+"at": "P112.L14",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 65 – Inspection of books of a co-operative society › Sub-sections (2A)-(3)"
+},
+{
+"at": "P112.L41",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 65A – Report of inquiry, inspection and final report to be made available to a credit agency"
+},
+{
+"at": "P113.L7",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 65B – Inspection of books of co-operative society by a credit agency"
+},
+{
+"at": "P113.L17",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 66 – Power to seize books and property"
+},
+{
+"at": "P113.L26",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 67 – Costs of Inquiry"
+},
+{
+"at": "P114.L2",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 68 – Order by the Registrar"
+},
+{
+"at": "P114.L38",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 69 – Surcharge › Sub-sections (1)-(2)"
+},
+{
+"at": "P115.L13",
+"label": "Chapter VIII – Audit, Inquiry, Inspection and Surcharge › Section 69 – Surcharge › Sub-sections (3)-(4) (costs, time limit for decision)"
+},
+{
+"at": "P115.L28",
+"label": "Chapter IX – Settlement of Disputes › Section 70 – Disputes which may be referred to Registrar for decision › Sub-section (1)"
+},
+{
+"at": "P116.L19",
+"label": "Chapter IX – Settlement of Disputes › Section 70 – Disputes which may be referred to Registrar for decision › Sub-section (2) (deemed disputes)"
+},
+{
+"at": "P117.L7",
+"label": "Chapter IX – Settlement of Disputes › Section 70 – Disputes which may be referred to Registrar for decision › Sub-section (3)"
+},
+{
+"at": "P117.L16",
+"label": "Chapter IX – Settlement of Disputes › Section 70A – Period of limitation"
+},
+{
+"at": "P117.L31",
+"label": "Chapter IX – Settlement of Disputes › Section 71 – Disposal of disputes › Sub-sections (1)-(3A)"
+},
+{
+"at": "P118.L15",
+"label": "Chapter IX – Settlement of Disputes › Section 71 – Disposal of disputes › Sub-sections (4)-(5) (civil suit, time limit)"
+},
+{
+"at": "P118.L31",
+"label": "Chapter IX – Settlement of Disputes › Section 71A – Powers of financing bank to proceed against members for recovery of money due"
+},
+{
+"at": "P119.L12",
+"label": "Chapter IX – Settlement of Disputes › Section 71B – Powers of credit agency to proceed against members for recovery of money due"
+},
+{
+"at": "P119.L29",
+"label": "Chapter X – Winding Up and Dissolution of Co-operative Societies › Section 72 – Winding up of co-operative societies › Sub-sections (1)-(2)"
+},
+{
+"at": "P120.L23",
+"label": "Chapter X – Winding Up and Dissolution of Co-operative Societies › Section 72 – Winding up of co-operative societies › Sub-sections (3)-(5)"
+},
+{
+"at": "P120.L39",
+"label": "Chapter X – Winding Up and Dissolution of Co-operative Societies › Section 72A – Winding up of a co-operative bank if so required by the Reserve Bank"
+},
+{
+"at": "P121.L1",
+"label": "Chapter X – Winding Up and Dissolution of Co-operative Societies › Section 72B – Reimbursement to the Deposit Insurance Corporation by the Liquidators"
+},
+{
+"at": "P121.L9",
+"label": "Chapter X – Winding Up and Dissolution of Co-operative Societies › Section 73 – Liquidator"
+},
+{
+"at": "P121.L24",
+"label": "Chapter X – Winding Up and Dissolution of Co-operative Societies › Section 74 – Powers of Liquidator › Sub-section (1)"
+},
+{
+"at": "P121.L28",
+"label": "Chapter X – Winding Up and Dissolution of Co-operative Societies › Section 74 – Powers of Liquidator › Sub-section (2) (clauses (a)-(j))"
+},
+{
+"at": "P122.L26",
+"label": "Chapter X – Winding Up and Dissolution of Co-operative Societies › Section 74 – Powers of Liquidator › Sub-section (3) (final report)"
+},
+{
+"at": "P122.L29",
+"label": "Chapter X – Winding Up and Dissolution of Co-operative Societies › Section 75 – Cancellation of registration of a co-operative society"
+},
+{
+"at": "P123.L3",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 76 – Definitions"
+},
+{
+"at": "P123.L20",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 76A – Application of Chapter to Agriculture and Rural Development Banks"
+},
+{
+"at": "P123.L29",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 76B – State and other Agriculture and Rural Development Banks"
+},
+{
+"at": "P124.L22",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 77 – Appointment of Trustee and his powers and functions"
+},
+{
+"at": "P124.L32",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 78 – Trustee to be a corporation sole"
+},
+{
+"at": "P124.L35",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 79 – Issue of debentures › Sub-section (1) (securities for debentures or loans)"
+},
+{
+"at": "P126.L11",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 79 – Issue of debentures › Sub-sections (2)-(3) (redemption, limit on amount outstanding)"
+},
+{
+"at": "P126.L50",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 80 – Charge of debenture holders on certain properties"
+},
+{
+"at": "P127.L9",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 81 – Guarantee by State Government of principal of, and interest on, debentures"
+},
+{
+"at": "P127.L29",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 82 – Other guarantees by State Government"
+},
+{
+"at": "P128.L4",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 82A – Powers of Land Development Banks to advance loans and to hold lands"
+},
+{
+"at": "P128.L14",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 82B – Mode of dealing with applications for loans"
+},
+{
+"at": "P128.L34",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 82C – Order granting loan conclusive of certain matters"
+},
+{
+"at": "P129.L11",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 83 – Priority of mortgage over certain claims"
+},
+{
+"at": "P129.L39",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 84 – Right of Agriculture and Rural Development Bank to purchase mortgaged property"
+},
+{
+"at": "P130.L12",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 85 – Mortgages in favour of ARD Bank to stand vested in State ARD Bank"
+},
+{
+"at": "P130.L30",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 85A – Registration of mortgage or lease in favour of Land Development Banks"
+},
+{
+"at": "P130.L46",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 86 – Power of Agriculture and Rural Development Bank to receive moneys and grant discharges"
+},
+{
+"at": "P131.L18",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 86A – Recovery of Loans by development banks"
+},
+{
+"at": "P131.L29",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 87 – Right of Agriculture and Rural Development Bank to pay prior debts of mortgagor"
+},
+{
+"at": "P132.L13",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 87A – Mortgages executed by managers of joint Hindu families"
+},
+{
+"at": "P132.L44",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 87B – Restrictions on lease"
+},
+{
+"at": "P133.L21",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 88 – Distraint - When to be made"
+},
+{
+"at": "P133.L40",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 89 – Power of sale when to be exercised"
+},
+{
+"at": "P134.L27",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 89A – Confirmation of sale"
+},
+{
+"at": "P135.L2",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 89B – Disposal of sale-proceeds"
+},
+{
+"at": "P135.L24",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 89C – Certificate to purchase, delivery of property and title of purchaser › Sub-sections (1)-(2)"
+},
+{
+"at": "P136.L11",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 89C – Certificate to purchase, delivery of property and title of purchaser › Sub-section (3)"
+},
+{
+"at": "P136.L24",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 89D – Recovery of loans on certificate by Registrar"
+},
+{
+"at": "P137.L15",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 89E – Deputy Commissioner to make recoveries during a certain period"
+},
+{
+"at": "P137.L37",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 89F – Officers of banks not to bid at sales"
+},
+{
+"at": "P138.L2",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 89G – Section 40 of Bombay Act 28 of 1947 not to apply to alienation in favour of Land Development Banks"
+},
+{
+"at": "P138.L10",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 89H – Provision for Guarantee Funds to meet certain losses"
+},
+{
+"at": "P138.L29",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 90 – Powers of ARD Bank where mortgaged property is destroyed or security becomes insufficient"
+},
+{
+"at": "P139.L6",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 91 – Power of Board or of Trustee to distrain and sell property, etc."
+},
+{
+"at": "P139.L30",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 92 – Title of purchaser not to be questioned on the ground of irregularity, etc."
+},
+{
+"at": "P139.L41",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 93 – Mortgage not to be questioned on insolvency of mortgagor"
+},
+{
+"at": "P140.L6",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 94 – Appointment of receiver and his powers"
+},
+{
+"at": "P140.L23",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 95 – Mortgagor's powers to lease"
+},
+{
+"at": "P140.L29",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 96 – Delegation of certain powers by Board"
+},
+{
+"at": "P140.L32",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 97 – Sections 102, 103 and 104 of the Transfer of Property Act, 1882, to apply to notices"
+},
+{
+"at": "P140.L37",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 97A – Constitution of a common cadre for the employees of primary agriculture and rural development banks"
+},
+{
+"at": "P141.L24",
+"label": "Chapter XI – Agriculture and Rural Development Banks › Section 98 – Power of Board of State ARD Bank to supervise ARD Banks and make regulations"
+},
+{
+"at": "P142.L25",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98A – Application of this Chapter"
+},
+{
+"at": "P142.L30",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98B – Overriding effect of Chapter XIA"
+},
+{
+"at": "P143.L3",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98C – Approval of bye-laws"
+},
+{
+"at": "P143.L10",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98D – Ensuring membership to Depositors"
+},
+{
+"at": "P143.L24",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98E – Freedom in all financial and internal administrative matters"
+},
+{
+"at": "P144.L7",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98F – Limit on State Government's subscription"
+},
+{
+"at": "P144.L14",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98G – Restriction on number of Government Nominees"
+},
+{
+"at": "P144.L22",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98H – Freedom for affiliation or disaffiliation with a federal society"
+},
+{
+"at": "P145.L6",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98I – Restriction regarding area of operation"
+},
+{
+"at": "P145.L10",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98J – Freedom of investment and deposit"
+},
+{
+"at": "P145.L14",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98K – Freedom of borrowings"
+},
+{
+"at": "P145.L19",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98L – Guidelines for payment of dividend"
+},
+{
+"at": "P145.L22",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98M – Contribution to any fund"
+},
+{
+"at": "P145.L25",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98N – Disqualification of members of the board of Co-operative Credit Structure"
+},
+{
+"at": "P146.L22",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98O – Applicability of Sections 20 and 29C to election of new board"
+},
+{
+"at": "P146.L28",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98Q – Elections"
+},
+{
+"at": "P147.L10",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98R – The Prudential norms"
+},
+{
+"at": "P147.L13",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98S – Removal of Directors and Chief Executive Officers"
+},
+{
+"at": "P147.L29",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98U – Audit of accounts"
+},
+{
+"at": "P147.L32",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98V – Special audit of Co-operative Credit Structure"
+},
+{
+"at": "P148.L6",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98W – Restriction for using the word 'Bank'"
+},
+{
+"at": "P148.L22",
+"label": "Chapter XI-A – Special Provisions for Societies in Co-operative Credit Structure › Section 98X – Implementation of regulatory prescriptions of Reserve Bank"
+},
+{
+"at": "P149.L13",
+"label": "Chapter XII – Execution of Awards, Decrees, Orders and Decisions › Section 99 – Enforcement of charge"
+},
+{
+"at": "P149.L26",
+"label": "Chapter XII – Execution of Awards, Decrees, Orders and Decisions › Section 100 – Recovery of moneys due to Societies › Sub-section (1)"
+},
+{
+"at": "P150.L3",
+"label": "Chapter XII – Execution of Awards, Decrees, Orders and Decisions › Section 100 – Recovery of moneys due to Societies › Sub-sections (2)-(3) and Explanation"
+},
+{
+"at": "P150.L28",
+"label": "Chapter XII – Execution of Awards, Decrees, Orders and Decisions › Section 101 – Execution of orders, etc. › Sub-section (1)"
+},
+{
+"at": "P151.L16",
+"label": "Chapter XII – Execution of Awards, Decrees, Orders and Decisions › Section 101 – Execution of orders, etc. › Sub-section (2)(a) (questions on execution)"
+},
+{
+"at": "P151.L26",
+"label": "Chapter XII – Execution of Awards, Decrees, Orders and Decisions › Section 101 – Execution of orders, etc. › Sub-section (2)(b) (claims and objections to attachment)"
+},
+{
+"at": "P152.L18",
+"label": "Chapter XII – Execution of Awards, Decrees, Orders and Decisions › Section 101A – Transfer of property made after issue of certificate void against co-operative society"
+},
+{
+"at": "P152.L25",
+"label": "Chapter XII – Execution of Awards, Decrees, Orders and Decisions › Section 101B – Transfer of property which cannot be sold"
+},
+{
+"at": "P153.L15",
+"label": "Chapter XII – Execution of Awards, Decrees, Orders and Decisions › Section 102 – Registrar or person empowered by him to be a civil court for certain purposes"
+},
+{
+"at": "P153.L25",
+"label": "Chapter XII – Execution of Awards, Decrees, Orders and Decisions › Section 103 – Attachment of property before award or order"
+},
+{
+"at": "P154.L10",
+"label": "Chapter XII – Execution of Awards, Decrees, Orders and Decisions › Section 104 – Recovery of sums due to Government"
+},
+{
+"at": "P154.L34",
+"label": "Chapter XII – Execution of Awards, Decrees, Orders and Decisions › Section 104A – Application of this Chapter to Co-operative Societies in other States"
+},
+{
+"at": "P155.L5",
+"label": "Chapter XIII – Appeals, Revision and Review › Section 105 – Appeals to the Tribunal"
+},
+{
+"at": "P155.L33",
+"label": "Chapter XIII – Appeals, Revision and Review › Section 105A – Appeals relating to admission of members to societies"
+},
+{
+"at": "P156.L24",
+"label": "Chapter XIII – Appeals, Revision and Review › Section 106 – Appeals to other authorities › Sub-section (1) (orders against which appeal lies)"
+},
+{
+"at": "P157.L28",
+"label": "Chapter XIII – Appeals, Revision and Review › Section 106 – Appeals to other authorities › Sub-section (2) (appellate authorities and sixty-day limit)"
+},
+{
+"at": "P158.L15",
+"label": "Chapter XIII – Appeals, Revision and Review › Section 106 – Appeals to other authorities › Sub-sections (3)-(6) (interim orders, disposal, time limit, 25% deposit)"
+},
+{
+"at": "P159.L1",
+"label": "Chapter XIII – Appeals, Revision and Review › Section 107 – Revision by Tribunal"
+},
+{
+"at": "P159.L10",
+"label": "Chapter XIII – Appeals, Revision and Review › Section 108 – Powers of revision of State Government"
+},
+{
+"at": "P159.L27",
+"label": "Chapter XIII – Appeals, Revision and Review › Section 108A – No appeal or revision in certain cases"
+},
+{
+"at": "P160.L1",
+"label": "Chapter XIV – Offences and Penalties › Section 109 – Offences › Sub-sections (1)-(1A)"
+},
+{
+"at": "P160.L20",
+"label": "Chapter XIV – Offences and Penalties › Section 109 – Offences › Sub-sections (2)-(3)"
+},
+{
+"at": "P160.L42",
+"label": "Chapter XIV – Offences and Penalties › Section 109 – Offences › Sub-sections (4)-(5)"
+},
+{
+"at": "P161.L20",
+"label": "Chapter XIV – Offences and Penalties › Section 109 – Offences › Sub-sections (6)-(7)"
+},
+{
+"at": "P162.L1",
+"label": "Chapter XIV – Offences and Penalties › Section 109 – Offences › Sub-sections (8)-(9)"
+},
+{
+"at": "P162.L17",
+"label": "Chapter XIV – Offences and Penalties › Section 109 – Offences › Sub-sections (10)-(11)"
+},
+{
+"at": "P162.L37",
+"label": "Chapter XIV – Offences and Penalties › Section 109 – Offences › Sub-sections (12)-(12B)"
+},
+{
+"at": "P163.L14",
+"label": "Chapter XIV – Offences and Penalties › Section 109 – Offences › Sub-sections (13)-(14)"
+},
+{
+"at": "P163.L32",
+"label": "Chapter XIV – Offences and Penalties › Section 109 – Offences › Sub-sections (15)-(16) (corrupt practice, general penalty)"
+},
+{
+"at": "P164.L20",
+"label": "Chapter XIV – Offences and Penalties › Section 109 – Offences › Sub-sections (17)-(21) (audit, returns, election offences)"
+},
+{
+"at": "P165.L4",
+"label": "Chapter XIV – Offences and Penalties › Section 110 – Offences by Companies"
+},
+{
+"at": "P165.L24",
+"label": "Chapter XIV – Offences and Penalties › Section 110A – Power to compound offences"
+},
+{
+"at": "P166.L12",
+"label": "Chapter XIV – Offences and Penalties › Section 111 – Cognizance of offences"
+},
+{
+"at": "P166.L32",
+"label": "Chapter XV – Miscellaneous › Section 111-B – Preservation of records (with omitted section 111-A)"
+},
+{
+"at": "P167.L8",
+"label": "Chapter XV – Miscellaneous › Section 112 – Prohibition against the use of the word \"Co-operative\""
+},
+{
+"at": "P167.L14",
+"label": "Chapter XV – Miscellaneous › Section 113 – Address of a co-operative society"
+},
+{
+"at": "P167.L34",
+"label": "Chapter XV – Miscellaneous › Section 114 – Copy of Act, rules and bye-laws to be open to inspection (with omitted section 115)"
+},
+{
+"at": "P167.L43",
+"label": "Chapter XV – Miscellaneous › Section 116 – Orders to be pronounced"
+},
+{
+"at": "P168.L1",
+"label": "Chapter XV – Miscellaneous › Section 117 – Procedure for settlement of disputes and power of the Registrar › Sub-sections (1)-(2)"
+},
+{
+"at": "P168.L13",
+"label": "Chapter XV – Miscellaneous › Section 117 – Procedure for settlement of disputes and power of the Registrar › Sub-section (3) (parties)"
+},
+{
+"at": "P169.L3",
+"label": "Chapter XV – Miscellaneous › Section 118 – Bar of jurisdiction of courts"
+},
+{
+"at": "P169.L24",
+"label": "Chapter XV – Miscellaneous › Section 119 – Application of Limitation Act"
+},
+{
+"at": "P169.L27",
+"label": "Chapter XV – Miscellaneous › Section 120 – Power to exempt societies from conditions of registration"
+},
+{
+"at": "P169.L31",
+"label": "Chapter XV – Miscellaneous › Section 121 – Power to exempt societies"
+},
+{
+"at": "P170.L1",
+"label": "Chapter XV – Miscellaneous › Section 122 – Register of Members"
+},
+{
+"at": "P170.L7",
+"label": "Chapter XV – Miscellaneous › Section 123 – Proof of entries in co-operative societies' books"
+},
+{
+"at": "P170.L27",
+"label": "Chapter XV – Miscellaneous › Section 124 – Service of notice under the Act"
+},
+{
+"at": "P171.L12",
+"label": "Chapter XV – Miscellaneous › Section 125 – Notice necessary in suits"
+},
+{
+"at": "P171.L18",
+"label": "Chapter XV – Miscellaneous › Section 126 – Acts of co-operative societies not to be invalidated by certain defects"
+},
+{
+"at": "P171.L26",
+"label": "Chapter XV – Miscellaneous › Section 127 – Indemnity"
+},
+{
+"at": "P171.L40",
+"label": "Chapter XV – Miscellaneous › Section 127A – Office bearers, members and employees of co-operative societies to be public servants"
+},
+{
+"at": "P172.L6",
+"label": "Chapter XV – Miscellaneous › Section 128 – Companies Act, 1956, not to apply"
+},
+{
+"at": "P172.L10",
+"label": "Chapter XV – Miscellaneous › Section 128B – Duties of police officer"
+},
+{
+"at": "P172.L16",
+"label": "Chapter XV – Miscellaneous › Section 129 – Powers to make rules › Sub-sections (1)-(2), clauses (a)-(j)"
+},
+{
+"at": "P173.L6",
+"label": "Chapter XV – Miscellaneous › Section 129 – Powers to make rules › Sub-section (2), clauses (k)-(t-2)"
+},
+{
+"at": "P174.L10",
+"label": "Chapter XV – Miscellaneous › Section 129 – Powers to make rules › Sub-section (2), clauses (u)-(dd-4)"
+},
+{
+"at": "P175.L10",
+"label": "Chapter XV – Miscellaneous › Section 129 – Powers to make rules › Sub-section (2), clauses (dd-5)-(ll)"
+},
+{
+"at": "P176.L13",
+"label": "Chapter XV – Miscellaneous › Section 129 – Powers to make rules › Sub-sections (3)-(4) (penalty for breach, retrospective rules)"
+},
+{
+"at": "P176.L22",
+"label": "Chapter XV – Miscellaneous › Section 129A – Model bye-laws"
+},
+{
+"at": "P176.L35",
+"label": "Chapter XV – Miscellaneous › Section 130 – Rules and orders to be laid before State Legislature"
+},
+{
+"at": "P177.L7",
+"label": "Chapter XV – Miscellaneous › Section 131 – Repeal and savings"
+},
+{
+"at": "P177.L39",
+"label": "Chapter XV – Miscellaneous › Section 132 – Power to remove difficulties"
+},
+{
+"at": "P179.L1",
+"label": "Karnataka Act No. 06 of 2010 (Amendment Act, 2010) › Section 1 – Short title and commencement"
+},
+{
+"at": "P179.L19",
+"label": "Karnataka Act No. 06 of 2010 (Amendment Act, 2010) › Sections 36-37 – Power to remove difficulty; Repeal and Savings"
+},
+{
+"at": "P180.L1",
+"label": "Notifications I-IV – dates of commencement of the 1959 Act and related Acts"
+},
+{
+"at": "P181.L5",
+"label": "Notifications V-VIII – dates of commencement of amendment Acts of 1974, 1975 and 1998"
+},
+{
+"at": "P182.L21",
+"label": "Notifications IX-XI – dates of commencement of Karnataka Act 2 of 2000 and Act 24 of 2001"
+},
+{
+"at": "P184.L1",
+"label": "Notification in Kannada dated 22.03.2004 (text not legible)"
+},
+{
+"at": "P184.L9",
+"label": "Notification XIII – commencement of Karnataka Act No. 4 of 2011 on 10th February 2011"
+},
+{
+"at": "P184.L21",
+"label": "Karnataka Act No. 28 of 2012 (Second Amendment Act, 2010) – short title and commencement"
+},
+{
+"at": "P186.L1",
+"label": "Notification in Kannada dated 20.12.2012 on Karnataka Act No. 28 of 2012 (text not legible)"
+},
+{
+"at": "P187.L1",
+"label": "Notification dated 8.02.2013 – commencement of Karnataka Act No. 3 of 2013 on 11th February 2013"
+},
+{
+"at": "P187.L13",
+"label": "Karnataka Act No. 03 of 2013 (Amendment Act, 2012) – short title, commencement and power to remove difficulties"
+},
+{
+"at": "P188.L16",
+"label": "Karnataka Act No. 35 of 2014 (Amendment Act, 2014) – short title and commencement"
+},
+{
+"at": "P189.L1",
+"label": "Karnataka Act No. 7 of 2017 (Second Amendment Act, 2016) – short title and commencement"
+}
+]
+}

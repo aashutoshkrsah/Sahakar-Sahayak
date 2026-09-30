@@ -1,0 +1,222 @@
+{
+"doc_key": "247816",
+"made_by": "AI cutter (Claude), reviewed by check_cuts.py",
+"cuts": [
+{
+"at": "P1.L1",
+"label": "Title, preamble and Section 1 – Short title and commencement"
+},
+{
+"at": "P1.L14",
+"label": "Section 2 – Amendment of section 3 (definitions: Authority, Co-operative Ombudsman, financial year)"
+},
+{
+"at": "P2.L17",
+"label": "Section 3 – Amendment of section 7 (registration) › Sub-section (2) prudential norms for thrift and credit societies, with provisos"
+},
+{
+"at": "P2.L37",
+"label": "Section 3 – Amendment of section 7 (registration) › Sub-sections (3)-(4) time limit for registration and refusal"
+},
+{
+"at": "P3.L1",
+"label": "Sections 4-5 – Amendment of sections 10 and 14 (address including e-mail address)"
+},
+{
+"at": "P3.L8",
+"label": "Sections 6-7 – Amendment of section 17 (merger of co-operative society into multi-State society) and section 19"
+},
+{
+"at": "P3.L19",
+"label": "Section 8 – Amendment of section 22 (deemed de-registration under State law)"
+},
+{
+"at": "P3.L26",
+"label": "Section 9 – Amendment of section 26 (non-voting shares for nominal or associate members)"
+},
+{
+"at": "P3.L37",
+"label": "Sections 10-12 – Amendment of sections 28, 29 and 30 (members' dues, minimum use of services)"
+},
+{
+"at": "P4.L1",
+"label": "Sections 13-14 – Substitution of section 35 (redemption of shares) and amendment of section 39 (appointment of auditor)"
+},
+{
+"at": "P4.L19",
+"label": "Section 15 – Amendment of section 41 › Sub-sections (3)-(5) board size, reservation, co-opted and functional directors"
+},
+{
+"at": "P4.L38",
+"label": "Section 15 – Amendment of section 41 › Sub-sections (6)-(7) directors' interest in contracts, relatives (Explanation)"
+},
+{
+"at": "P5.L27",
+"label": "Section 16 – Amendment of section 43 (disqualification of directors, supersession, board duties)"
+},
+{
+"at": "P6.L20",
+"label": "Section 17 – Substitution of new sections for section 45 › Section 45 – Establishment of Co-operative Election Authority"
+},
+{
+"at": "P7.L1",
+"label": "Section 17 – Substitution of new sections for section 45 › Sections 45A-45B – Power of Chairperson; removal and suspension of Chairperson and Members"
+},
+{
+"at": "P7.L31",
+"label": "Section 17 – Substitution of new sections for section 45 › Sections 45C-45D – Disclosure and declaration of interest; resignation of Members"
+},
+{
+"at": "P8.L1",
+"label": "Section 17 – Substitution of new sections for section 45 › Sections 45E-45H – Casual vacancy, re-employment restriction, validity of proceedings, meetings of Authority"
+},
+{
+"at": "P8.L34",
+"label": "Section 17 – Substitution of new sections for section 45 › Section 45-I – Functions of Authority"
+},
+{
+"at": "P8.L39",
+"label": "Section 17 – Substitution of new sections for section 45 › Section 45J – Elections of members of board › Sub-sections (1)-(4) active member, secret ballot"
+},
+{
+"at": "P9.L9",
+"label": "Section 17 – Substitution of new sections for section 45 › Section 45J – Elections of members of board › Sub-sections (5)-(9) term, casual vacancies, election expenses"
+},
+{
+"at": "P9.L30",
+"label": "Section 17 – Substitution of new sections for section 45 › Sections 45K-45L – Returning Officer and other officers; power to issue directions"
+},
+{
+"at": "P9.L46",
+"label": "Section 18 – Amendment of section 49 (election of Chairperson/President, recruitment of employees)"
+},
+{
+"at": "P10.L7",
+"label": "Section 19 – Amendment of section 50 (convening board meetings, presiding, quorum)"
+},
+{
+"at": "P10.L24",
+"label": "Section 20 – Amendment of section 51 › Sub-section (1A) eligibility of Chief Executive"
+},
+{
+"at": "P10.L42",
+"label": "Sections 21-22 – Amendment of sections 52 and 53 (committees, Audit and Ethics Committee)"
+},
+{
+"at": "P11.L4",
+"label": "Section 23 – Amendment of section 63 (co-operative education fund)"
+},
+{
+"at": "P11.L11",
+"label": "Section 24 – Insertion of new sections 63A, 63B and 63C › Section 63A – Co-operative Rehabilitation, Reconstruction and Development Fund"
+},
+{
+"at": "P11.L27",
+"label": "Section 24 – Insertion of new sections 63A, 63B and 63C › Section 63B – Rehabilitation and reconstruction of sick societies"
+},
+{
+"at": "P12.L1",
+"label": "Section 24 – Insertion of new sections 63A, 63B and 63C › Section 63C – Financial assistance to multi-State co-operative societies for development"
+},
+{
+"at": "P12.L12",
+"label": "Sections 25-26 – Amendment of section 64 (investment of funds) and section 67"
+},
+{
+"at": "P12.L34",
+"label": "Section 27 – Amendment of section 70 (appointment of auditors, audit report)"
+},
+{
+"at": "P13.L12",
+"label": "Sections 28-29 – Insertion of section 70A (concurrent audit) and amendment of section 73 (auditing standards)"
+},
+{
+"at": "P13.L32",
+"label": "Section 30 – Amendment of section 78 (inquiry by Central Registrar)"
+},
+{
+"at": "P14.L1",
+"label": "Section 31 – Insertion of Chapter IXA – Redressal of Complaints › Section 85A – Co-operative Ombudsman"
+},
+{
+"at": "P14.L31",
+"label": "Section 32 – Amendment of section 86 (winding up)"
+},
+{
+"at": "P15.L18",
+"label": "Sections 33-34 – Amendment of sections 94 and 98 (recovery by attaching bank accounts)"
+},
+{
+"at": "P15.L30",
+"label": "Section 35 – Insertion of section 98A (review of decision)"
+},
+{
+"at": "P15.L44",
+"label": "Section 36 – Amendment of section 103 (deemed multi-State co-operative societies)"
+},
+{
+"at": "P16.L7",
+"label": "Section 37 – Amendment of section 104 (offences) › Sub-sections (1)-(4) penalties"
+},
+{
+"at": "P16.L30",
+"label": "Section 37 – Amendment of section 104 (offences) › New sub-sections (5)-(6) punishment of board and officers"
+},
+{
+"at": "P17.L11",
+"label": "Section 38 – Insertion of section 105A (Act not in derogation of any other law)"
+},
+{
+"at": "P17.L15",
+"label": "Section 39 – Substitution of section 106 › Sections 106-106A – Co-operative Information Officer; copy of rules and bye-laws for inspection"
+},
+{
+"at": "P17.L35",
+"label": "Sections 40-41 – Amendment of sections 108 and 109"
+},
+{
+"at": "P17.L40",
+"label": "Section 42 – Amendment of section 116 (power to amend Schedules)"
+},
+{
+"at": "P18.L7",
+"label": "Section 43 – Amendment of section 120 (annual return contents)"
+},
+{
+"at": "P18.L18",
+"label": "Section 44 – Insertion of sections 120A and 120B › Section 120A – Filing of applications, documents, inspections in electronic form"
+},
+{
+"at": "P19.L10",
+"label": "Section 44 › Section 120B – Application of Banking Regulation Act, 1949"
+},
+{
+"at": "P19.L15",
+"label": "Section 45 – Amendment of section 121 (Companies Act, 2013 and Competition Act, 2002)"
+},
+{
+"at": "P19.L19",
+"label": "Section 46 – Amendment of section 123 (supersession of board)"
+},
+{
+"at": "P20.L1",
+"label": "Section 47 – Amendment of section 124 (rule-making powers) › Sub-section (2) clauses (aa)-(kj)"
+},
+{
+"at": "P20.L37",
+"label": "Section 47 – Amendment of section 124 (rule-making powers) › Sub-section (2) clauses (ma)-(xb)"
+},
+{
+"at": "P21.L18",
+"label": "Section 47 – Amendment of section 124 (rule-making powers) › Sub-section (3) laying of rules before Parliament"
+},
+{
+"at": "P21.L30",
+"label": "Section 48 – Amendment of section 125 (power to remove difficulties)"
+},
+{
+"at": "P21.L40",
+"label": "Section 49 – Insertion of Third Schedule (list of Acts) (table)"
+}
+]
+}

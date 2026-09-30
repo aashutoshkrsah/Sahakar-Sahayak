@@ -1,0 +1,222 @@
+{
+"doc_key": "Model Byelaws",
+"made_by": "AI cutter (Claude), reviewed by check_cuts.py",
+"cuts": [
+{
+"at": "P3.L1",
+"label": "Chapter I – Identification of Cooperative Society › Bye-laws 1-3 – Name, address and area of operation"
+},
+{
+"at": "P3.L14",
+"label": "Chapter I – Identification of Cooperative Society › Bye-law 4 – Definitions (1)-(11): Act to Employee"
+},
+{
+"at": "P4.L15",
+"label": "Chapter I – Identification of Cooperative Society › Bye-law 4 – Definitions (12)-(18): Farmer to Member"
+},
+{
+"at": "P5.L6",
+"label": "Chapter I – Identification of Cooperative Society › Bye-law 4 – Definitions (19)-(25): NABARD to RBI"
+},
+{
+"at": "P5.L29",
+"label": "Chapter I – Identification of Cooperative Society › Bye-law 4 – Definitions (26)-(31): Registrar to Vice President"
+},
+{
+"at": "P7.L1",
+"label": "Chapter II – Objectives and Services › Bye-law 5 – Objectives of the Society › Objectives (1)-(3) credit, long-term loans, linkages"
+},
+{
+"at": "P7.L26",
+"label": "Chapter II – Objectives and Services › Bye-law 5 – Objectives of the Society › Objectives (4)-(9)"
+},
+{
+"at": "P8.L17",
+"label": "Chapter II – Objectives and Services › Bye-law 5 – Objectives of the Society › Objectives (10)-(19)"
+},
+{
+"at": "P9.L4",
+"label": "Chapter II – Objectives and Services › Bye-law 6 – Services of the Society"
+},
+{
+"at": "P10.L1",
+"label": "Chapter III – Membership › Bye-law 7 – Membership › Clause 7(1) types of membership and 7(2) eligibility for 'A' class membership"
+},
+{
+"at": "P10.L23",
+"label": "Chapter III – Membership › Bye-law 7 – Membership › Clause 7(3) eligibility and conditions for 'B' class (nominal) membership"
+},
+{
+"at": "P11.L13",
+"label": "Chapter III – Membership › Bye-law 7 – Membership › Clause 7(4) ineligibility or disqualification of members"
+},
+{
+"at": "P12.L1",
+"label": "Chapter III – Membership › Bye-law 7 – Membership › Clause 7(5) procedure for membership"
+},
+{
+"at": "P12.L26",
+"label": "Chapter III – Membership › Bye-law 7 – Membership › Clause 7(6) shares subscription by the members"
+},
+{
+"at": "P13.L14",
+"label": "Chapter III – Membership › Bye-law 7 – Membership › Clause 7(7) rights of member › 1. 'A' class member rights"
+},
+{
+"at": "P14.L8",
+"label": "Chapter III – Membership › Bye-law 7 – Membership › Clause 7(7) rights of member › 2. 'B' class (nominal) member rights"
+},
+{
+"at": "P14.L17",
+"label": "Chapter III – Membership › Bye-law 7 – Membership › Clause 7(8) duties of member and 7(9) liability of members"
+},
+{
+"at": "P15.L1",
+"label": "Chapter III – Membership › Bye-law 7 – Membership › Clause 7(10) withdrawal of membership and share capital"
+},
+{
+"at": "P15.L9",
+"label": "Chapter III – Membership › Bye-law 7 – Membership › Clause 7(11) expulsion of member"
+},
+{
+"at": "P15.L18",
+"label": "Chapter III – Membership › Bye-law 7 – Membership › Clause 7(12) nomination by member"
+},
+{
+"at": "P16.L1",
+"label": "Chapter IV – Capital and Funds › Bye-law 8 – Funds and resources › Sources of funds and (i) admission fee"
+},
+{
+"at": "P16.L15",
+"label": "Chapter IV – Capital and Funds › Bye-law 8 – Funds and resources › (ii) Share capital"
+},
+{
+"at": "P17.L1",
+"label": "Chapter IV – Capital and Funds › Bye-law 8 – Funds and resources › (iii) Borrowings and maximum borrowing power; (iv) Deposits"
+},
+{
+"at": "P17.L12",
+"label": "Chapter IV – Capital and Funds › Bye-law 8 – Funds and resources › (v) Loans and advances"
+},
+{
+"at": "P17.L19",
+"label": "Chapter IV – Capital and Funds › Bye-law 8 – Funds and resources › (vi) Reserve and surplus; (vii) Grants and subsidies; (viii) Donation"
+},
+{
+"at": "P18.L1",
+"label": "Chapter V – Management of Society › Bye-law 9 – General Body › Clauses 9(1)-(2) composition, powers and duties of General Body"
+},
+{
+"at": "P19.L1",
+"label": "Chapter V – Management of Society › Bye-law 9 – General Body › Clauses 9(3)-(4) kinds of General Body meetings (annual, special, requisitioned)"
+},
+{
+"at": "P19.L24",
+"label": "Chapter V – Management of Society › Bye-law 9 – General Body › Clause 9(5) notice of General Body meeting"
+},
+{
+"at": "P20.L1",
+"label": "Chapter V – Management of Society › Bye-law 9 – General Body › Clauses 9(6)-(7) quorum for General Body meeting"
+},
+{
+"at": "P20.L12",
+"label": "Chapter V – Management of Society › Bye-law 9 – General Body › Clauses 9(8)-(10) presiding, voting and minutes of General Body meeting"
+},
+{
+"at": "P20.L22",
+"label": "Chapter V – Management of Society › Bye-law 10 – Board of Directors › Clauses 10(1)-(2) constitution of Board and ineligibility for election"
+},
+{
+"at": "P21.L16",
+"label": "Chapter V – Management of Society › Bye-law 10 – Board of Directors › Clauses 10(3)-(9) reservation, term, elections and Board meetings"
+},
+{
+"at": "P22.L1",
+"label": "Chapter V – Management of Society › Bye-law 10 – Board of Directors › Clause 10(10) Professional Directors"
+},
+{
+"at": "P22.L8",
+"label": "Chapter V – Management of Society › Bye-law 10 – Board of Directors › Clause 10(11) disqualification of Board members"
+},
+{
+"at": "P22.L30",
+"label": "Chapter V – Management of Society › Bye-law 10 – Board of Directors › Clauses 10(12)-(13) absence from meetings, reinstatement, cessation after Registrar's enquiry"
+},
+{
+"at": "P23.L17",
+"label": "Chapter V – Management of Society › Bye-law 10 – Board of Directors › Clauses 10(14)-(15) election of President and Vice President, quorum of Board meeting"
+},
+{
+"at": "P23.L26",
+"label": "Chapter V – Management of Society › Bye-law 10 – Board of Directors › Clause 10(16) powers and duties of the Board (i)-(xiv)"
+},
+{
+"at": "P25.L1",
+"label": "Chapter V – Management of Society › Bye-law 10 – Board of Directors › Clause 10(16) powers and duties of the Board (xv)-(xxiii)"
+},
+{
+"at": "P26.L1",
+"label": "Chapter V – Management of Society › Bye-law 10 – Board of Directors › Clause 10(16) powers and duties of the Board (xxiv)-(xxxi)"
+},
+{
+"at": "P26.L21",
+"label": "Chapter V – Management of Society › Bye-law 10 – Board of Directors › Clauses 10(17)-(20) sub-committees, responsibility, minutes, sitting fees"
+},
+{
+"at": "P27.L10",
+"label": "Chapter V – Management of Society › Bye-law 11 – President and his powers"
+},
+{
+"at": "P27.L26",
+"label": "Chapter V – Management of Society › Bye-law 12 – Chief Executive Officer – duties and responsibilities › Clauses 12(1)-(2) appointment, duties (a)-(g)"
+},
+{
+"at": "P28.L21",
+"label": "Chapter V – Management of Society › Bye-law 12 – Chief Executive Officer – duties and responsibilities › Clause 12(2) duties (h)-(s)"
+},
+{
+"at": "P30.L1",
+"label": "Chapter VI – Internal Control › Bye-law 13 – Maintenance of books and accounts and registers › Clause 13(1) A) books related to financial statements"
+},
+{
+"at": "P30.L29",
+"label": "Chapter VI – Internal Control › Bye-law 13 – Maintenance of books and accounts and registers › Clause 13(1) B) books not related to financial statement"
+},
+{
+"at": "P31.L27",
+"label": "Chapter VI – Internal Control › Bye-law 13 – Maintenance of books and accounts and registers › Clauses 13(2)-(8) custody, inspection, returns, Common Accounting System"
+},
+{
+"at": "P32.L18",
+"label": "Chapter VI – Internal Control › Bye-law 14 – Audit of the Society"
+},
+{
+"at": "P33.L9",
+"label": "Chapter VII – Change of Structure of Society › Bye-law 15 – Change of liability, transfer, division, amalgamation › Clauses 15(1)-(3) resolutions for restructuring"
+},
+{
+"at": "P34.L1",
+"label": "Chapter VII – Change of Structure of Society › Bye-law 15 – Change of liability, transfer, division, amalgamation › Clauses 15(4)-(7) notice, creditors' option, effect"
+},
+{
+"at": "P34.L22",
+"label": "Chapter VII – Change of Structure of Society › Bye-law 15 – Change of liability, transfer, division, amalgamation › Clauses 15(8)-(9) dissolution on transfer or division"
+},
+{
+"at": "P35.L1",
+"label": "Chapter VII – Change of Structure of Society › Bye-law 16 – Promotion of subsidiary organisation (FPO)"
+},
+{
+"at": "P36.L1",
+"label": "Chapter VIII – Dispute of Society › Bye-law 17 – Dispute settlement procedure"
+},
+{
+"at": "P36.L9",
+"label": "Chapter IX – Liquidation of Society › Bye-law 18 – Liquidation"
+},
+{
+"at": "P37.L1",
+"label": "Chapter X – Miscellaneous › Bye-law 19 – Miscellaneous (inspection by financing institution, interpretation, conflict with Act)"
+}
+]
+}

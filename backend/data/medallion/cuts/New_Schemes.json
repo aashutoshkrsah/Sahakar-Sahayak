@@ -1,0 +1,250 @@
+{
+"doc_key": "New Schemes",
+"made_by": "AI cutter (Claude), reviewed by check_cuts.py",
+"cuts": [
+{
+"at": "P1.L1",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 1 – Objectives"
+},
+{
+"at": "P1.L9",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 2 – Implementing Agency (IA)"
+},
+{
+"at": "P1.L18",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 3 – Empanelled insurance companies and selection of IA"
+},
+{
+"at": "P2.L15",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 4 – Management of the Scheme (SLCCCI, DLMC)"
+},
+{
+"at": "P2.L24",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 5 – Unit of Insurance (Area Approach)"
+},
+{
+"at": "P3.L11",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 6 – Crops and Notified Area (6.1, 6.2)"
+},
+{
+"at": "P3.L24",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 7 – Farmers to be covered (7.1 Compulsory, 7.2 Voluntary)"
+},
+{
+"at": "P4.L14",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 8 – Risks and Exclusions › 8.1.1 Yield losses (standing crops)"
+},
+{
+"at": "P5.L1",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 8 – Risks › 8.1.2 Prevented sowing, 8.1.3 Post-harvest losses, 8.1.4 Localised calamities"
+},
+{
+"at": "P5.L13",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 8 – Risks and Exclusions › 8.2 Exclusions"
+},
+{
+"at": "P5.L18",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 9 – Sum Insured / Limit of Coverage"
+},
+{
+"at": "P6.L7",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 10 – Premium Rates › 10.1–10.2 Farmer insurance charges (table) and premium subsidy"
+},
+{
+"at": "P7.L3",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 10 – Premium Rates › 10.3–10.7 Premium calculation, bidding and cluster selection of IA"
+},
+{
+"at": "P8.L1",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 11 – Sharing of Risk"
+},
+{
+"at": "P8.L10",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 12 – Estimation of Crop Yield (Crop Cutting Experiments table)"
+},
+{
+"at": "P9.L6",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 12 – Use of Mobile Phone Technology to improve Yield-data Quality & Timeliness"
+},
+{
+"at": "P9.L19",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 13 – Indemnity Level (IL) and Threshold Yield (TY)"
+},
+{
+"at": "P10.L4",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 14 – Calendar of Activity (seasonality discipline, cut-off dates)"
+},
+{
+"at": "P10.L16",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 14 – Calendar of Activity › Kharif/Rabi seasonality chart (table)"
+},
+{
+"at": "P11.L53",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 15 – Assessment of Claims › 15.1 Yield losses at Notified Area level (claim formula)"
+},
+{
+"at": "P12.L15",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 15 – Assessment of Claims › 15.2 Assessment of prevented sowing"
+},
+{
+"at": "P13.L1",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 15 – Assessment of Claims › 15.3 Localized calamity and 15.4 Post-harvest loss assessment"
+},
+{
+"at": "P13.L12",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 15 – Assessment of Claims › 15.5 On-account payment for mid-season adversity, 15.6"
+},
+{
+"at": "P14.L1",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 16 – Procedure for Settlement of Claims"
+},
+{
+"at": "P14.L10",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 16 – Acreage discrepancy (over-insurance handling)"
+},
+{
+"at": "P15.L5",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 17 – Management of the Scheme and Review"
+},
+{
+"at": "P15.L24",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 18 – Publicity & Awareness; Para 19 – Service Tax"
+},
+{
+"at": "P16.L11",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 20 – Use of Innovative Technology (satellite imagery, smart sampling of CCEs)"
+},
+{
+"at": "P17.L5",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 20 – Use of Innovative Technology › 20.1–20.4 Mobile phones, centralized repository"
+},
+{
+"at": "P17.L21",
+"label": "Pradhan Mantri Fasal Bima Yojana (PMFBY) › Para 21 – Review of the Scheme"
+},
+{
+"at": "P18.L1",
+"label": "Weather Based Crop Insurance Scheme (WBCIS) › Premium structure and existing premium subsidy structure (table)"
+},
+{
+"at": "P18.L16",
+"label": "Weather Based Crop Insurance Scheme (WBCIS) › Revised premium subsidy structure – farmer insurance charges (table)"
+},
+{
+"at": "P19.L1",
+"label": "Unified Package Insurance Scheme (UPIS) › 1. Nature of the Scheme"
+},
+{
+"at": "P19.L14",
+"label": "Unified Package Insurance Scheme (UPIS) › Suitability (coverage of the policy)"
+},
+{
+"at": "P20.L1",
+"label": "Unified Package Insurance Scheme (UPIS) › Salient Features and Benefits"
+},
+{
+"at": "P21.L1",
+"label": "Unified Package Insurance Scheme (UPIS) › Section 1 – Crop Insurance; Section 2 – Building and Contents Insurance (Fire and Allied Perils)"
+},
+{
+"at": "P22.L1",
+"label": "Unified Package Insurance Scheme (UPIS) › Section 3 – Personal Accident Insurance (as per PMSBY) › Details, scope of coverage"
+},
+{
+"at": "P22.L17",
+"label": "Unified Package Insurance Scheme (UPIS) › Section 3 – Personal Accident Insurance (as per PMSBY) › Enrollment modality / period"
+},
+{
+"at": "P23.L2",
+"label": "Unified Package Insurance Scheme (UPIS) › Section 3 – Personal Accident Insurance (as per PMSBY) › Benefits (table) and Premium"
+},
+{
+"at": "P23.L18",
+"label": "Unified Package Insurance Scheme (UPIS) › Section 3 – Personal Accident Insurance (as per PMSBY) › Eligibility conditions and Master Policy Holder"
+},
+{
+"at": "P23.L27",
+"label": "Unified Package Insurance Scheme (UPIS) › Section 3 – Personal Accident Insurance (as per PMSBY) › Termination of cover"
+},
+{
+"at": "P24.L15",
+"label": "Unified Package Insurance Scheme (UPIS) › Section 3 – Personal Accident Insurance (as per PMSBY) › Administration and Appropriation of Premium"
+},
+{
+"at": "P25.L10",
+"label": "Unified Package Insurance Scheme (UPIS) › Section 4 – Agriculture Pumpset Insurance › Scope of cover and specific exclusions"
+},
+{
+"at": "P26.L7",
+"label": "Unified Package Insurance Scheme (UPIS) › Section 4 – Agriculture Pumpset Insurance › Special conditions (claims)"
+},
+{
+"at": "P26.L25",
+"label": "Unified Package Insurance Scheme (UPIS) › Section 5 – Agricultural Tractors Insurance"
+},
+{
+"at": "P27.L10",
+"label": "Unified Package Insurance Scheme (UPIS) › Section 6 – Student Safety Insurance › Schedule of Benefits"
+},
+{
+"at": "P27.L19",
+"label": "Unified Package Insurance Scheme (UPIS) › Section 6 – Student Safety Insurance › Part 1 – Parent/guardian accident cover and fee reimbursement"
+},
+{
+"at": "P28.L12",
+"label": "Unified Package Insurance Scheme (UPIS) › Section 6 – Student Safety Insurance › Part 2&3 – Student accident cover; Part 4 – Hospitalisation"
+},
+{
+"at": "P29.L8",
+"label": "Unified Package Insurance Scheme (UPIS) › Section 7 – Life Insurance (as per PMJJBY) › Benefits and Rules of the Scheme (definitions)"
+},
+{
+"at": "P30.L7",
+"label": "Unified Package Insurance Scheme (UPIS) › Section 7 – Life Insurance (as per PMJJBY) › Eligibility, Admission of Age, Evidence of Health, Premium, Assurance"
+},
+{
+"at": "P31.L3",
+"label": "Unified Package Insurance Scheme (UPIS) › Section 7 – Life Insurance (as per PMJJBY) › Death benefit, Termination of Assurance, Suspension of Risk, Restraint"
+},
+{
+"at": "P31.L22",
+"label": "Unified Package Insurance Scheme (UPIS) › Section 7 – Life Insurance (as per PMJJBY) › Discontinuance or Amendment of the Scheme; Jurisdiction"
+},
+{
+"at": "P32.L9",
+"label": "Unified Package Insurance Scheme (UPIS) › General Conditions and Definitions for all Sections › Notice, Misdescription, Reasonable Care, Cancellation"
+},
+{
+"at": "P33.L4",
+"label": "Unified Package Insurance Scheme (UPIS) › General Conditions and Definitions for all Sections › Claims Procedure"
+},
+{
+"at": "P34.L1",
+"label": "Unified Package Insurance Scheme (UPIS) › General Conditions and Definitions for all Sections › Contribution, Fraud, Indemnity, Average"
+},
+{
+"at": "P35.L1",
+"label": "Unified Package Insurance Scheme (UPIS) › General Conditions and Definitions for all Sections › Grievance Redressal Mechanism; Observance of Terms and Conditions"
+},
+{
+"at": "P35.L12",
+"label": "Unified Package Insurance Scheme (UPIS) › General Conditions and Definitions for all Sections › General Exceptions"
+},
+{
+"at": "P36.L1",
+"label": "Unified Package Insurance Scheme (UPIS) › Enclosure – Proposal-cum-Policy Schedule › Crop, Fire & Allied Perils, Personal Accident (table)"
+},
+{
+"at": "P37.L1",
+"label": "Unified Package Insurance Scheme (UPIS) › Enclosure – Proposal-cum-Policy Schedule › Agriculture Pump-set and Agriculture Tractor (table)"
+},
+{
+"at": "P37.L71",
+"label": "Unified Package Insurance Scheme (UPIS) › Enclosure – Proposal-cum-Policy Schedule › Student Safety and Life Insurance (table)"
+},
+{
+"at": "P38.L1",
+"label": "Unified Package Insurance Scheme (UPIS) › Enclosure – Proposal-cum-Policy Schedule › Declaration, Assignment clause, PMJJBY benefits, total premium"
+}
+]
+}

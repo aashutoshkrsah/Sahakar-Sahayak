@@ -62,6 +62,7 @@ const AI_NAMES = {
   sarvam: 'Sarvam AI',
   groq: 'Groq (backup AI)',
   cloudflare: 'Cloudflare (backup AI)',
+  gemini: 'Gemini Flash Lite (backup AI)',
   search_only: 'Search only (AI unavailable)',
 };
 
@@ -121,7 +122,7 @@ const VERDICT_STYLE = {
   partly: 'bg-amber-100 text-amber-800 dark:bg-amber-950/50 dark:text-amber-300',
   poor: 'bg-red-100 text-red-700 dark:bg-red-950/50 dark:text-red-300',
 };
-const JUDGE_SHORT = { groq: 'Groq', cloudflare: 'Cloudflare', sarvam: 'Sarvam' };
+const JUDGE_SHORT = { groq: 'Groq', gemma: 'Gemma', lite: 'Gemini Flash Lite', cloudflare: 'Cloudflare', sarvam: 'Sarvam' };
 
 const AiCheck = ({ check }) => (
   <div className="rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-2.5 space-y-2">
@@ -194,7 +195,7 @@ const SearchReport = ({ report, check, title }) => {
         <ScoreBar label="Keyword match (BM25)" value={report.keyword_score} hint="Important words of the question found exactly" />
         <ScoreBar label="Spelling-tolerant match" value={report.spelling_score} hint="Word parts found, so kisan ≈ kishan" />
         {meaningOn ? (
-          <ScoreBar label="Meaning match (Cloudflare bge-m3)" value={report.meaning_score} hint="Same meaning, even with different words" />
+          <ScoreBar label="Meaning match (bge-m3)" value={report.meaning_score} hint="Same meaning, even with different words" />
         ) : (
           <p className="text-[11px] text-slate-400 dark:text-slate-500">Meaning match: not available for this search</p>
         )}

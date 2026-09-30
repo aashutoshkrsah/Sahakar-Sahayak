@@ -15,7 +15,8 @@ from backend.services.nlp_service import (
 )
 from backend.services.rag_service import get_answer, normalize_query, lexicon_terms
 from backend.services.reqlog import new_request_id, log
-from backend.services.retriever import search
+from backend.services import pipeline          # PIPELINE=v1 (today) or v2 (gold pieces + new rules), with auto fallback
+from backend.services import answer_cache
 from backend.services.help_contacts import helplines_for
 from backend.services import analytics
 from backend.services import live_judge
@@ -45,6 +46,25 @@ def query(request: QueryRequest):
         cleaned_query = preprocess_query(request.query)
         log("QUERY", f"📩 new question | language={language} | {cleaned_query[:200]!r}")
 
+        # 2b. Exact repeat of a question already answered well? Reuse it: no AI calls at all (v2 only)
+        cache_key = answer_cache.key(cleaned_query, language)
+        hit = answer_cache.get(cache_key)
+        if hit:
+            result, check, from_rid = hit
+            total_ms = round((time.perf_counter() - started) * 1000, 2)
+            if isinstance(result.get("search_report"), dict):
+                result["search_report"].update({"total_time_ms": total_ms, "request_id": rid, "cached_from": from_rid})
+            if check:
+                live_judge._results[rid] = check          # the website's AI check shows the saved grade, no new AI call
+            analytics.log_query(
+                question=cleaned_query, english_question=(result.get("search_report") or {}).get("search_query"),
+                language=language, intent=result.get("intent"), trust_level=result.get("trust_level"),
+                answer_source=result.get("answer_source"), top_document=(result.get("sources") or [{}])[0].get("document"),
+                confidence=result.get("confidence"), response_ms=total_ms, topics=[], answered_by=result.get("answered_by"),
+                report=result.get("search_report"), top_page=(result.get("sources") or [{}])[0].get("page"))
+            log("CACHE", f"♻️ exact repeat of REQ {from_rid} -- saved answer reused, no AI calls ({total_ms / 1000:.2f}s)")
+            return JSONResponse(content=jsonable_encoder(result), media_type="application/json; charset=utf-8")
+
         # 3. Translate code-mixed input into clean English (Sarvam -> Groq -> Cloudflare)
         english_query, translated_by = normalize_query(cleaned_query)
 
@@ -54,7 +74,7 @@ def query(request: QueryRequest):
         # 5. Hybrid search of the PDFs: keyword (BM25) + spelling + meaning (Cloudflare).
         #    Official scheme names only help find candidates; they don't change the scores.
         boost = lexicon_terms(f"{cleaned_query} {english_query}")
-        retrieved_docs, search_stats = search(english_query, boost_terms=boost)
+        retrieved_docs, search_stats, pipeline_used = pipeline.search(english_query, boost_terms=boost)
         routed = search_stats.get("scheme_routing") or []
         log("QUERY", f"📚 intent={intent} | {len(retrieved_docs)} pieces found | routed to {routed or 'none'}")
 
@@ -75,6 +95,7 @@ def query(request: QueryRequest):
             search_stats=search_stats,
             original_query=cleaned_query,
             extra_context=price_context,
+            **({"pipeline": "v2"} if pipeline_used == "v2" else {}),
         )
         result["prices"] = prices
 
@@ -93,6 +114,7 @@ def query(request: QueryRequest):
                 "request_id": rid,
                 "translated_by": translated_by,
                 "answered_by": result.get("answered_by"),
+                "pipeline": pipeline_used,
             })
 
         # 8. Log for the admin Insights page (never breaks the answer)
@@ -111,6 +133,7 @@ def query(request: QueryRequest):
                             result.get("trust_level"), result.get("answered_by"),
                             ([price_context] if price_context else [])
                             + ([d.get("text", "") for d in retrieved_docs] if result.get("answer_source") == "documents" else []))
+        answer_cache.put(cache_key, rid, result)
         log("QUERY", f"🏁 finished in {total_ms / 1000:.2f}s | translated by {translated_by or 'none'} | "
                      f"answered by {result.get('answered_by')} | trust={result.get('trust_level')} | "
                      f"helplines={len(result['helplines'])}")

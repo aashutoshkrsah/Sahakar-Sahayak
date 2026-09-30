@@ -261,23 +261,15 @@ def build_or_load_index():
 # Meaning search (Cloudflare Workers AI embeddings)
 # ---------------------------------------------------------------------------
 def _cf_enabled() -> bool:
-    return bool(CF_ACCOUNT_ID and CF_API_TOKEN)
+    from backend.services import cloudflare
+    return cloudflare.configured()
 
 
 def _embed(texts: list, timeout: float) -> np.ndarray:
     """Send texts to Cloudflare and get back one row of meaning-numbers per text.
-    Raises on any failure."""
-    url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/run/{CF_MODEL}"
-    resp = requests.post(
-        url,
-        headers={"Authorization": f"Bearer {CF_API_TOKEN}"},
-        json={"text": texts},
-        timeout=timeout,
-    )
-    body = resp.json()
-    if resp.status_code != 200 or not body.get("success", False):
-        raise RuntimeError(f"Cloudflare HTTP {resp.status_code}: {str(body.get('errors'))[:300]}")
-    result = body.get("result") or {}
+    Uses account 1, then account 2 (backend/services/cloudflare.py). Raises on any failure."""
+    from backend.services import cloudflare
+    result = cloudflare.run(CF_MODEL, {"text": texts}, timeout=timeout, what="meaning numbers") or {}
     data = result.get("data") if isinstance(result, dict) else None
     if data is None and isinstance(result, dict):
         data = result.get("response")
@@ -295,22 +287,21 @@ def _load_or_build_vectors(signature) -> None:
     ask Cloudflare for them (once) and save them."""
     global _vectors
     _vectors = None
-    if not _cf_enabled():
-        print("ℹ️ Meaning search OFF (no CLOUDFLARE_ACCOUNT_ID / CLOUDFLARE_API_TOKEN). Word search only.")
-        return
-
     wanted = {"signature": signature, "model": CF_MODEL, "count": len(chunks)}
-    try:
+    try:            # saved file first (committed in the repo), so nothing is rebuilt after a deploy
         with open(EMB_META_PATH, "r", encoding="utf-8") as f:
             meta = json.load(f)
         if meta == wanted and os.path.exists(EMB_PATH):
             mat = np.load(EMB_PATH).astype(np.float32)
             if mat.shape[0] == len(chunks):
                 _vectors = mat
-                print(f"📦 Loaded meaning search data for {len(chunks)} pieces.")
+                print(f"📦 Loaded saved meaning search data for {len(chunks)} pieces.")
                 return
     except Exception:
         pass
+    if not _cf_enabled():
+        print("ℹ️ Meaning search OFF (no saved numbers and no CLOUDFLARE_ACCOUNT_ID / CLOUDFLARE_API_TOKEN). Word search only.")
+        return
 
     print(f"🧠 Building meaning search data with Cloudflare for {len(chunks)} pieces (one time)...")
     try:
@@ -335,17 +326,20 @@ def _load_or_build_vectors(signature) -> None:
         _vectors = None
 
 
-def _meaning_similarities(query: str):
-    """Cloudflare similarity (-1..1, usually 0.2-0.8) of the question to EVERY piece,
-    as a numpy array. None if meaning search is off or Cloudflare fails."""
+def _meaning_similarities(query: str, stats: dict = None):
+    """Cloudflare similarity (-1..1, usually 0.2-0.8) of the question to EVERY piece, as a numpy array.
+    Saved numbers first, then Cloudflare account 1, then account 2 (backend/services/meaning.py).
+    None if meaning search is off or every source fails."""
     if _vectors is None:
         return None
-    try:
-        q = _embed([query], timeout=QUERY_TIMEOUT)[0]
-    except Exception as e:
-        log("SEARCH", f"⚠️ meaning search (Cloudflare) failed for this question, using word search only: {e}")
+    from backend.services import meaning
+    sims, engine, src = meaning.similarities(query, [("cf", _vectors, None)])
+    if sims is None:
+        log("SEARCH", f"⚠️ meaning search failed for this question, using word search only: {src}")
         return None
-    return _vectors @ q
+    if stats is not None:
+        stats["meaning_engine"], stats["meaning_from"] = engine, src
+    return sims
 
 
 def _scale_meaning(sim: float) -> float:
@@ -439,7 +433,7 @@ def search(query: str, top_k: int = MIN_RESULTS, boost_terms: str = ""):
                              + BOOST_WEIGHT * boost_scores.get(doc_id, 0.0))
 
     # 2) Meaning search (Cloudflare)
-    sims = _meaning_similarities(query)
+    sims = _meaning_similarities(query, stats)
     meaning_on = sims is not None
     stats["meaning_available"] = meaning_on
 

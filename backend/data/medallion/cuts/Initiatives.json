@@ -1,0 +1,434 @@
+{
+"doc_key": "Initiatives",
+"made_by": "AI cutter (Claude), reviewed by check_cuts.py",
+"cuts": [
+{
+"at": "P1.L1",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 1 – Model Bye-Laws for PACS (multipurpose, transparent entities)"
+},
+{
+"at": "P1.L12",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 2 – Strengthening of PACS through Computerization"
+},
+{
+"at": "P1.L20",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 3 – Establishing new Multipurpose PACS/ Dairy/ Fishery Cooperatives in all Panchayats"
+},
+{
+"at": "P1.L29",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 4 – Margdarshika/ SOP for establishing new Multipurpose PACS/ Dairy/ Fishery Cooperatives"
+},
+{
+"at": "P1.L34",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 5 – World's Largest Decentralized Grain Storage Plan in the Cooperative Sector"
+},
+{
+"at": "P2.L16",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 6 – Margdarshika/ SOP for World's Largest Grain Storage Plan"
+},
+{
+"at": "P2.L26",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 7 – Amendments under AMI Scheme for Grain Storage Plan"
+},
+{
+"at": "P3.L1",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 8 – FCI identification and Hiring Assurance for godowns under Grain Storage Plan"
+},
+{
+"at": "P3.L12",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 9 – PACS as Common Service Centers (CSCs)"
+},
+{
+"at": "P3.L18",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 10 – Formation of new Farmer Producer Organizations (FPOs) by PACS"
+},
+{
+"at": "P3.L35",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 11 – PACS given priority for Retail Petrol/ Diesel outlets"
+},
+{
+"at": "P4.L1",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 12 – PACS permitted to convert bulk consumer petrol pumps into retail outlets"
+},
+{
+"at": "P4.L6",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 13 – PACS eligible for LPG Distributorship"
+},
+{
+"at": "P4.L9",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 14 – PACS as PM Bharatiya Jan Aushadhi Kendra (generic medicines)"
+},
+{
+"at": "P4.L17",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 15 – PACS as Pradhan Mantri Kisan Samriddhi Kendras (PMKSK)"
+},
+{
+"at": "P4.L21",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 16 – PACS to carry out O&M of rural piped water supply schemes"
+},
+{
+"at": "P4.L25",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 17 – Convergence of PM-KUSUM at PACS level"
+},
+{
+"at": "P4.L27",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 18 – Convergence of PM Surya Ghar – Muft Bijli Yojana at Cooperative Societies level"
+},
+{
+"at": "P4.L31",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 19 – Micro-ATMs to Bank Mitra Cooperative Societies (doorstep financial services)"
+},
+{
+"at": "P5.L3",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 20 – Rupay Kisan Credit Card to Members of Milk Cooperatives"
+},
+{
+"at": "P5.L10",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 21 – Formation of Fish Farmer Producer Organization (FFPO)"
+},
+{
+"at": "P5.L18",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 22 – White Revolution 2.0"
+},
+{
+"at": "P5.L29",
+"label": "A – Making Primary Cooperatives economically vibrant and transparent › Item 23 – Atmanirbharta Abhiyan (pulses and maize procurement at MSP; e-samyukti, e-samridhi)"
+},
+{
+"at": "P6.L1",
+"label": "B – Strengthening the Cooperative Banks › Item 24 – UCBs allowed to open new branches"
+},
+{
+"at": "P6.L5",
+"label": "B – Strengthening the Cooperative Banks › Item 25 – UCBs allowed to offer doorstep services"
+},
+{
+"at": "P6.L9",
+"label": "B – Strengthening the Cooperative Banks › Item 26 – Scheduling norms for Urban Cooperative Banks"
+},
+{
+"at": "P6.L14",
+"label": "B – Strengthening the Cooperative Banks › Item 27 – Nodal Officer in RBI for UCBs"
+},
+{
+"at": "P6.L17",
+"label": "B – Strengthening the Cooperative Banks › Item 28 – PSL target for UCBs reduced from 75% to 60%"
+},
+{
+"at": "P6.L21",
+"label": "B – Strengthening the Cooperative Banks › Item 29 – Housing loan limit for UCBs increased from 10% to 25%"
+},
+{
+"at": "P6.L24",
+"label": "B – Strengthening the Cooperative Banks › Item 30 – Withdrawal of ₹2 lakh women loan target in 12% weaker sections sub-limit"
+},
+{
+"at": "P6.L28",
+"label": "B – Strengthening the Cooperative Banks › Item 31 – UCB 50% loan limit increased from ₹1 crore to ₹3 crore"
+},
+{
+"at": "P6.L33",
+"label": "B – Strengthening the Cooperative Banks › Item 32 – Monetary ceiling doubled by RBI for Gold Loan"
+},
+{
+"at": "P7.L1",
+"label": "B – Strengthening the Cooperative Banks › Item 33 – Umbrella Organization for Urban Cooperative Banks"
+},
+{
+"at": "P7.L5",
+"label": "B – Strengthening the Cooperative Banks › Item 34 – RBI extended glide path for Security Receipts to FY 2027-28"
+},
+{
+"at": "P7.L10",
+"label": "B – Strengthening the Cooperative Banks › Item 35 – One-time settlement of outstanding loans by Cooperative banks"
+},
+{
+"at": "P7.L13",
+"label": "B – Strengthening the Cooperative Banks › Item 36 – Higher Housing Loan Limits for rural co-operative banks"
+},
+{
+"at": "P7.L16",
+"label": "B – Strengthening the Cooperative Banks › Item 37 – License fee reduced for Cooperative Banks for AePS"
+},
+{
+"at": "P7.L23",
+"label": "B – Strengthening the Cooperative Banks › Item 38 – UIDAI new framework for onboarding Cooperative Banks on AePS"
+},
+{
+"at": "P7.L27",
+"label": "B – Strengthening the Cooperative Banks › Item 39 – Cooperative banks notified as Member Lending Institutions in CGTMSE"
+},
+{
+"at": "P7.L34",
+"label": "B – Strengthening the Cooperative Banks › Item 40 – Banking Regulation Act amended for term of Board of Directors"
+},
+{
+"at": "P8.L1",
+"label": "B – Strengthening the Cooperative Banks › Item 41 – PSL limit for Agricultural Cooperative Societies (Dairy) increased to ₹10 crore"
+},
+{
+"at": "P8.L7",
+"label": "B – Strengthening the Cooperative Banks › Item 42 – Sahakar Sarathi (Shared Service Entity)"
+},
+{
+"at": "P8.L10",
+"label": "B – Strengthening the Cooperative Banks › Item 43 to 45 – Task Force on UCBs, NABARD report on ARDBs, IRMA study for NAFCARD"
+},
+{
+"at": "P8.L19",
+"label": "B – Strengthening the Cooperative Banks › Item 46 to 47 – NAFSCOB strategic study; rural cooperative banks in RBI Integrated Ombudsman Scheme"
+},
+{
+"at": "P8.L27",
+"label": "C – Relief to Cooperative Societies in the Income Tax Act › Item 48 to 49 – Surcharge reduced from 12% to 7%; MAT reduced from 18.5% to 15%"
+},
+{
+"at": "P9.L1",
+"label": "C – Relief to Cooperative Societies in the Income Tax Act › Item 50 – Relief in cash transactions under section 269ST"
+},
+{
+"at": "P9.L6",
+"label": "C – Relief to Cooperative Societies in the Income Tax Act › Item 51 – Tax cut for new manufacturing Cooperative societies"
+},
+{
+"at": "P9.L10",
+"label": "C – Relief to Cooperative Societies in the Income Tax Act › Item 52 – Cash Deposits and Payments limit by PACS and PCARDBs raised to Rs. 2 lakh"
+},
+{
+"at": "P9.L15",
+"label": "C – Relief to Cooperative Societies in the Income Tax Act › Item 53 – Loan and Loan Repayments in Cash limit by PACS and PCARDBs raised to Rs. 2 lakh"
+},
+{
+"at": "P9.L20",
+"label": "D – Revival of Cooperative Sugar Mills › Item 54 – Relief from Income Tax to Sugar Cooperative Mills"
+},
+{
+"at": "P9.L25",
+"label": "D – Revival of Cooperative Sugar Mills › Item 55 – Resolution of pending Income Tax issues of Sugar Cooperative Mills"
+},
+{
+"at": "P9.L30",
+"label": "D – Revival of Cooperative Sugar Mills › Item 56 – Rs.10,000 crore loan scheme for Sugar Cooperative Mills"
+},
+{
+"at": "P10.L1",
+"label": "D – Revival of Cooperative Sugar Mills › Item 57 – Preference to Cooperative Sugar Mills in purchase of ethanol"
+},
+{
+"at": "P10.L4",
+"label": "D – Revival of Cooperative Sugar Mills › Item 58 – Converting molasses-based ethanol plants into multi-feed ethanol plants"
+},
+{
+"at": "P10.L23",
+"label": "D – Revival of Cooperative Sugar Mills › Item 59 – GST on molasses reduced from 28% to 5%"
+},
+{
+"at": "P10.L26",
+"label": "D – Revival of Cooperative Sugar Mills › Item 60 – Revival of closed Cooperative Sugar Mills"
+},
+{
+"at": "P10.L35",
+"label": "E – Three new National Level Multi-State Societies › Item 61 – Multi-State Cooperative Seed Society – Bharatiya Beej Sahakari Samiti Limited (BBSSL)"
+},
+{
+"at": "P11.L6",
+"label": "E – Three new National Level Multi-State Societies › Item 62 – Multi-State Cooperative Organic Society – National Cooperative Organics Limited (NCOL)"
+},
+{
+"at": "P11.L23",
+"label": "E – Three new National Level Multi-State Societies › Item 63 – Multi-State Cooperative Export Society – National Cooperative Export Limited (NCEL)"
+},
+{
+"at": "P11.L37",
+"label": "E – Three new National Level Multi-State Societies › Item 64 – Establishment of Beej Anusandhan Kendra (BAK)"
+},
+{
+"at": "P12.L6",
+"label": "E – Three new National Level Multi-State Societies › Item 65 – Tissue culture facilities for Bananas"
+},
+{
+"at": "P12.L15",
+"label": "E – Three new National Level Multi-State Societies › Item 66 – Conserve and preserve traditional natural seeds"
+},
+{
+"at": "P12.L26",
+"label": "C – Capacity Building in Cooperatives › Item 67 – Establishment of Cooperative University (Tribhuvan Sahkari University)"
+},
+{
+"at": "P13.L1",
+"label": "C – Capacity Building in Cooperatives › Item 67 – Tribhuvan Sahkari University: functioning, programs and affiliation"
+},
+{
+"at": "P13.L14",
+"label": "C – Capacity Building in Cooperatives › Item 68 to 69 – NLCF study; Impact Assessment Study through LINAC"
+},
+{
+"at": "P13.L21",
+"label": "C – Capacity Building in Cooperatives › Item 70 – Strategic study on NCUI growth during Amrit Kaal"
+},
+{
+"at": "P13.L27",
+"label": "C – Capacity Building in Cooperatives › Item 71 – National study to boost FISHCOPFED business growth"
+},
+{
+"at": "P13.L33",
+"label": "C – Capacity Building in Cooperatives › Item 72 – Special Module on Cooperatives in India"
+},
+{
+"at": "P14.L5",
+"label": "C – Capacity Building in Cooperatives › Item 73 – Cooperatives in Schools"
+},
+{
+"at": "P14.L9",
+"label": "C – Capacity Building in Cooperatives › Item 74 – Strengthening of Finance of NCCT"
+},
+{
+"at": "P14.L16",
+"label": "C – Capacity Building in Cooperatives › Item 75 to 76 – Building Sub-Committee for NCCT institutes; use of Training Development Fund/ Building Fund"
+},
+{
+"at": "P14.L22",
+"label": "C – Capacity Building in Cooperatives › Item 77 – International Hostel at VAMNICOM"
+},
+{
+"at": "P14.L28",
+"label": "C – Capacity Building in Cooperatives › Item 78 – New Course PGDM-Cooperation at VAMNICOM"
+},
+{
+"at": "P14.L33",
+"label": "C – Capacity Building in Cooperatives › Item 79 – Pilot Project – comprehensive training for PACS"
+},
+{
+"at": "P15.L6",
+"label": "C – Capacity Building in Cooperatives › Item 80 – Training Programme for PACS for CSC Portal"
+},
+{
+"at": "P15.L13",
+"label": "C – Capacity Building in Cooperatives › Item 81 – Training for Newly Established Multi-Purpose Cooperative Societies"
+},
+{
+"at": "P15.L18",
+"label": "C – Capacity Building in Cooperatives › Item 82 – Capacity Building and Training under PMFBY/ RWBCIS"
+},
+{
+"at": "P15.L28",
+"label": "C – Capacity Building in Cooperatives › Item 83 to 84 – Academic Journal by RICM; Revival of PGDM-ABM Programme"
+},
+{
+"at": "P15.L35",
+"label": "G – Use of Information Technology for 'Ease of Doing Business' › Item 85 – Computerization of the Central Registrar's Office"
+},
+{
+"at": "P16.L4",
+"label": "G – Use of Information Technology for 'Ease of Doing Business' › Item 86 – Computerization of Registrar of Cooperative Societies (RCS) offices in States/UTs"
+},
+{
+"at": "P16.L18",
+"label": "G – Use of Information Technology for 'Ease of Doing Business' › Item 87 – Computerization of Agriculture and Rural Development Banks (ARDBs)"
+},
+{
+"at": "P16.L25",
+"label": "H – Steps taken by National Cooperative Development Corporation (NCDC) › Item 88 – Increase in NCDC loan disbursement"
+},
+{
+"at": "P16.L29",
+"label": "H – Steps taken by National Cooperative Development Corporation (NCDC) › Item 89 – Introduction of Floating Interest Rate"
+},
+{
+"at": "P16.L34",
+"label": "H – Steps taken by National Cooperative Development Corporation (NCDC) › Item 90 – Adoption of Differential Rate"
+},
+{
+"at": "P17.L1",
+"label": "H – Steps taken by National Cooperative Development Corporation (NCDC) › Item 91 – Registration under CGTMSE, CGSFPO & CGFT-AHD (collateral-free loans)"
+},
+{
+"at": "P17.L5",
+"label": "H – Steps taken by National Cooperative Development Corporation (NCDC) › Item 92 – MoU between NDDB and NCDC"
+},
+{
+"at": "P17.L11",
+"label": "H – Steps taken by National Cooperative Development Corporation (NCDC) › Item 93 – Appraisal of large projects of other lenders by NCDC"
+},
+{
+"at": "P17.L15",
+"label": "H – Steps taken by National Cooperative Development Corporation (NCDC) › Item 94 to 95 – Expansion of geographical reach; Appointment of Young Professionals"
+},
+{
+"at": "P17.L22",
+"label": "H – Steps taken by National Cooperative Development Corporation (NCDC) › Item 96 – Sahakar Taxi Cooperative Limited (Bharat Taxi)"
+},
+{
+"at": "P17.L35",
+"label": "H – Steps taken by National Cooperative Development Corporation (NCDC) › Item 97 – Grant-in-aid of ₹2000 crore to NCDC"
+},
+{
+"at": "P18.L6",
+"label": "H – Steps taken by National Cooperative Development Corporation (NCDC) › Item 98 – Cooperative Intern"
+},
+{
+"at": "P18.L12",
+"label": "I – Creation of National Cooperative Database (NCD) › Item 99 – New National Cooperative Database"
+},
+{
+"at": "P18.L19",
+"label": "I – Creation of National Cooperative Database (NCD) › Item 100 – Cooperative Ranking Framework"
+},
+{
+"at": "P18.L31",
+"label": "I – Creation of National Cooperative Database (NCD) › Item 101 – States/UTs fetch data through API from NCD portal"
+},
+{
+"at": "P19.L4",
+"label": "J – Policy and Outreach › Item 102 – National Cooperation Policy (NCP)"
+},
+{
+"at": "P19.L10",
+"label": "J – Policy and Outreach › Item 103 – International Year of Cooperatives – 2025 in India"
+},
+{
+"at": "P19.L30",
+"label": "J – Policy and Outreach › Item 104 – Strengthening Media Outreach of the Ministry"
+},
+{
+"at": "P20.L12",
+"label": "J – Policy and Outreach › Item 105 – Monthly Publications Sahakar Uday and Sahakar Jagran"
+},
+{
+"at": "P20.L22",
+"label": "K – Multi-State Cooperative Societies › Item 106 – Multi-State Co-operative Societies (Amendment) Act, 2023"
+},
+{
+"at": "P20.L27",
+"label": "K – Multi-State Cooperative Societies › Item 107 – Cooperative Ombudsman"
+},
+{
+"at": "P20.L33",
+"label": "K – Multi-State Cooperative Societies › Item 108 – Cooperative Election Authority (CEA)"
+},
+{
+"at": "P21.L3",
+"label": "K – Multi-State Cooperative Societies › Item 109 – Cooperatives as buyers on GeM portal"
+},
+{
+"at": "P21.L7",
+"label": "K – Multi-State Cooperative Societies › Item 110 – Refund to Investors of Sahara Group of Societies"
+},
+{
+"at": "P21.L11",
+"label": "L – Other initiatives › Item 111 – MoU with Swiggy Instamart for market access to cooperative products"
+},
+{
+"at": "P21.L34",
+"label": "L – Other initiatives › Item 112 to 113 – Grievance redressal via CPGRAMS; transfer of Cooperative Education Fund"
+},
+{
+"at": "P22.L5",
+"label": "L – Other initiatives › Item 114 – Sustainability and Circularity in the Dairy Sector"
+},
+{
+"at": "P22.L16",
+"label": "L – Other initiatives › Item 115 – Sardar Patel Cooperative Dairy Federation Limited (SPCDF)"
+}
+]
+}

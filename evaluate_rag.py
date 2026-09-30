@@ -33,6 +33,17 @@ HOW TO RUN (Codespaces, project folder; keys come from your .env)
   limits run out, so the live app's backups keep working.
   Options: --only F101,L06   --redo   --contestants sarvam,groq   --judges groq,sarvam
 
+TEST 3 (100 new questions, each a 4-5 line real-life story) -- normally run with the new system.
+  Judges for Test 3: Gemma 4 31B (GEMINI_API_KEY) replaces the Cloudflare judge, so Cloudflare's free units
+  are left for meaning search and its own answers:
+    Sarvam + docs  -> Groq + Gemma        Groq + docs        -> Sarvam + Gemma
+    Cloudflare     -> Sarvam + Groq       Sarvam alone       -> Groq + Gemma
+  Groq's judge budget is counted PER KEY, so you can continue with a second Groq key the same day:
+    GROQ_API_KEY="$K2" python3 evaluate_rag.py --set 100 --pipeline v2 --grade
+  python3 evaluate_rag.py --set 100 --pipeline v2 --run      (then --grade, then --report, same options)
+  --pipeline v2 = gold pieces + re-ranker + new answer rules (same as PIPELINE=v2 on Render);
+  without it the current system (v1) is used. The free search check also takes --pipeline v2.
+
 TEST 2 (200 brand-new questions, saved in separate files -- Test 1 is never touched)
   python3 evaluate_rag.py --set 200 --run
   python3 evaluate_rag.py --set 200 --grade
@@ -75,11 +86,17 @@ REPORT_PATH = os.path.join(ROOT, "benchmark_report.md")
 # Test 2 is chosen only with "--set 200" on the command line; everything else (Test 1, the live
 # /scoreboard page) keeps using the files above.
 _SET = sys.argv[sys.argv.index("--set") + 1] if "--set" in sys.argv[:-1] else ""
-TEST_SET = "200" if _SET == "200" else "45"
-if TEST_SET == "200":
-    QUESTIONS_PATH = os.path.join(ROOT, "benchmark_questions_200.json")
-    RESULTS_PATH = os.path.join(ROOT, "benchmark_results_200.json")
-    REPORT_PATH = os.path.join(ROOT, "benchmark_report_200.md")
+TEST_SET = _SET if _SET in ("200", "100") else "45"
+if TEST_SET != "45":
+    QUESTIONS_PATH = os.path.join(ROOT, f"benchmark_questions_{TEST_SET}.json")
+    RESULTS_PATH = os.path.join(ROOT, f"benchmark_results_{TEST_SET}.json")
+    REPORT_PATH = os.path.join(ROOT, f"benchmark_report_{TEST_SET}.md")
+TEST_NAME = {"45": "Test 1", "200": "Test 2", "100": "Test 3"}[TEST_SET]
+_SET_ARGS = (f" --set {TEST_SET}" if TEST_SET != "45" else "") + (
+    f" --pipeline {sys.argv[sys.argv.index('--pipeline') + 1]}" if "--pipeline" in sys.argv[:-1] else "")
+# --pipeline v2 -> the new system (gold pieces + re-ranker + new answer rules), exactly like PIPELINE=v2 on Render
+if "--pipeline" in sys.argv[:-1]:
+    os.environ["PIPELINE"] = sys.argv[sys.argv.index("--pipeline") + 1].strip().lower()
 
 GROQ_ANSWER_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b").strip()
 GROQ_JUDGE_MODEL = os.getenv("GROQ_JUDGE_MODEL", "openai/gpt-oss-20b").strip()
@@ -99,6 +116,13 @@ JUDGES = {
     "groq": f"Groq · {GROQ_JUDGE_MODEL.split('/')[-1]}",
     "cloudflare": "Cloudflare · Llama 3.3 70B",
 }
+if TEST_SET == "100":
+    # Test 3: Gemma 4 31B (Gemini key) replaces the Cloudflare judge -- Cloudflare's units stay for meaning search
+    JUDGES = {"sarvam": "Sarvam · sarvam-105b", "groq": f"Groq · {GROQ_JUDGE_MODEL.split('/')[-1]}",
+              "gemma": "Gemma 4 31B"}
+    for _c, _j in (("sarvam", ["groq", "gemma"]), ("groq", ["sarvam", "gemma"]), ("cloudflare", ["sarvam", "groq"]),
+                   ("sarvam_plain", ["groq", "gemma"])):
+        CONTESTANTS[_c]["judges"] = _j
 GROUP_NAMES = {
     "fact": "Facts from the PDFs",
     "multi_case": "Answers with several cases",
@@ -113,7 +137,11 @@ GRADE_SCORE = {"correct": 1.0, "partial": 0.5, "wrong": 0.0}
 
 # ---- Free-limit guard (per UTC day; Groq and Cloudflare reset daily) ----
 GROQ_DAILY_BUDGET = int(os.getenv("GROQ_DAILY_BUDGET", "185000"))      # tokens per model (free: 200,000)
-CF_NEURON_BUDGET = int(os.getenv("CF_NEURON_BUDGET", "9300"))          # neurons (free: 10,000)
+def _cf_accounts():
+    return sum(1 for suf in ("", "_2") if os.getenv(f"CLOUDFLARE_ACCOUNT_ID{suf}") and os.getenv(f"CLOUDFLARE_API_TOKEN{suf}"))
+
+
+CF_NEURON_BUDGET = int(os.getenv("CF_NEURON_BUDGET", str(9300 * max(1, _cf_accounts()))))   # neurons (free: 10,000 per account)
 CF_NEURONS_IN = float(os.getenv("CF_NEURONS_PER_INPUT_TOKEN", "0.026668"))    # Llama 3.3 70B fp8-fast
 CF_NEURONS_OUT = float(os.getenv("CF_NEURONS_PER_OUTPUT_TOKEN", "0.204805"))
 GROQ_TPM_SAFE = 7000        # stay under Groq's 8,000 tokens/minute
@@ -169,7 +197,9 @@ class Budget:
     def __init__(self, data):
         today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         self.day = data.setdefault("budget", {}).setdefault(today, {})
-        for k in ("groq_answer_tokens", "groq_judge_tokens", "cf_neurons"):
+        self.key = (os.getenv("GROQ_API_KEY", "").strip() or "none")[-4:]     # Groq limits are per key (account)
+        for k in ("groq_answer_tokens", "groq_judge_tokens", "cf_neurons", "gemma_calls",
+                  f"groq_answer_tokens@{self.key}", f"groq_judge_tokens@{self.key}"):
             self.day.setdefault(k, 0)
         self._minute = {"answer": [], "judge": []}
 
@@ -177,20 +207,26 @@ class Budget:
         return self.day["cf_neurons"] + need <= CF_NEURON_BUDGET
 
     def groq_ok(self, which, need=3000):
-        return self.day[f"groq_{which}_tokens"] + need <= GROQ_DAILY_BUDGET
+        return self.day[f"groq_{which}_tokens@{self.key}"] + need <= GROQ_DAILY_BUDGET
+
+    def add_gemma(self):
+        self.day["gemma_calls"] += 1
 
     def add_cf(self, tin, tout):
         self.day["cf_neurons"] = round(self.day["cf_neurons"] + tin * CF_NEURONS_IN + tout * CF_NEURONS_OUT, 1)
 
     def add_groq(self, which, tokens):
         self.day[f"groq_{which}_tokens"] += int(tokens)
+        self.day[f"groq_{which}_tokens@{self.key}"] += int(tokens)
         self._minute[which].append((time.time(), int(tokens)))
 
     def usage_line(self):
         """Today's use against the free daily limits (shown in the terminal after every question)."""
-        return (f"   📊 Today so far -- Groq answer: {self.day['groq_answer_tokens']:,} / {GROQ_DAILY_BUDGET:,} tokens · "
-                f"Groq judge: {self.day['groq_judge_tokens']:,} / {GROQ_DAILY_BUDGET:,} tokens · "
-                f"Cloudflare: {self.day['cf_neurons']:,.0f} / {CF_NEURON_BUDGET:,} units")
+        return (f"   📊 Today so far (Groq key …{self.key}) -- Groq answer: "
+                f"{self.day[f'groq_answer_tokens@{self.key}']:,} / {GROQ_DAILY_BUDGET:,} tokens · "
+                f"Groq judge: {self.day[f'groq_judge_tokens@{self.key}']:,} / {GROQ_DAILY_BUDGET:,} tokens · "
+                f"Cloudflare: {self.day['cf_neurons']:,.0f} / {CF_NEURON_BUDGET:,} units"
+                + (f" · Gemma: {self.day['gemma_calls']:,} / 14,400 checks" if "gemma" in JUDGES else ""))
 
     def pace_groq(self, which, need):
         """Wait so this model stays under Groq's tokens-per-minute limit."""
@@ -212,7 +248,8 @@ _DIGITS = str.maketrans("०१२३४५६७८९೦೧೨೩೪೫೬೭�
 
 
 def _norm(text):
-    t = (text or "").translate(_DIGITS).lower().replace("₹", " ").replace("rs.", " ")
+    t = (text or "").translate(_DIGITS).lower().replace("₹", " ")
+    t = re.sub(r"\brs\.?(?=\s*\d)", " ", t)          # the currency "Rs." / "Rs" before a number only
     return " ".join(t.split())
 
 
@@ -227,10 +264,20 @@ def fact_checkable(q):
     return q["language"] == "en" or all(any(_is_numeric(a) for a in g) for g in q["facts"])
 
 
+def _has(text, alt):
+    """alt found in text; a number must be a whole number there ("6" is not found inside "16" or "6.5",
+    "50,000" not inside "1,50,000")."""
+    if not alt:
+        return False
+    if _is_numeric(alt):
+        return re.search(r"(?<![\d,.])" + re.escape(alt) + r"(?![\d]|[.,]\d)", text) is not None
+    return alt in text
+
+
 def facts_found(answer, groups):
     a = _norm(answer)
     a2 = a.replace(",", "")
-    return all(any(_norm(w) in a or _norm(w).replace(",", "") in a2 for w in g) for g in groups)
+    return all(any(_has(a, _norm(w)) or _has(a2, _norm(w).replace(",", "")) for w in g) for g in groups)
 
 
 def script_of(text):
@@ -277,7 +324,7 @@ def _run_rag(q, order, tag):
     """Exactly what /query does (minus the Insights log), with one forced AI."""
     from backend.services.nlp_service import preprocess_query, detect_intent, validate_language
     from backend.services.rag_service import normalize_query, lexicon_terms, get_answer
-    from backend.services.retriever import search
+    from backend.services import pipeline
     from backend.services.reqlog import set_request_id
 
     set_request_id(tag)
@@ -286,8 +333,9 @@ def _run_rag(q, order, tag):
     cleaned = preprocess_query(q["q"])
     english, translated_by = normalize_query(cleaned, order=order)
     intent = detect_intent(english, language)
-    results, stats = search(english, boost_terms=lexicon_terms(f"{cleaned} {english}"))
-    out = get_answer(english, language, intent, results, stats, order=order, original_query=cleaned)
+    results, stats, used = pipeline.search(english, boost_terms=lexicon_terms(f"{cleaned} {english}"))
+    out = get_answer(english, language, intent, results, stats, order=order, original_query=cleaned,
+                     **({"pipeline": "v2"} if used == "v2" else {}))
     return {
         "answer": out.get("answer", ""),
         "answered_by": out.get("answered_by"),
@@ -300,6 +348,7 @@ def _run_rag(q, order, tag):
         "page_hit": bool(q["doc"] and q["pages"] and any(
             q["doc"].lower() in r["document"].lower() and r["page"] in q["pages"] for r in results)),
         "time_s": round(time.perf_counter() - t0, 2),
+        **({"pipeline": used} if used != "v1" else {}),
     }
 
 
@@ -433,7 +482,7 @@ def run_answers(contestants, only=None, redo=False):
     print(f"\n✔ Answers saved. Today's use: Groq {budget.day['groq_answer_tokens']:,} tokens · "
           f"Cloudflare {budget.day['cf_neurons']:,} neurons.")
     print(f"  {'All answered. ' if not missing else f'{missing} answers missing/failed -- run --run again to retry. '}"
-          f"Next: python3 evaluate_rag.py{' --set 200' if TEST_SET == '200' else ''} --grade\n")
+          f"Next: python3 evaluate_rag.py{_SET_ARGS} --grade\n")
 
 
 # ---------------------------------------------------------------------------
@@ -499,6 +548,23 @@ def _judge_call(judge, prompt, budget):
         msg = resp.choices[0].message if getattr(resp, "choices", None) else None
         return llm_chain._clean(getattr(msg, "content", "") or "")
 
+    if judge == "gemma":
+        from backend.services import gemini
+        for attempt in range(6):
+            try:
+                txt = gemini.chat(msgs, model=gemini.GEMMA_MODEL, temperature=0, max_tokens=2500, timeout=120)
+                budget.add_gemma()
+                return txt
+            except gemini.GeminiError as e:
+                if e.daily:
+                    raise DailyLimit(str(e))
+                if e.status == 429 or (e.status or 0) >= 500:
+                    print(f"   ⏳ gemma: busy ({e.status}), waiting {20 * (attempt + 1)}s")
+                    time.sleep(20 * (attempt + 1))
+                    continue
+                raise
+        raise RuntimeError("gave up after repeated rate limits")
+
     for attempt in range(6):
         if judge == "groq":
             budget.pace_groq("judge", 2000)
@@ -507,10 +573,22 @@ def _judge_call(judge, prompt, budget):
                               json={"model": GROQ_JUDGE_MODEL, "messages": msgs, "temperature": 0,
                                     "max_completion_tokens": 1500, "reasoning_effort": "low", "include_reasoning": False})
         else:
-            acct = os.getenv("CLOUDFLARE_ACCOUNT_ID", "").strip()
-            r = requests.post(f"https://api.cloudflare.com/client/v4/accounts/{acct}/ai/run/{llm_chain.CF_LLM_MODEL}",
-                              timeout=90, headers={"Authorization": f"Bearer {os.getenv('CLOUDFLARE_API_TOKEN', '').strip()}"},
-                              json={"messages": msgs, "temperature": 0, "max_tokens": 300})
+            from backend.services import cloudflare
+            try:
+                res = cloudflare.run(llm_chain.CF_LLM_MODEL, {"messages": msgs, "temperature": 0, "max_tokens": 300},
+                                     timeout=90, what="judge") or {}
+            except cloudflare.CloudflareError as e:
+                if "4006" in str(e) or "allocation" in str(e).lower() or not cloudflare.available():
+                    raise DailyLimit(str(e))
+                time.sleep(10 * (attempt + 1))
+                continue
+            txt = res.get("response")
+            if txt is None and res.get("choices"):
+                txt = (res["choices"][0].get("message") or {}).get("content")
+            txt = txt if isinstance(txt, str) else json.dumps(txt or {})
+            u = res.get("usage") or {}
+            budget.add_cf(u.get("prompt_tokens") or len(prompt) // 3, u.get("completion_tokens") or len(txt) // 3)
+            return txt
         if r.status_code == 200:
             d = r.json()
             if judge == "groq":
@@ -562,12 +640,13 @@ def run_grading(judges, only=None, redo=False):
 
     data = load_results()
     if not data["questions"]:
-        print(f"Nothing to grade yet -- run: python3 evaluate_rag.py{' --set 200' if TEST_SET == '200' else ''} --run")
+        print(f"Nothing to grade yet -- run: python3 evaluate_rag.py{_SET_ARGS} --run")
         return
     budget = Budget(data)
     cfg = llm_chain.configured()
+    cfg["gemma"] = cfg.get("gemini", False)
     for j in list(judges):
-        if not cfg[j]:
+        if not cfg.get(j):
             print(f"❌ judge {j}: key missing in .env -- skipping.")
             judges.remove(j)
 
@@ -631,7 +710,8 @@ def run_grading(judges, only=None, redo=False):
     save_results(data)
     s = data["summary"]
     print(f"\n✔ Grades saved. Today's use: Groq judge {budget.day['groq_judge_tokens']:,} tokens · "
-          f"Cloudflare {budget.day['cf_neurons']:,} neurons.\n  Scores (average of each answer's judges):")
+          f"Cloudflare {budget.day['cf_neurons']:,} neurons · Gemma {budget.day.get('gemma_calls', 0):,} checks.\n"
+          f"  Scores (average of each answer's judges):")
     for c in CONTESTANTS:
         b = s.get("contestants", {}).get(c)
         if b and b.get("score") is not None:
@@ -768,9 +848,14 @@ def markdown(data):
     s = data.get("summary") or summarise(data)
     C = s.get("contestants", {})
     present = [c for c in CONTESTANTS if c in C]
-    title = ("# Sahakar Sahayak — Test 2: 200 brand-new questions (3 AIs grade each other)" if TEST_SET == "200"
-             else "# Sahakar Sahayak — Accuracy Test Results (3 AIs grade each other)")
-    L = [title, "",
+    title = {"200": "# Sahakar Sahayak — Test 2: 200 brand-new questions (3 AIs grade each other)",
+             "100": "# Sahakar Sahayak — Test 3: 100 long, complex questions (AIs grade each other)"}.get(
+        TEST_SET, "# Sahakar Sahayak — Accuracy Test Results (3 AIs grade each other)")
+    used = sorted({(r.get("runs") or {}).get("sarvam", {}).get("pipeline", "v1") for r in data.get("questions", [])
+                   if (r.get("runs") or {}).get("sarvam")})
+    system = ("v2 -- gold pieces (AI-cut sections with full labels) + re-ranker + stricter answer rules + number check"
+              if used == ["v2"] else "v1 -- the original system" if used == ["v1"] else " + ".join(used) or "—")
+    L = [title, "", f"System tested: **{system}**", "",
          f"Generated {s.get('generated_at')} · {s.get('questions')} questions · each answer graded by the "
          f"AIs that did NOT write it · two judges agree on {_f(s['judges'].get('agreement'))} of "
          f"{s['judges'].get('pairs_compared', 0)} double-graded answers", ""]
@@ -811,20 +896,19 @@ def markdown(data):
     if "sarvam" in C and C["sarvam"].get("search"):
         sr = C["sarvam"]["search"]
         L += ["## Our document search (live app)", "", "| Metric | Result |", "|---|---|",
-              f"| Correct PDF ranked #1 / top 3 / top 6 | {_f(sr['hit_at_1'])} / {_f(sr['hit_at_3'])} / {_f(sr['hit_at_6'])} |",
+              f"| Correct PDF ranked #1 / top 3 / anywhere in the passages sent to the AI | {_f(sr['hit_at_1'])} / {_f(sr['hit_at_3'])} / {_f(sr['hit_at_6'])} |",
               f"| Mean reciprocal rank | {sr['mrr']} |",
-              f"| Exact page among the 6 passages | {_f(sr['page_at_6'])} |",
+              f"| Exact page among the passages sent to the AI | {_f(sr['page_at_6'])} |",
               f"| Document answers marked 🟢 Verified | {_f(sr['verified_share'])} |",
               f"| 'Not in the PDFs' questions NOT falsely marked Verified | {_f(sr['not_in_docs_honest'])} |", ""]
-    first = ("- 200 brand-new, very hard questions in 7 groups, written after Test 1 and never seen by the app; every document answer key has an exact quote from the PDF page (machine-checked) and was checked by a separate reviewer."
-             if TEST_SET == "200" else
-             "- 45 questions in 7 groups, picked from a bank of 200; every document answer key has an exact quote from the PDF page (machine-checked). The app was never tuned on them.")
+    first = {
+        "200": "- 200 brand-new, very hard questions in 7 groups, written after Test 1 and never seen by the app; every document answer key has an exact quote from the PDF page (machine-checked) and was checked by a separate reviewer.",
+        "100": "- 100 new, very hard questions in 7 groups, each a 4-5 line real-life story with distracting details, the real question buried near the end and often a second part; written before the new system was tested and never used to tune it; every document answer key has an exact quote from the PDF page (machine-checked) and was checked by a separate reviewer.\n- Judges for Test 3: Sarvam, Groq and Gemma 4 31B (Google); Gemma replaces the Cloudflare judge so Cloudflare's free units stay for meaning search.",
+    }.get(TEST_SET, "- 45 questions in 7 groups, picked from a bank of 200; every document answer key has an exact quote from the PDF page (machine-checked). The app was never tuned on them.")
     L += ["## How this test works", "", first,
           "- Three AIs from three companies each answer using our document search; each answer is graded by the other AIs, never by itself, without knowing who wrote it.",
           "- Sarvam alone (same instructions, no documents) shows what our search adds.",
-          ("- Reproduce: `python3 evaluate_rag.py --set 200 --run` then `python3 evaluate_rag.py --set 200 --grade`."
-           if TEST_SET == "200" else
-           "- Reproduce: `python3 evaluate_rag.py --run` then `python3 evaluate_rag.py --grade`."), ""]
+          "- Reproduce: `python3 evaluate_rag.py" + _SET_ARGS + " --run` then `python3 evaluate_rag.py" + _SET_ARGS + " --grade`.", ""]
     return "\n".join(L)
 
 
@@ -837,17 +921,26 @@ def _searchable(q):
     return bool(q.get("doc")) and (q["language"] == "en" or q.get("group") == "reply_language")
 
 
-def _search_summary(qs, search, lexicon_terms, retriever, tick):
+def _search_summary(qs, search, lexicon_terms, meaning_on, tick):
     ranks, page_hits, times = [], 0, []
+    meaning_ok, librarian_ok, librarian_needed, sources = 0, 0, 0, {}
     for q in qs:
         res, stats = search(q["q"], boost_terms=lexicon_terms(q["q"]))
         ranks.append(_rank(res, q["doc"]))
         page_hits += bool(q["pages"] and any(q["doc"].lower() in r["document"].lower() and r["page"] in q["pages"] for r in res))
         times.append(stats.get("search_time_ms", 0.0))
+        if stats.get("meaning_available"):
+            meaning_ok += 1
+            k = f"{stats.get('meaning_engine', 'cf')}:{stats.get('meaning_from', 'live')}"
+            sources[k] = sources.get(k, 0) + 1
+        librarian_ok += bool(stats.get("reranked"))
+        librarian_needed += bool(stats.get("librarian_needed"))
         tick()
     return {
         "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "questions": len(qs),
-        "meaning_search": retriever._vectors is not None,
+        "meaning_search": meaning_ok == len(qs) and bool(qs),
+        "meaning_ok": meaning_ok, "librarian_ok": librarian_ok, "librarian_needed": librarian_needed,
+        "meaning_sources": sources,
         "hit_at_1": _pct(sum(1 for k in ranks if k == 1), len(ranks)),
         "hit_at_3": _pct(sum(1 for k in ranks if k and k <= 3), len(ranks)),
         "hit_at_6": _pct(sum(1 for k in ranks if k), len(ranks)),
@@ -862,9 +955,22 @@ def run_benchmark(full=False, log=print, progress=None):
     """Search-only check (the /scoreboard button). Never calls an AI.
     Uses every searchable question (see _searchable) of the old 200-question bank and of Test 2's 200 new questions;
     returns the combined result as "summary" and each bank separately under "banks"."""
-    from backend.services import retriever
-    from backend.services.retriever import search
+    from backend.services import retriever, pipeline
     from backend.services.rag_service import lexicon_terms
+
+    use_v2 = pipeline.wanted() == "v2"
+
+    def search(q, boost_terms=""):
+        res, stats, used = pipeline.search(q, boost_terms=boost_terms)
+        search.used = used
+        return res, stats
+    search.used = "v1"
+
+    def meaning_on():
+        if search.used == "v2":
+            from backend.services import retriever_v2
+            return retriever_v2._vectors is not None
+        return retriever._vectors is not None
 
     banks = {}
     old_path = BANK_PATH if os.path.exists(BANK_PATH) else os.path.join(ROOT, "benchmark_questions.json")
@@ -879,25 +985,37 @@ def run_benchmark(full=False, log=print, progress=None):
         if progress:
             progress(done["n"], total)
 
-    per = {name: _search_summary(qs, search, lexicon_terms, retriever, tick) for name, qs in banks.items()}
+    banks = {k: v for k, v in banks.items() if v}
+    if os.path.exists(os.path.join(ROOT, "benchmark_questions_100.json")):
+        banks["test3"] = [q for q in load_questions(os.path.join(ROOT, "benchmark_questions_100.json")) if _searchable(q)]
+    total = sum(len(v) for v in banks.values())
+    per = {name: _search_summary(qs, search, lexicon_terms, meaning_on, tick) for name, qs in banks.items()}
     per_q = [q for qs in banks.values() for q in qs]
     # the combined numbers, weighted by question (no second search needed)
     def comb(key):
         vals = [(per[n][key], per[n]["questions"]) for n in per if per[n][key] is not None]
         return round(sum(v * c for v, c in vals) / sum(c for _, c in vals), 2) if vals else None
     summary = {"generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "questions": len(per_q),
-               "meaning_search": retriever._vectors is not None}
+               "meaning_ok": sum(per[n]["meaning_ok"] for n in per),
+               "librarian_ok": sum(per[n]["librarian_ok"] for n in per),
+               "librarian_needed": sum(per[n]["librarian_needed"] for n in per), "pipeline": search.used}
+    summary["meaning_search"] = summary["meaning_ok"] == len(per_q) and bool(per_q)
+    summary["meaning_sources"] = {}
+    for n in per:
+        for k, v in per[n]["meaning_sources"].items():
+            summary["meaning_sources"][k] = summary["meaning_sources"].get(k, 0) + v
     for key in ("hit_at_1", "hit_at_3", "hit_at_6", "page_at_6", "avg_search_ms"):
         summary[key] = comb(key)
     summary["mrr"] = round(sum(per[n]["mrr"] * per[n]["questions"] for n in per if per[n]["mrr"] is not None) / len(per_q), 4) if per_q else None
     summary["p95_search_ms"] = max((per[n]["p95_search_ms"] or 0) for n in per) if per else None
-    for name, label in (("old", "Old bank"), ("new", "Test 2 bank"), (None, "All")):
+    for name, label in (("old", "Old bank"), ("new", "Test 2 bank"), ("test3", "Test 3 bank"), (None, "All")):
         s = per[name] if name else summary
         if name and name not in per:
             continue
         log(f"Search check · {label}: {s['questions']} English-text document questions: Hit@1 {_f(s['hit_at_1'])}  "
             f"Hit@3 {_f(s['hit_at_3'])}  Hit@6 {_f(s['hit_at_6'])}  MRR {s['mrr']}  Page@6 {_f(s['page_at_6'])}  "
-            f"avg {s['avg_search_ms']} ms  meaning search {'ON' if s['meaning_search'] else 'OFF'}")
+            f"avg {s['avg_search_ms']} ms  meaning search worked on {s['meaning_ok']}/{s['questions']}  "
+            f"librarian {s['librarian_ok']}/{s['librarian_needed']}  system {search.used}")
     return {"summary": summary, "banks": per}
 
 
@@ -915,7 +1033,7 @@ def main():
     redo = "--redo" in sys.argv
     print(f"\n Keys found:  Sarvam {'yes' if os.getenv('SARVAM_API_KEY') else 'NO'} · "
           f"Groq {'yes' if os.getenv('GROQ_API_KEY') else 'NO'} · "
-          f"Cloudflare {'yes' if os.getenv('CLOUDFLARE_API_TOKEN') and os.getenv('CLOUDFLARE_ACCOUNT_ID') else 'NO'}")
+          f"Cloudflare {_cf_accounts()} account(s) · Gemini {'yes' if os.getenv('GEMINI_API_KEY') else 'NO'}")
     try:
         if "--run" in sys.argv:
             cs = [c for c in (_arg("--contestants") or ",".join(CONTESTANTS)).split(",") if c in CONTESTANTS]

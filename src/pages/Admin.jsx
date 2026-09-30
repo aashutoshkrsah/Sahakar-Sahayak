@@ -11,7 +11,7 @@ const KEY_STORE = 'sahakar_insights_key';
 const DEMO_PASSWORD = 'sih2026demo';
 
 const LANG_NAMES = { en: 'English', hi: 'Hindi', kn: 'Kannada', ne: 'Nepali', ta: 'Tamil', te: 'Telugu', ml: 'Malayalam' };
-const AI_NAMES = { sarvam: 'Sarvam AI', groq: 'Groq (backup)', cloudflare: 'Cloudflare (backup)', search_only: 'Search only (no AI)', unknown: 'Not recorded' };
+const AI_NAMES = { sarvam: 'Sarvam AI', groq: 'Groq (backup)', cloudflare: 'Cloudflare (backup)', gemini: 'Gemini Flash Lite (backup)', search_only: 'Search only (no AI)', unknown: 'Not recorded' };
 const TRUST = {
   verified: '🟢 Verified', partial: '🟡 Partly verified', general: '🔵 General guidance',
   refused: 'Refused (off-topic)', error: 'Error',

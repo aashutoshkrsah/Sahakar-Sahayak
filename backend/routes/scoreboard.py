@@ -11,6 +11,7 @@ What it shows
 
   GET  /scoreboard          -> Test 1 page (45 questions)
   GET  /scoreboard/test2    -> Test 2 page (200 brand-new questions, benchmark_results_200.json)
+  GET  /scoreboard/test3    -> Test 3 page (100 long, complex questions, benchmark_results_100.json)
   POST /scoreboard/run      -> free search re-check (max once a minute); /scoreboard/test2/run does the same
   GET  /scoreboard.json     -> Test 1 saved result as JSON
   GET  /scoreboard_200.json -> Test 2 saved result as JSON
@@ -85,6 +86,16 @@ def run_search_check_test2():
     return _start_check("/scoreboard/test2")
 
 
+@router.post("/scoreboard/test3/run", include_in_schema=False)
+def run_search_check_test3():
+    return _start_check("/scoreboard/test3")
+
+
+@router.get("/scoreboard_100.json", include_in_schema=False)
+def scoreboard_100_json():
+    return JSONResponse(_load_official("benchmark_results_100.json") or {})
+
+
 @router.get("/scoreboard.json", include_in_schema=False)
 def scoreboard_json():
     return JSONResponse(_load_official() or {})
@@ -119,7 +130,8 @@ GROUPS = {
 }
 LANGS = {"en": "English", "hi": "Hindi", "kn": "Kannada", "ne": "Nepali"}
 GRADE_CLASS = {"correct": "ok", "partial": "mid", "wrong": "bad"}
-JUDGE_SHORT = {"sarvam": "Sarvam", "groq": "Groq", "cloudflare": "Cloudflare"}
+JUDGE_SHORT = {"sarvam": "Sarvam", "groq": "Groq", "cloudflare": "Cloudflare", "gemma": "Gemma"}
+ALL_JUDGES = ("sarvam", "groq", "cloudflare", "gemma")
 
 
 def _grade_chip(g):
@@ -165,7 +177,7 @@ def _official_section(result):
     out.append(table("Score by question type", [
         (name, (lambda b, k=k: _pct((b["by_group"].get(k) or {}).get("score")))) for k, name in GROUPS.items()] + [
         (f"Score from {names.get(j, j)}", (lambda b, j=j: _pct((b["by_judge"].get(j) or {}).get("score"))))
-        for j in ("sarvam", "groq", "cloudflare")]))
+        for j in ALL_JUDGES if j in names]))
     out.append(table("Score by language", [
         (name, (lambda b, k=k: _pct((b["by_language"].get(k) or {}).get("score")))) for k, name in LANGS.items()]))
     out.append(table("Automatic checks (no AI judge)", [
@@ -202,7 +214,7 @@ def _official_section(result):
             ans = run.get("answer") or ""
             auto = run.get("auto") or {}
             chips = " · ".join(f'{JUDGE_SHORT[j]} {_grade_chip((grades.get(j) or {}).get(c))}'
-                               for j in ("sarvam", "groq", "cloudflare") if c in (grades.get(j) or {}))
+                               for j in ALL_JUDGES if c in (grades.get(j) or {}))
             blocks.append(f'''<div class="ans"><div><b>{_e(C[c]["short"])}</b>
               <span class="muted small">{run.get("time_s", 0):.1f}s</span> · {chips or '<span class="muted">not graded</span>'}
               <span class="small muted">· fact {_tick(auto.get("fact_ok"))} · language {_tick(auto.get("lang_ok"))}
@@ -229,16 +241,29 @@ def _live_section(action="/scoreboard/run"):
     elif live:
         s = live["summary"]
         banks = live.get("banks") or {}
-        rows = [(label, banks[k]) for k, label in (("old", "Old question bank"), ("new", "Test 2 questions")) if k in banks]
+        rows = [(label, banks[k]) for k, label in (("old", "Old question bank"), ("new", "Test 2 questions"),
+                                                   ("test3", "Test 3 questions")) if k in banks]
         rows.append(("All", s))
         lines = "".join(f'<div>{_e(label)} · {b["questions"]} questions: correct PDF #1 <b>{_pct(b["hit_at_1"])}</b> · '
                         f'in top 6 <b>{_pct(b["hit_at_6"])}</b> · exact page {_pct(b["page_at_6"])}</div>' for label, b in rows)
+        n = s.get("questions") or 0
+        if "meaning_ok" in s:
+            src = s.get("meaning_sources") or {}
+            saved = sum(v for k, v in src.items() if k.endswith(":saved"))
+            backup = sum(v for k, v in src.items() if not k.startswith("cf:"))
+            meaning = (f'meaning search worked on <b>{s["meaning_ok"]}/{n}</b> questions '
+                       f'({saved} from saved numbers{f", {backup} from the Gemini backup" if backup else ""})')
+            if s.get("pipeline") == "v2":
+                meaning += (f' · senior librarian on {s.get("librarian_ok", 0)}/{s.get("librarian_needed", n)} '
+                            f'(questions with more than one candidate piece)')
+        else:
+            meaning = f'meaning search {"on" if s.get("meaning_search") else "off"}'
         out.append(f'<div class="banner ok-bg">Live search check on every English-text question that has a PDF answer:'
-                   f'{lines}<div class="small muted">avg search {s["avg_search_ms"]:.2f} ms · '
-                   f'meaning search {"on" if s.get("meaning_search") else "off"} · run {_e(s["generated_at"])}</div></div>')
+                   f'{lines}<div class="small muted">avg search {(s.get("avg_search_ms") or 0):.2f} ms · {meaning} · '
+                   f'system {_e(s.get("pipeline", "v1"))} · run {_e(s["generated_at"])}</div></div>')
     out.append(f'''
     <form method="post" action="{action}" class="actions">
-      <button class="primary" {disabled}>Re-check search now <span>about 1–2 minutes · free, no AI answers are generated</span></button>
+      <button class="primary" {disabled}>Re-check search now <span>about 1–2 minutes · free, no AI answers are generated · uses the saved meaning-numbers</span></button>
     </form>
     <p class="muted small">This button re-runs only the document search part, live, for free, on the English-text document
     questions of both tests (Hindi / Kannada / Nepali questions need an AI to translate them first, so they are not in this
@@ -248,7 +273,8 @@ def _live_section(action="/scoreboard/run"):
 
 
 def _nav(active):
-    tabs = [("test1", "/scoreboard", "Test 1 · 45 questions"), ("test2", "/scoreboard/test2", "Test 2 · 200 new questions")]
+    tabs = [("test1", "/scoreboard", "Test 1 · 45 questions"), ("test2", "/scoreboard/test2", "Test 2 · 200 new questions"),
+            ("test3", "/scoreboard/test3", "Test 3 · 100 long questions")]
     return '<nav class="tabs">' + "".join(
         f'<a class="tab{" on" if k == active else ""}" href="{href}">{label}</a>' for k, href, label in tabs) + "</nav>"
 
@@ -269,6 +295,25 @@ def scoreboard_test2_page():
         main = '<p class="muted">Test 2 results are not published yet.</p>'
     return _page("test2", "Sahakar Sahayak · Test 2 Results", "🌾 Sahakar Sahayak · Test 2: 200 new questions",
                  INTRO_TEST2, main, _live_section("/scoreboard/test2/run"))
+
+
+INTRO_TEST3 = """<div class="muted">A third test with 100 new questions, each a 4-5 line real-life story (a farmer, a PACS secretary, a
+bank officer...) with distracting details, the real question buried near the end, and often a second part. Every answer key
+has an exact quote from an official government PDF. Sarvam, Groq and Cloudflare answer; Sarvam, Groq and Gemma 4 grade them
+(nobody grades its own answers) · <a href="/scoreboard_100.json">raw JSON</a></div>
+<p class="muted small">Not the same as the <b>Scorecard</b> and <b>AI check</b> under each answer in the app: those grade one live
+answer; this page tests the whole system on a fixed set of questions.</p>"""
+
+
+@router.get("/scoreboard/test3", response_class=HTMLResponse, include_in_schema=False)
+def scoreboard_test3_page():
+    result = _load_official("benchmark_results_100.json")
+    if result and result.get("version") == 3 and result.get("questions"):
+        main = _official_section(result)
+    else:
+        main = '<p class="muted">Test 3 results are not published yet.</p>'
+    return _page("test3", "Sahakar Sahayak · Test 3 Results", "🌾 Sahakar Sahayak · Test 3: 100 long, complex questions",
+                 INTRO_TEST3, main, _live_section("/scoreboard/test3/run"))
 
 
 INTRO_TEST1 = """<div class="muted">A one-time test of 45 hard questions with answer keys from official government PDFs: Sarvam, Groq and

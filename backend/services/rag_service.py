@@ -180,6 +180,83 @@ def _base_system_prompt(target_lang: str) -> str:
     )
 
 
+# ---------------------------------------------------------------------------
+# Version 2 answer rules (only when PIPELINE=v2, see backend/services/pipeline.py)
+# ---------------------------------------------------------------------------
+def _v2_rules(target_lang: str) -> str:
+    return (
+        "\n7. Each Context piece starts with its exact source label in square brackets "
+        "(document › chapter › section › page). BOOK MODE -- when the Context contains the answer: first write "
+        "a line 'QUOTES:' and copy, word for word, the one to three sentences from the Context that contain the "
+        "answer, each followed by its short source (document and section). Then write a line 'ANSWER:' and give "
+        f"the answer in {target_lang}, using ONLY facts from those quotes. Every number, amount, date, percentage, "
+        "time limit and name in the answer must appear in the quotes. Never add conditions, exceptions or numbers "
+        "that are not in the Context.\n"
+        "8. Before answering, check the Context for every case, condition, exception, minimum or maximum that "
+        "applies (for example kharif/rabi, loanee/non-loanee, 'provided that', 'except') and include each relevant one.\n"
+        "9. If pieces from DIFFERENT documents give different rules or numbers for the same thing, give both and "
+        "name each document (for example 'The Karnataka Act says ...; the PACS model bye-laws say ...').\n"
+        "10. GENERAL MODE -- when the Context does not contain the answer: write only 'ANSWER:' followed by "
+        f"helpful general guidance in {target_lang}. Say clearly that it is general guidance, not from the official "
+        "documents. Do NOT state exact official figures, deadlines, percentages or legal rules as facts, and "
+        "suggest confirming with the cooperative office, bank, agriculture office or KVK.\n"
+        "11. Off-topic questions: follow rule 2 exactly (no QUOTES)."
+    )
+
+
+_NATIVE_DIGITS = str.maketrans("०१२३४५६७८९೦೧೨೩೪೫೬೭೮೯", "01234567890123456789")
+_NUMBER = re.compile(r"(?<![\w.])\d[\d,]*(?:\.\d+)?")
+NUMBER_NOTE = {
+    "en": "⚠️ Please check this figure in the official document: {nums}",
+    "hi": "⚠️ कृपया यह आंकड़ा आधिकारिक दस्तावेज़ में जाँच लें: {nums}",
+    "kn": "⚠️ ದಯವಿಟ್ಟು ಈ ಅಂಕಿಯನ್ನು ಅಧಿಕೃತ ದಾಖಲೆಯಲ್ಲಿ ಪರಿಶೀಲಿಸಿ: {nums}",
+    "ne": "⚠️ कृपया यो अंक आधिकारिक कागजातमा जाँच गर्नुहोस्: {nums}",
+}
+
+
+_NUMBER_WORDS = {w: str(n) for n, w in enumerate(
+    "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen "
+    "seventeen eighteen nineteen twenty".split())}
+_NUMBER_WORDS.update({"thirty": "30", "forty": "40", "fifty": "50", "sixty": "60", "seventy": "70", "eighty": "80",
+                      "ninety": "90", "hundred": "100", "thousand": "1000"})
+
+
+def _numbers(text: str, words: bool = False) -> set:
+    """Numbers written with digits (any script); with words=True also English number words ("seven" -> 7)."""
+    out = set()
+    if words:
+        for w in re.findall(r"[a-z]+", (text or "").lower()):
+            if w in _NUMBER_WORDS:
+                out.add(_NUMBER_WORDS[w])
+    for m in _NUMBER.findall((text or "").translate(_NATIVE_DIGITS)):
+        n = m.replace(",", "").rstrip(".")
+        if "." in n:
+            n = n.rstrip("0").rstrip(".")
+        if n:
+            out.add(n)
+    return out
+
+
+def number_check(answer: str, allowed_text: str) -> list:
+    """Free check (no AI): numbers in the answer that appear nowhere in the source pieces or the question.
+    Tiny numbers 0-3 are skipped (list numbering, 'one or two')."""
+    allowed = _numbers(allowed_text, words=True)
+    return sorted(n for n in _numbers(answer) if n not in allowed and not (n.isdigit() and int(n) <= 3))
+
+
+def _split_quotes(text: str):
+    """v2 answers come as 'QUOTES: ... ANSWER: ...'. Returns (answer_for_user, quotes)."""
+    t = (text or "").strip()
+    m = re.search(r"(?im)^\s*\**\s*ANSWER\s*\**\s*:\s*\**\s*", t)
+    if m:
+        quotes = re.sub(r"(?im)^\s*\**\s*QUOTES\s*\**\s*:\s*", "", t[:m.start()]).strip()
+        return t[m.end():].strip(), quotes
+    if re.match(r"(?i)\s*\**\s*QUOTES\s*\**\s*:", t):          # quotes but no answer marker: drop the quote block
+        parts = re.split(r"\n\s*\n", t, maxsplit=1)
+        return (parts[1].strip() if len(parts) > 1 else t), parts[0]
+    return t, ""
+
+
 # Shown when every AI is down: the best passage from the official PDF, as it is.
 SEARCH_ONLY_INTRO = {
     "en": "⚠️ Our AI assistant is not reachable right now, so here is the most relevant part of the official document (in English):",
@@ -236,6 +313,51 @@ def _is_refusal(text: str) -> bool:
 
 _CLEARLY_OFF_TOPIC = re.compile(r"\b(ipl|cricket|football|movie|film|cinema|song|recipe|joke|poem|celebrity|actor|actress)\b", re.I)
 
+# Farming / rural words: a refusal of a question that contains any of these is treated as a mistake and retried
+# (so questions like "my tomato leaves are curling" or "can a temple trust join PACS" are never refused).
+# "temple" / "trust" alone are NOT farming words ("history of Tirupati temple", "can I trust bitcoin").
+_FARM_WORDS = re.compile(
+    r"\b(farm\w*|crops?|leaf|leaves|plants?|seeds?|sow\w*|soil|fertili[sz]\w*|manure|compost|pests?|insects?|"
+    r"diseases?|fungus|weeds?|paddy|rice|wheat|tomato\w*|onions?|potato\w*|cotton|sugarcane|cane|maize|ragi|millets?|"
+    r"pulses?|tur|areca\w*|coconut|banana|chilli|vegetables?|fruits?|orchard|horticulture|dairy|milk|cows?|calf|"
+    r"calves|buffalo\w*|goats?|sheep|poultry|hens?|chickens?|fish\w*|livestock|cattle|fodder|vets?|veterinar\w*|irrigation|"
+    r"borewell|drip|sprinkler|tractor|land|acres?|hectares?|harvest\w*|mandi|kisan|krishi|fasal|kheti|khet|bima|"
+    r"kcc|pacs|societ(y|ies)|co-?operatives?|shg|nabard|subsid\w*|schemes?|villages?|rural|panchayat|"
+    r"warehouse|godown|grain|storage|weather|rain\w*|drought|flood)\b"
+    r"|किसान|फसल|खेत|खेती|बीज|खाद|कीट|गाय|भैंस|बकरी|पशु|सिंचाई|मंडी|सहकारी|समिति|ऋण|बाली|कृषि"
+    r"|ರೈತ|ಕೃಷಿ|ಬೆಳೆ|ಹೊಲ|ಬೀಜ|ಗೊಬ್ಬರ|ಕೀಟ|ಹಸು|ಎಮ್ಮೆ|ಮೇಕೆ|ನೀರಾವರಿ|ಸಹಕಾರ|ಸಂಘ|ಸಾಲ", re.I)
+
+# Distress: add the national mental-health helpline (Tele-MANAS, free, 24x7) to the answer.
+_DISTRESS = re.compile(
+    r"suicid|kill myself|end my life|end it all|want to die|wanna die|no reason to live|"
+    r"(?:can'?t|cannot) go on(?:\s+(?:any\s?more|like this|living)|(?=\s*(?:[.!?]|$)))|"
+    r"take my (own )?life|harm myself|(?:want|going|wish|thinking of|think of|feel like) (?:to )?hurt(?:ing)? myself|आत्महत्या|खुदकुशी|मर जाना चाहत|मरना चाहत|जान दे दूँ|जान दे दूं|"
+    r"जीना नहीं चाहत|ಆತ್ಮಹತ್ಯೆ|ಸಾಯಬೇಕು|ಸಾಯಲು ಬಯಸ|ಬದುಕಲು ಇಷ್ಟವಿಲ್ಲ|मर्न मन|बाँच्न मन छैन|आत्महत्या गर्", re.I)
+HELPLINE = {
+    "en": "💚 If you are going through a very hard time or thinking of harming yourself, please talk to someone now: "
+          "Tele-MANAS 14416 or 1800-891-4416 (free, 24x7, in many Indian languages). In an emergency, call 112.",
+    "hi": "💚 अगर आप बहुत कठिन समय से गुज़र रहे हैं या खुद को नुकसान पहुँचाने के बारे में सोच रहे हैं, तो कृपया अभी किसी से बात करें: "
+          "टेली-मानस 14416 या 1800-891-4416 (मुफ़्त, 24x7, कई भारतीय भाषाओं में)। आपात स्थिति में 112 पर कॉल करें।",
+    "kn": "💚 ನೀವು ತುಂಬಾ ಕಷ್ಟದ ಸಮಯದಲ್ಲಿದ್ದರೆ ಅಥವಾ ನಿಮಗೆ ನೀವೇ ಹಾನಿ ಮಾಡಿಕೊಳ್ಳುವ ಯೋಚನೆ ಬಂದರೆ, ದಯವಿಟ್ಟು ಈಗಲೇ ಯಾರೊಂದಿಗಾದರೂ ಮಾತನಾಡಿ: "
+          "ಟೆಲಿ-ಮಾನಸ್ 14416 ಅಥವಾ 1800-891-4416 (ಉಚಿತ, 24x7, ಕನ್ನಡದಲ್ಲೂ). ತುರ್ತು ಸಂದರ್ಭದಲ್ಲಿ 112 ಗೆ ಕರೆ ಮಾಡಿ.",
+    "ne": "💚 यदि तपाईं धेरै कठिन समयबाट गुज्रिरहनुभएको छ वा आफैंलाई हानि गर्ने सोच आएको छ भने, कृपया अहिले नै कसैसँग कुरा गर्नुहोस्: "
+          "टेली-मानस 14416 वा 1800-891-4416 (निःशुल्क, 24x7)। आपतकालमा 112 मा फोन गर्नुहोस्।",
+}
+
+
+def _is_farming(*texts) -> bool:
+    return bool(_FARM_WORDS.search(" ".join(t or "" for t in texts)))
+
+
+def _add_helpline(result: dict, language: str, *texts) -> dict:
+    if result and _DISTRESS.search(" ".join(t or "" for t in texts)):
+        note = HELPLINE.get(language, HELPLINE["en"])
+        if note not in (result.get("answer") or ""):
+            result["answer"] = f"{(result.get('answer') or '').rstrip()}\n\n{note}".strip()
+            result["helpline"] = True
+            log("ANSWER", "💚 distress words found -- Tele-MANAS 14416 helpline added")
+    return result
+
 
 LANG_SCRIPT = {"hi": "deva", "ne": "deva", "mr": "deva", "kn": "knda", "en": "latn"}
 LANG_HINT = {
@@ -282,7 +404,16 @@ def _strip_markers(text: str) -> str:
     return text.strip(" :-\n")
 
 
-def get_answer(
+def get_answer(query: str, language: str = "en", intent: str = "general", retrieved_docs: list = None,
+               search_stats: dict = None, order: list = None, original_query: str = None, extra_context: str = None,
+               pipeline: str = "v1") -> dict:
+    """Write the final answer (see _write_answer), then add the Tele-MANAS helpline if the user sounds in distress."""
+    result = _write_answer(query, language, intent, retrieved_docs, search_stats, order, original_query,
+                           extra_context, pipeline)
+    return _add_helpline(result, language, query, original_query)
+
+
+def _write_answer(
     query: str,
     language: str = "en",
     intent: str = "general",
@@ -291,6 +422,7 @@ def get_answer(
     order: list = None,
     original_query: str = None,
     extra_context: str = None,
+    pipeline: str = "v1",
 ) -> dict:
     """Write the final answer. Tries Sarvam -> Groq -> Cloudflare (see llm_chain.py);
     if all fail, falls back to search-only mode (the PDF passage itself).
@@ -310,9 +442,12 @@ def get_answer(
             page_val = int(raw_page)
         except (ValueError, TypeError):
             page_val = None
-        context_chunks.append(
-            f"[Document: {doc_name} | Page: {page_val if page_val is not None else 'General'}]\n{text_chunk}"
-        )
+        if pipeline == "v2" and doc.get("label"):
+            context_chunks.append(text_chunk)             # gold pieces already start with their full label
+        else:
+            context_chunks.append(
+                f"[Document: {doc_name} | Page: {page_val if page_val is not None else 'General'}]\n{text_chunk}"
+            )
 
     # Sources shown to the user: only pieces that matched almost as well as the best one
     sources = _relevant_sources(retrieved_docs)
@@ -323,6 +458,10 @@ def get_answer(
     context_block = "\n\n---\n\n".join(context_chunks[:7 if extra_context else 6])
     target_lang = LANG_MAP.get(language, "English")
     system_prompt = build_system_prompt(target_lang, with_prices="[Mandi prices for" in (extra_context or ""))
+    v2 = pipeline == "v2"
+    if v2:
+        system_prompt += _v2_rules(target_lang)
+    temperature = 0.0 if v2 else 0.3
     lang_hint = LANG_HINT.get(language, target_lang)
     user_prompt = f"Context:\n{context_block if context_block else 'None'}\n\nUser Query: {query}"
     if original_query and original_query.strip() and original_query.strip() != (query or "").strip():
@@ -332,7 +471,10 @@ def get_answer(
     log("ANSWER", f"🧠 writing answer in {target_lang} with {len(context_chunks[:6])} document pieces")
     answer_text, answered_by = llm_chain.chat(
         [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt}],
-        purpose="answer", temperature=0.3, max_tokens=1024, order=order)
+        purpose="answer", temperature=temperature, max_tokens=1024, order=order)
+    quotes = ""
+    if v2 and answer_text:
+        answer_text, quotes = _split_quotes(answer_text)
     used_context = bool(context_block)
 
     if not answer_text:
@@ -355,21 +497,39 @@ def get_answer(
         }
 
     is_refusal = _is_refusal(answer_text)
-    if is_refusal and _topic_verdict.get() == "in" and not _CLEARLY_OFF_TOPIC.search(f"{query} {original_query or ''}"):
-        # The translation step judged this question to be about farming/cooperatives, so a
-        # refusal is probably a mistake (e.g. crop disease, a trust's eligibility). Ask once more.
+    farming = _is_farming(query, original_query)
+    if is_refusal and (_topic_verdict.get() == "in" or farming) \
+            and not _CLEARLY_OFF_TOPIC.search(f"{query} {original_query or ''}"):
+        # The question is about farming/cooperatives (translation step's verdict, or farming words), so a
+        # refusal is a mistake (e.g. crop disease, a trust's eligibility). Ask again -- up to two more tries,
+        # the second one with a different AI.
         log("ANSWER", "🔁 refused, but the question looked on-topic -- asking again")
         retry_prompt = (user_prompt + "\n\nNote: this question was checked and IS about farming, crops, livestock, "
                         "farmer schemes, rural credit or cooperatives. Unless it is clearly about sports, movies, "
                         "entertainment, celebrities, coding, recipes or party politics, do NOT refuse: answer it "
-                        "helpfully (from the Context if relevant, otherwise from general knowledge). If you still refuse, start "
+                        "helpfully (from the Context if relevant, otherwise from general knowledge). If the message "
+                        "ALSO asks for something unrelated (a poem, code, a story, cricket...), help only with the "
+                        "farming part and briefly decline the unrelated request. If you still refuse, start "
                         "your reply with [OFF_TOPIC].")
-        retry_text, retry_by = llm_chain.chat(
-            [{"role": "system", "content": system_prompt}, {"role": "user", "content": retry_prompt}],
-            purpose="answer-retry", temperature=0.3, max_tokens=1024, order=order)
-        if retry_text and not _is_refusal(retry_text):
-            answer_text, answered_by, is_refusal = retry_text, retry_by, False
-            log("ANSWER", f"✅ answered on the second try ({retry_by})")
+        tries = [order]
+        if farming:
+            chain = list(order or llm_chain.DEFAULT_ORDER)
+            tries.append(None)          # filled below with the chain minus the AI that refused again
+        for n, try_order in enumerate(tries):
+            if n == 1:
+                try_order = [p for p in chain if p != last_by] or chain
+                log("ANSWER", f"🔁 still refused -- asking a different AI ({try_order[0]})")
+            retry_text, retry_by = llm_chain.chat(
+                [{"role": "system", "content": system_prompt}, {"role": "user", "content": retry_prompt}],
+                purpose="answer-retry", temperature=temperature, max_tokens=1024, order=try_order)
+            last_by = retry_by or answered_by
+            retry_quotes = ""
+            if v2 and retry_text:
+                retry_text, retry_quotes = _split_quotes(retry_text)
+            if retry_text and not _is_refusal(retry_text):
+                answer_text, answered_by, is_refusal, quotes = retry_text, retry_by, False, retry_quotes
+                log("ANSWER", f"✅ answered on try {n + 2} ({retry_by})")
+                break
     if not is_refusal:
         answer_text, _ = _fix_language(answer_text, language, order=order)
     if is_refusal:
@@ -395,6 +555,15 @@ def get_answer(
         trust_level = "general"
 
     report["used_documents"] = answer_source == "documents"
+    unverified = []
+    if v2 and answer_source == "documents":
+        unverified = number_check(answer_text, " ".join([context_block, quotes, query or "", original_query or ""]))
+        if unverified:
+            note = NUMBER_NOTE.get(language, NUMBER_NOTE["en"]).format(nums=", ".join(unverified[:4]))
+            answer_text = f"{answer_text}\n\n{note}"
+            log("ANSWER", f"🔢 number check: not found in the sources -> {unverified[:6]}")
+        else:
+            log("ANSWER", "🔢 number check: every number is in the sources")
     log("ANSWER", f"✅ done by {answered_by} | trust={trust_level} | source={answer_source} | {len(answer_text)} chars")
 
     return {
@@ -411,6 +580,7 @@ def get_answer(
         # answer (no 600-letter QR limit), so these stay empty.
         "action_url": None,
         "qr_code_base64": None,
+        **({"pipeline": "v2", "quotes": quotes, "number_check": {"unverified": unverified}} if v2 else {}),
     }
 
 

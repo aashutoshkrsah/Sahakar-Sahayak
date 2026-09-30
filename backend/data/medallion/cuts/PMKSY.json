@@ -1,0 +1,30 @@
+{
+"doc_key": "PMKSY",
+"made_by": "AI cutter (Claude), reviewed by check_cuts.py",
+"cuts": [
+{
+"at": "P1.L1",
+"label": "Title and Section 1 – Executive Overview & Institutional Extension (2021–2026 outlay)"
+},
+{
+"at": "P1.L13",
+"label": "Section 2 – Strategic Component Architecture (AIBP, HKKP, WDC 2.0, PDMC)"
+},
+{
+"at": "P1.L25",
+"label": "Section 3 – Operational Realignment of 'Per Drop More Crop' (PDMC) under PM-RKVY"
+},
+{
+"at": "P2.L1",
+"label": "Section 3 – Per Drop More Crop › Subsidy Mechanisms & Direct Benefit Transfer (table of subsidy shares and funding ratios)"
+},
+{
+"at": "P2.L20",
+"label": "Section 4 – Modernization Framework (M-CADWM)"
+},
+{
+"at": "P2.L25",
+"label": "Section 5 – District Irrigation Plans (DIPs) & Planning Control"
+}
+]
+}

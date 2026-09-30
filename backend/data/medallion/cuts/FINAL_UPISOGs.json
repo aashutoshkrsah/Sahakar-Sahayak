@@ -1,0 +1,126 @@
+{
+"doc_key": "FINAL_UPISOGs",
+"made_by": "AI cutter (Claude), reviewed by check_cuts.py",
+"cuts": [
+{
+"at": "P1.L1",
+"label": "Title; A. General Provisions › Paras 1–5 (pilot districts, 7 sections, cover period, exemption for existing policies)"
+},
+{
+"at": "P2.L18",
+"label": "A. General Provisions › Paras 6–9 (proposal cum declaration form, reference number, bank tie-ups)"
+},
+{
+"at": "P3.L1",
+"label": "Section 1 – Crop Insurance (PMFBY/WBCIS); Section 2 – Personal Accident Insurance (PMSBY) › Details, scope of coverage, enrollment period"
+},
+{
+"at": "P3.L23",
+"label": "Section 2 – Personal Accident Insurance (PMSBY) › Benefits table, premium Rs.12, master policy holder, termination of cover"
+},
+{
+"at": "P4.L11",
+"label": "Section 2 – Personal Accident Insurance (PMSBY) › Administration of PMSBY and appropriation of premium"
+},
+{
+"at": "P4.L30",
+"label": "Section 3 – Life Insurance (PMJJBY) › Benefits and Rules of the Scheme (definitions)"
+},
+{
+"at": "P5.L13",
+"label": "Section 3 – Life Insurance (PMJJBY) › Eligibility, admission of age, evidence of health, premium Rs.330, enrollment period"
+},
+{
+"at": "P5.L39",
+"label": "Section 3 – Life Insurance (PMJJBY) › Assurance, death benefit, termination, suspension of risk, discontinuance, jurisdiction"
+},
+{
+"at": "P6.L26",
+"label": "Section 4 – Building and Contents Insurance (Fire & Allied Perils) › Perils covered and enrollment (sum insured caps)"
+},
+{
+"at": "P7.L4",
+"label": "Section 4 – Building and Contents Insurance (Fire & Allied Perils) › Claim process methodology and special exclusions"
+},
+{
+"at": "P7.L34",
+"label": "Section 5 – Agriculture Pumpset Insurance (Upto 10 HP) › Scope of cover and enrollment of farmers"
+},
+{
+"at": "P8.L3",
+"label": "Section 5 – Agriculture Pumpset Insurance (Upto 10 HP) › Claim process methodology"
+},
+{
+"at": "P8.L30",
+"label": "Section 5 – Agriculture Pumpset Insurance (Upto 10 HP) › Special exclusions"
+},
+{
+"at": "P8.L39",
+"label": "Section 6 – Student Safety Insurance › Schedule of benefits and Part A (accidental death of parent/student)"
+},
+{
+"at": "P9.L15",
+"label": "Section 6 – Student Safety Insurance › Part B, Part C, Part D (hospitalization) and age limit"
+},
+{
+"at": "P10.L1",
+"label": "Section 6 – Student Safety Insurance › Exclusions and documents required for settlement of claims"
+},
+{
+"at": "P10.L20",
+"label": "Section 7 – Agricultural Tractor Insurance › Scope of cover and depreciation on parts replaced"
+},
+{
+"at": "P10.L34",
+"label": "Section 7 – Agricultural Tractor Insurance › Age wise Sum Insured and Premium (table)"
+},
+{
+"at": "P11.L41",
+"label": "Section 7 – Agricultural Tractor Insurance › Legal liability to third parties and enrollment of farmers (comprehensive / third party, trailer)"
+},
+{
+"at": "P12.L2",
+"label": "Section 7 – Agricultural Tractor Insurance › Claim process methodology"
+},
+{
+"at": "P12.L24",
+"label": "Section 7 – Agricultural Tractor Insurance › Policy exclusions"
+},
+{
+"at": "P13.L7",
+"label": "General Conditions and Definitions for All Sections › Misdescription, reasonable care, fraud, arbitration, contribution, indemnity"
+},
+{
+"at": "P13.L33",
+"label": "General Conditions and Definitions for All Sections › Grievance redressal, observance of terms, general exclusions, excess/deductible"
+},
+{
+"at": "P14.L26",
+"label": "General Conditions and Definitions for All Sections › Service charges payable to banks"
+},
+{
+"at": "P15.L1",
+"label": "Annexure I – Proposal-cum-Declaration form › Bank/proposer details and Sections 1–3 (crop, PMSBY, PMJJBY)"
+},
+{
+"at": "P16.L2",
+"label": "Annexure I – Proposal-cum-Declaration form › Sections 4–6 (fire & allied perils, pumpset, student safety)"
+},
+{
+"at": "P17.L9",
+"label": "Annexure I – Proposal-cum-Declaration form › Section 7 (tractor), declaration and assignment clause"
+},
+{
+"at": "P18.L1",
+"label": "Acknowledgement of Premium Receipt (form)"
+},
+{
+"at": "P19.L1",
+"label": "Roles and Responsibilities of various Agencies for UPIS › Banks/Financial Institutions"
+},
+{
+"at": "P19.L22",
+"label": "Roles and Responsibilities of various Agencies for UPIS › Insurance Companies"
+}
+]
+}

@@ -1,0 +1,118 @@
+{
+"doc_key": "RWBCIS",
+"made_by": "AI cutter (Claude), reviewed by check_cuts.py",
+"cuts": [
+{
+"at": "P1.L1",
+"label": "Title and Index (table of contents) of RWBCIS Operational Guidelines"
+},
+{
+"at": "P3.L1",
+"label": "Para 1 – Objective of the Scheme (weather parameters as proxy for crop yields)"
+},
+{
+"at": "P3.L6",
+"label": "Para 2 – Adoption of Technology for Scheme Administration › 2.1–2.4 (National Crop Insurance Portal)"
+},
+{
+"at": "P4.L1",
+"label": "Para 3 – Coverage of Farmers; Para 4 – Coverage of Crops"
+},
+{
+"at": "P4.L3",
+"label": "Para 5 – Coverage of Risks and Exclusions › 5.1 – Risks covered; 5.2 – Weather Perils to be Covered"
+},
+{
+"at": "P4.L7",
+"label": "Para 5 – Coverage of Risks and Exclusions › 5.2.1 – Add-on coverage (hailstorm, cloudburst, high wind speed)"
+},
+{
+"at": "P5.L2",
+"label": "Para 5 – Coverage of Risks and Exclusions › 5.2.2–5.2.6 – Choice of perils, triggers, CCEs, notification; General Exclusions"
+},
+{
+"at": "P5.L7",
+"label": "Para 5 – Coverage of Risks and Exclusions › 5.2.7 – Loss intimation for add-on cover; 5.3 – Period of Risk (Insurance Period)"
+},
+{
+"at": "P5.L11",
+"label": "Para 6 – Preconditions for implementation of the Scheme › 6.1 States › 6.1.1–6.1.4"
+},
+{
+"at": "P6.L1",
+"label": "Para 6 – Preconditions › 6.1.5 – Nodal Department and SLCCCI; 6.2 Insurance Company; 6.3 Aadhaar"
+},
+{
+"at": "P6.L6",
+"label": "Para 7 – Notification (Area Approach, RUA) › 7.1 – Reference Weather Stations and data providers › 7.1.1"
+},
+{
+"at": "P6.L11",
+"label": "Para 7 – Notification › 7.1.2–7.1.4 – Reference and Back-up Weather Stations; claims on actual RWS data"
+},
+{
+"at": "P7.L3",
+"label": "Paras 8–17 – CSCs, remittance, census codes, land records, sum insured, premium, admin budget, TSU, seasonality, proposals"
+},
+{
+"at": "P8.L3",
+"label": "Para 18 – Assessment of Loss / Shortfall in Yield › 18.1–18.5 (weather data from AWS/ARG)"
+},
+{
+"at": "P8.L11",
+"label": "Para 18 – Assessment of Loss › 18.6 – District level Steering Committee; 18.7 – Back-up station data"
+},
+{
+"at": "P9.L5",
+"label": "Para 19 – Dispute resolution regarding Weather Data/Crop loss › 19.1–19.2 (Arbitration Committee, 7-day timelines)"
+},
+{
+"at": "P9.L11",
+"label": "Para 19 – Dispute resolution › 19.3–19.6 – Technical Advisory Committee (TAC), Technical Agency and STAC"
+},
+{
+"at": "P10.L8",
+"label": "Para 20 – Use of Innovative Technologies › 20.1–20.2"
+},
+{
+"at": "P11.L1",
+"label": "Para 21 – Assessment of Claims › 21.1–21.5 (claims per unit formula)"
+},
+{
+"at": "P11.L8",
+"label": "Para 21 – Assessment of Claims › 21.6 – Illustration of deficit rainfall cover claims (tables)"
+},
+{
+"at": "P12.L4",
+"label": "Para 21.7 – Loss assessment for Add-on / Index-Plus products; Para 22 – Loss Assessors/Evaluators"
+},
+{
+"at": "P12.L6",
+"label": "Para 23 – Procedure for Settlement of Claims › 23.1–23.2 (subsidy instalments, term sheet in notification)"
+},
+{
+"at": "P13.L3",
+"label": "Para 23 – Procedure for Settlement of Claims › 23.3–23.4 (claims calculation and payment via Portal)"
+},
+{
+"at": "P13.L6",
+"label": "Paras 24–34.5 – Conditions, acreage discrepancy, publicity, service charges, GST, monitoring, grievances, roles"
+},
+{
+"at": "P15.L1",
+"label": "Para 34 – Role and Responsibilities › 34.6–34.10; 34.11 – Weather Data Providing Agencies; Para 35 – NCIP"
+},
+{
+"at": "P17.L1",
+"label": "Annexure 1 – Suggestive Illustration for Preparation and Evaluation of Term Sheet (crop phases and triggers)"
+},
+{
+"at": "P17.L5",
+"label": "Annexure 1 – Sample Termsheet for Weather Based Crop Insurance (Index A excess, B deficit rainfall, C dry days)"
+},
+{
+"at": "P18.L4",
+"label": "Coconut Palm Insurance Scheme (CPIS) – no change in guidelines"
+}
+]
+}

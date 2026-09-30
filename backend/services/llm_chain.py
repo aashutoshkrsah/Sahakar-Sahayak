@@ -1,5 +1,5 @@
 """
-Triple-fallback AI engine:  Sarvam  ->  Groq  ->  Cloudflare
+Fallback AI engine:  Sarvam  ->  Groq  ->  Cloudflare  ->  Gemini Flash Lite
 
 Every AI call in the app (translating the question to English, writing the
 answer) goes through `chat()`. It tries the AIs in order and moves to the next
@@ -17,10 +17,12 @@ Environment variables (Render -> Environment, and your .env):
     SARVAM_API_KEY                         main AI
     GROQ_API_KEY                           1st backup (free: console.groq.com)
     CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN   2nd backup (same as meaning search)
+    CLOUDFLARE_ACCOUNT_ID_2, CLOUDFLARE_API_TOKEN_2   optional: a second Cloudflare account (used when the first is out)
+    GEMINI_API_KEY                         3rd backup: Gemini Flash Lite (free: aistudio.google.com)
 Optional:
     GROQ_MODEL            default openai/gpt-oss-120b
     CLOUDFLARE_LLM_MODEL  default @cf/meta/llama-3.3-70b-instruct-fp8-fast
-    LLM_ORDER             default sarvam,groq,cloudflare
+    LLM_ORDER             default sarvam,groq,cloudflare,gemini
     LLM_TIMEOUT           seconds per AI call, default 30
     LLM_COOLDOWN          seconds to skip an AI after it failed, default 60
 """
@@ -42,12 +44,13 @@ GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b").strip()
 CF_LLM_MODEL = os.getenv("CLOUDFLARE_LLM_MODEL", "@cf/meta/llama-3.3-70b-instruct-fp8-fast").strip()
 TIMEOUT = float(os.getenv("LLM_TIMEOUT", "30"))
 COOLDOWN = float(os.getenv("LLM_COOLDOWN", "60"))
-DEFAULT_ORDER = [p.strip() for p in os.getenv("LLM_ORDER", "sarvam,groq,cloudflare").split(",") if p.strip()]
+DEFAULT_ORDER = [p.strip() for p in os.getenv("LLM_ORDER", "sarvam,groq,cloudflare,gemini").split(",") if p.strip()]
 
 PROVIDER_NAMES = {
     "sarvam": "Sarvam AI",
     "groq": "Groq (backup)",
     "cloudflare": "Cloudflare (backup)",
+    "gemini": "Gemini Flash Lite (backup)",
     "search_only": "Search only (AI unavailable)",
 }
 
@@ -79,11 +82,13 @@ _lock = threading.Lock()
 
 
 def configured() -> dict:
-    return {"sarvam": _sarvam is not None, "groq": bool(_GROQ_KEY), "cloudflare": bool(_CF_ACCOUNT and _CF_TOKEN)}
+    from backend.services import cloudflare, gemini
+    return {"sarvam": _sarvam is not None, "groq": bool(_GROQ_KEY), "cloudflare": cloudflare.configured(),
+            "gemini": gemini.configured()}
 
 
 print("=======================================================")
-print("🧠 AI ENGINE: triple fallback  " + "  ->  ".join(
+print("🧠 AI ENGINE: fallback chain  " + "  ->  ".join(
     f"{p} {'✅' if configured().get(p) else '❌ (no key)'}" for p in DEFAULT_ORDER))
 print(f"   groq model: {GROQ_MODEL} | cloudflare model: {CF_LLM_MODEL} | timeout {TIMEOUT:.0f}s | cool-down {COOLDOWN:.0f}s")
 print("=======================================================")
@@ -157,26 +162,42 @@ def _call_groq(messages, temperature, max_tokens):
 
 
 def _call_cloudflare(messages, temperature, max_tokens):
-    if not (_CF_ACCOUNT and _CF_TOKEN):
+    from backend.services import cloudflare
+    if not cloudflare.configured():
         raise ProviderError("no CLOUDFLARE_ACCOUNT_ID / CLOUDFLARE_API_TOKEN", cool_down=False)
-    url = f"https://api.cloudflare.com/client/v4/accounts/{_CF_ACCOUNT}/ai/run/{CF_LLM_MODEL}"
-    resp = _http.post(url, json={"messages": messages, "temperature": temperature, "max_tokens": max_tokens},
-                      timeout=TIMEOUT, headers={"Authorization": f"Bearer {_CF_TOKEN}"})
-    if resp.status_code != 200:
-        raise _http_error(resp)
-    result = resp.json().get("result") or {}
+    try:
+        result = cloudflare.run(CF_LLM_MODEL, {"messages": messages, "temperature": temperature, "max_tokens": max_tokens},
+                                timeout=TIMEOUT, what="answer") or {}
+    except cloudflare.CloudflareError as e:
+        raise ProviderError(str(e))
     text = result.get("response")
     if text is None and result.get("choices"):                     # OpenAI-style models
         text = (result["choices"][0].get("message") or {}).get("content")
     text = text if isinstance(text, str) else ""
     _count("cloudflare", result.get("usage"), messages, text)
-    return _clean(text), resp.headers.get("cf-ray")
+    return _clean(text), None
 
 
-_CALLS = {"sarvam": _call_sarvam, "groq": _call_groq, "cloudflare": _call_cloudflare}
+def _call_gemini(messages, temperature, max_tokens):
+    from backend.services import gemini
+    if not gemini.configured():
+        raise ProviderError("no GEMINI_API_KEY", cool_down=False)
+    try:
+        text = gemini.chat(messages, model=gemini.LITE_MODEL, temperature=temperature, max_tokens=max_tokens + 400,
+                           timeout=TIMEOUT)
+    except gemini.GeminiError as e:
+        raise ProviderError(str(e), cool_down=e.status != 400)
+    _count("gemini", None, messages, text)
+    return _clean(text), None
+
+
+_CALLS = {"sarvam": _call_sarvam, "groq": _call_groq, "cloudflare": _call_cloudflare, "gemini": _call_gemini}
 
 
 def _model_of(provider):
+    if provider == "gemini":
+        from backend.services import gemini
+        return gemini.LITE_MODEL
     return {"sarvam": SARVAM_MODEL, "groq": GROQ_MODEL, "cloudflare": CF_LLM_MODEL}.get(provider, "?")
 
 
@@ -184,7 +205,7 @@ def _model_of(provider):
 def chat(messages, purpose="answer", temperature=0.3, max_tokens=1024, order=None, _ignore_cooldown=False):
     """Ask the AIs in order until one gives a non-empty reply.
 
-    Returns (text, provider) -- provider is "sarvam" / "groq" / "cloudflare",
+    Returns (text, provider) -- provider is "sarvam" / "groq" / "cloudflare" / "gemini",
     or (None, None) if every AI failed. Never raises.
     """
     order = order or DEFAULT_ORDER

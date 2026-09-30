@@ -1,0 +1,98 @@
+{
+"doc_key": "PM-KISAN",
+"made_by": "AI cutter (Claude), reviewed by check_cuts.py",
+"cuts": [
+{
+"at": "P1.L1",
+"label": "Title; Para 1 – Scheme; Para 2 – Objective and Benefits (Rs.6000 per year); Para 3 – Definition of farmer's family"
+},
+{
+"at": "P2.L19",
+"label": "Para 4 – Exclusions › 4.1 – Categories not eligible (institutional land holders, officials, pensioners, taxpayers, professionals, NRIs)"
+},
+{
+"at": "P3.L12",
+"label": "Para 4 – Exclusions › 4.2 – Certification of eligibility based on self declaration"
+},
+{
+"at": "P3.L18",
+"label": "Para 5 – Methodology for calculation of benefit › 5.1–5.2 – Names in land records; cut-off date 01.02.2019"
+},
+{
+"at": "P3.L27",
+"label": "Para 5 – Methodology for calculation of benefit › 5.3, 5.3.1, 5.3.2 – Transfer of land ownership by succession/death"
+},
+{
+"at": "P4.L9",
+"label": "Para 5 – Methodology for calculation of benefit › 5.3.3 – Change in ownership after 01.02.2019 (inheritance, sale, gift)"
+},
+{
+"at": "P4.L20",
+"label": "Para 5 – Methodology for calculation of benefit › 5.3.4 – State mechanism for mutation and reassessing eligibility"
+},
+{
+"at": "P5.L6",
+"label": "Para 5 – Methodology for calculation of benefit › 5.4 – Entitlement from trimester of upload; 5.5 – North Eastern States (community land)"
+},
+{
+"at": "P5.L18",
+"label": "Para 5 – Methodology for calculation of benefit › 5.5.1 – Manipur and 5.5.2 – Nagaland: identification of bona fide beneficiaries"
+},
+{
+"at": "P6.L3",
+"label": "Para 5 – Methodology for calculation of benefit › 5.6 – Jharkhand: Vanshavali (lineage) based identification"
+},
+{
+"at": "P6.L15",
+"label": "Para 6 – Strategy for Implementation › 6.1 – State database of beneficiaries, Aadhaar and alternate IDs"
+},
+{
+"at": "P6.L31",
+"label": "Para 6 – Strategy for Implementation › 6.2–6.4 – Self-declaration and Aadhaar consent, land records, village lists"
+},
+{
+"at": "P7.L6",
+"label": "Para 7 – Review, Monitoring and Grievance Redressal Mechanism"
+},
+{
+"at": "P7.L15",
+"label": "Para 8 – Setting up of Project Monitoring Unit (PMU) › 8.1–8.3"
+},
+{
+"at": "P8.L1",
+"label": "Para 9 – PM-Kisan Portal (Beneficiary Details uploading by State) › 9.1–9.2 – Portal and its objectives"
+},
+{
+"at": "P8.L16",
+"label": "Para 9 – PM-Kisan Portal › 9.3 – Farmer attributes to be entered (essential and optional)"
+},
+{
+"at": "P9.L1",
+"label": "Para 9 – PM-Kisan Portal › 9.4–9.5 – Ways for State/UT to onboard; use of other databases"
+},
+{
+"at": "P9.L16",
+"label": "Para 9 – PM-Kisan Portal › 9.6 – Records preparation process through PM-KISAN Portal"
+},
+{
+"at": "P10.L13",
+"label": "Para 10 – Modalities for transfer of benefit › 10.1–10.2 – Three installments of Rs.2000; Aadhaar seeding"
+},
+{
+"at": "P10.L28",
+"label": "Para 10 – Modalities for transfer of benefit › 10.3 – Release of funds via State Notional Account"
+},
+{
+"at": "P11.L12",
+"label": "Para 10 – Modalities for transfer of benefit › 10.4 – DBT fund transfer › (a) and (b) A. State / UT Government steps"
+},
+{
+"at": "P12.L6",
+"label": "Para 10 – Modalities for transfer of benefit › 10.4(b) B. Union Government steps"
+},
+{
+"at": "P12.L20",
+"label": "Para 10.5 – Display of beneficiary lists and grievances; Para 11 – Validity of the list of beneficiaries"
+}
+]
+}

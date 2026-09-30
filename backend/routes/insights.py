@@ -26,7 +26,7 @@ from backend.services import analytics
 router = APIRouter()
 
 LANG_NAMES = {"en": "English", "hi": "Hindi", "kn": "Kannada", "ne": "Nepali", "ta": "Tamil", "te": "Telugu", "ml": "Malayalam"}
-AI_NAMES = {"sarvam": "Sarvam AI", "groq": "Groq (backup)", "cloudflare": "Cloudflare (backup)",
+AI_NAMES = {"sarvam": "Sarvam AI", "groq": "Groq (backup)", "cloudflare": "Cloudflare (backup)", "gemini": "Gemini Flash Lite (backup)",
             "search_only": "Search only (no AI)", "unknown": "Not recorded"}
 TRUST_NAMES = {"verified": "🟢 Verified", "partial": "🟡 Partly verified", "general": "🔵 General guidance",
                "refused": "Refused (off-topic)", "error": "Error"}

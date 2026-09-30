@@ -1,0 +1,1746 @@
+{
+"doc_key": "doc1",
+"made_by": "AI cutter (Claude), reviewed by check_cuts.py",
+"cuts": [
+{
+"at": "P1.L1",
+"label": "Table of contents – cover and index of Sections 1 to 38"
+},
+{
+"at": "P3.L1",
+"label": "Table of contents – Section 39, Annexures I–VI and table index"
+},
+{
+"at": "P5.L1",
+"label": "Abbreviations (A/C to DGRC)"
+},
+{
+"at": "P6.L1",
+"label": "Abbreviations (DILRMP to IRDAI)"
+},
+{
+"at": "P7.L1",
+"label": "Abbreviations (IRRI to NOAA-CPC)"
+},
+{
+"at": "P8.L1",
+"label": "Abbreviations (NRSC to SR)"
+},
+{
+"at": "P9.L1",
+"label": "Abbreviations (SR-MSA to YES-TECH)"
+},
+{
+"at": "P10.L1",
+"label": "Introduction – background and review of PMFBY since Kharif 2016"
+},
+{
+"at": "P10.L34",
+"label": "Introduction – Operational Guidelines 2023 effective from Kharif 2023 and their overriding effect"
+},
+{
+"at": "P11.L5",
+"label": "Section 1 – Objective of the Scheme"
+},
+{
+"at": "P11.L16",
+"label": "Section 2 – Adoption of Technology for Scheme Administration › Digital Technology › Paras 2.1–2.3 (NCIP portal and digitization)"
+},
+{
+"at": "P11.L36",
+"label": "Section 2 – Adoption of Technology for Scheme Administration › Paras 2.4–2.7 (digitization before tender, no separate state portal, logins)"
+},
+{
+"at": "P12.L12",
+"label": "Section 2 – Adoption of Technology for Scheme Administration › Paras 2.8–2.9 (no other proforma; only farmers uploaded on NCIP eligible)"
+},
+{
+"at": "P12.L23",
+"label": "Section 2 – Adoption of Technology for Scheme Administration › Para 2.10 (NCIP data as single source of truth)"
+},
+{
+"at": "P12.L37",
+"label": "Section 2 – Adoption of Technology for Scheme Administration › Paras 2.11–2.12 (bank data transfer, Kisan Rin Portal and PM KISAN link)"
+},
+{
+"at": "P13.L3",
+"label": "Section 2 – Adoption of Technology for Scheme Administration › Para 2.13 (innovation and research)"
+},
+{
+"at": "P13.L16",
+"label": "Section 2 – Adoption of Technology for Scheme Administration › Remote Sensing & Other Technologies › Para 2.14 (CROPIC, CCE Agri App)"
+},
+{
+"at": "P13.L30",
+"label": "Section 2 – Adoption of Technology for Scheme Administration › Paras 2.15–2.17 (land record API, Smart Sampling, YES-TECH)"
+},
+{
+"at": "P13.L42",
+"label": "Section 2 – Adoption of Technology for Scheme Administration › Paras 2.18–2.19 (CROPIC, WINDS weather network)"
+},
+{
+"at": "P14.L2",
+"label": "Section 2 – Adoption of Technology for Scheme Administration › Paras 2.20–2.24 (when technology-based yield is used)"
+},
+{
+"at": "P14.L25",
+"label": "Section 3 – Coverage of Farmers › Para 3.1 (eligible farmers, sharecroppers, tenants, forest land)"
+},
+{
+"at": "P14.L40",
+"label": "Section 3 – Coverage of Farmers › Para 3.1.1 – Loanee farmers (KCC/crop loan) › Paras 3.1.1.1–3.1.1.3 (optional, opt-out)"
+},
+{
+"at": "P15.L14",
+"label": "Section 3 – Coverage of Farmers › Paras 3.1.2–3.1.3 (non-loanee farmers; SC/ST/women farmers)"
+},
+{
+"at": "P15.L25",
+"label": "Section 3 – Coverage of Farmers › Paras 3.1.4–3.1.5 (enrolment of non-loanee farmers by L1 and other insurance companies)"
+},
+{
+"at": "P16.L3",
+"label": "Section 3 – Coverage of Farmers › Paras 3.1.6–3.1.7 (yield data sharing and SOP for other companies)"
+},
+{
+"at": "P16.L17",
+"label": "Section 3 – Coverage of Farmers › Para 3.2 – Universal Coverage (full and preferential universalization)"
+},
+{
+"at": "P16.L37",
+"label": "Section 4 – Coverage of Crops"
+},
+{
+"at": "P17.L6",
+"label": "Section 5 – Coverage of Risks and Exclusions › Para 5.1 – Basic Cover › Para 5.2 – Add-On Coverage (5.2.1–5.2.4)"
+},
+{
+"at": "P17.L34",
+"label": "Section 5 – Coverage of Risks and Exclusions › Para 5.2.5 – Add-on coverage for crop loss due to attack by wild animals"
+},
+{
+"at": "P18.L4",
+"label": "Section 5 – Coverage of Risks and Exclusions › Paras 5.3–5.6 (add-on period, general exclusions, intimation of loss)"
+},
+{
+"at": "P18.L19",
+"label": "Section 5 – Coverage of Risks and Exclusions › Para 5.7 – Risk Management Mechanisms › Paras 5.7.1–5.7.3 (risk transfer and risk participation)"
+},
+{
+"at": "P18.L35",
+"label": "Section 5 › Para 5.7.4 – Risk Participation Approach › Para 5.7.4.1 – Profit & Loss Sharing Mechanism (table, conditions and example)"
+},
+{
+"at": "P20.L1",
+"label": "Section 5 › Para 5.7.4 – Risk Participation Approach › Para 5.7.4.2 – Cup & Cap model (60:130)"
+},
+{
+"at": "P20.L24",
+"label": "Section 5 › Para 5.7.4 – Risk Participation Approach › Para 5.7.4.3 – Cup & Cap Model (80-110)"
+},
+{
+"at": "P21.L13",
+"label": "Section 5 › Para 5.7.4 – Risk Participation Approach › Paras 5.7.4.4–5.7.4.5 (claim settlement and burn cost under Cup & Cap)"
+},
+{
+"at": "P21.L38",
+"label": "Section 5 › Para 5.8 – SARTHI Platform & Product Innovation › Paras 5.8.1–5.8.2"
+},
+{
+"at": "P22.L21",
+"label": "Section 5 › Para 5.8 – SARTHI Platform & Product Innovation › Paras 5.8.3–5.8.4 (features of unified Agri insurance ecosystem)"
+},
+{
+"at": "P22.L44",
+"label": "Section 5 › Para 5.8 – SARTHI Platform & Product Innovation › Paras 5.8.5–5.8.7 (committee, IRDAI platforms, SOP)"
+},
+{
+"at": "P23.L21",
+"label": "Section 6 – Preconditions for Implementation of the Scheme › Para 6.1 – State/UTs › Paras 6.1.1–6.1.2"
+},
+{
+"at": "P23.L42",
+"label": "Section 6 – Preconditions › Para 6.1 – State/UTs › Paras 6.1.3–6.1.5 (3% admin budget, Smart Sampling, yield data upload)"
+},
+{
+"at": "P24.L12",
+"label": "Section 6 – Preconditions › Para 6.1 – State/UTs › Para 6.1.6 – Release of subsidy provisions and escrow flowchart"
+},
+{
+"at": "P25.L2",
+"label": "Section 6 – Preconditions › Para 6.1 – State/UTs › Para 6.1.7 – Advance upfront premium subsidy in Escrow Account (I–II and illustration table)"
+},
+{
+"at": "P25.L49",
+"label": "Section 6 – Preconditions › Para 6.1.7 – Advance upfront premium subsidy › Clauses III–VII (release from Escrow, opening NCIP)"
+},
+{
+"at": "P26.L4",
+"label": "Section 6 – Preconditions › Para 6.1.7 – Advance upfront premium subsidy › Clauses VIII–X (subsequent tranches, excess premium, pro-rata claims)"
+},
+{
+"at": "P26.L24",
+"label": "Section 6 – Preconditions › Para 6.1 – State/UTs › Paras 6.1.8–6.1.11 (pilots, SLCCCI composition, data, grievance redressal)"
+},
+{
+"at": "P27.L2",
+"label": "Section 6 – Preconditions › Para 6.2 – Insurance Companies (ICs)"
+},
+{
+"at": "P27.L22",
+"label": "Section 6 – Preconditions › Para 6.2 – Insurance Companies › Paras 6.2.5–6.2.9 (grievance mechanism, claim settlement, bank service charge)"
+},
+{
+"at": "P27.L38",
+"label": "Section 6 – Preconditions › Para 6.3 – Banks and Other Enrolment Channels › Paras 6.3.1–6.3.5"
+},
+{
+"at": "P28.L24",
+"label": "Section 6 – Preconditions › Para 6.4 – Submission of UID (AADHAAR) by Farmer"
+},
+{
+"at": "P28.L39",
+"label": "Section 6 – Preconditions › Para 6.5 – Agreement/MoU between States and Insurance Companies"
+},
+{
+"at": "P29.L5",
+"label": "Section 7 – Tendering and Notification › Para 7.1 – Procedure for Issuance of Tender › Paras 7.1.1–7.1.4 (3-year tender, model tender document)"
+},
+{
+"at": "P29.L23",
+"label": "Section 7 – Tendering and Notification › Para 7.1 › Paras 7.1.5–7.1.6 (tender notice three months before season, bid annexure)"
+},
+{
+"at": "P29.L36",
+"label": "Section 7 – Tendering and Notification › Para 7.1 › Para 7.1.7 – Data to be published with the tender (A–G)"
+},
+{
+"at": "P30.L19",
+"label": "Section 7 – Tendering and Notification › Para 7.1 › Paras 7.1.8–7.1.8.1 (lowest weighted premium of district, e-tendering)"
+},
+{
+"at": "P30.L30",
+"label": "Section 7 – Tendering and Notification › Para 7.1 › Paras 7.1.8.2–7.1.8.3 (ceiling on premium rates, two-envelope bidding)"
+},
+{
+"at": "P31.L5",
+"label": "Section 7 – Tendering and Notification › Para 7.1 › Para 7.1.9 (evaluation of ceiling premium rate envelope)"
+},
+{
+"at": "P31.L19",
+"label": "Section 7 – Tendering and Notification › Para 7.1 › Paras 7.1.10–7.1.11 (sum insured upload, loss cost, re-tendering)"
+},
+{
+"at": "P31.L36",
+"label": "Section 7 – Tendering and Notification › Para 7.1 › Paras 7.1.12–7.1.13 (upload of tender documents, objections to tender conditions)"
+},
+{
+"at": "P32.L2",
+"label": "Section 7 – Tendering and Notification › Para 7.1 › Paras 7.1.14–7.1.16 (L1 bid withdrawal, no negotiation, CVC guidelines)"
+},
+{
+"at": "P32.L16",
+"label": "Section 7 – Tendering and Notification › Para 7.1 › Para 7.1.17 – Termination of Contract"
+},
+{
+"at": "P32.L43",
+"label": "Section 7 › Para 7.2 – Procedure for Issuance of Notification › Para 7.2.1 – Notification of Crops, Areas and IA › Paras 7.2.1.1–7.2.1.2"
+},
+{
+"at": "P33.L20",
+"label": "Section 7 › Para 7.2.1 – Notification of Crops, Areas and IA › Paras 7.2.1.3–7.2.1.4 (SLCCCI factors, data to insurance companies)"
+},
+{
+"at": "P33.L41",
+"label": "Section 7 › Para 7.2.1 – Notification of Crops, Areas and IA › Paras 7.2.1.5–7.2.1.6 (irrigated/rainfed areas, yield conversion factor)"
+},
+{
+"at": "P34.L13",
+"label": "Section 7 › Para 7.2.1 – Notification of Crops, Areas and IA › Paras 7.2.1.7–7.2.1.8 (adding/de-notifying IUs, new districts)"
+},
+{
+"at": "P34.L31",
+"label": "Section 7 › Para 7.2.1 › Para 7.2.1.9 (Rs. 150 incentive per CCE through CCE Agri App)"
+},
+{
+"at": "P34.L38",
+"label": "Section 7 › Para 7.3 – Notification of Indemnity Level, Average Yield and Threshold Yield › Paras 7.3.1–7.3.2"
+},
+{
+"at": "P35.L13",
+"label": "Section 7 › Para 7.3.3 – Calculation of Threshold Yield › Para 7.3.3.1 – Fixed Threshold Yield (Illustration 1)"
+},
+{
+"at": "P36.L10",
+"label": "Section 7 › Para 7.3.3 – Calculation of Threshold Yield › Para 7.3.3.2 – Laddered Threshold Yield (Illustration 2, negative growth)"
+},
+{
+"at": "P37.L10",
+"label": "Section 7 › Para 7.3.3.2 – Laddered Threshold Yield › Illustration 3 (positive growth rate)"
+},
+{
+"at": "P38.L6",
+"label": "Section 7 › Para 7.3.3 – Calculation of Threshold Yield › Para 7.3.3.3 – Variable Threshold Yield (APR change table)"
+},
+{
+"at": "P38.L26",
+"label": "Section 7 › Para 7.3.3.3 – Variable Threshold Yield › Illustration 4 (variable TY and premium rate)"
+},
+{
+"at": "P39.L19",
+"label": "Section 7 › Para 7.3.3.3 – Variable Threshold Yield › Notes on premium rate and use of latest yield data"
+},
+{
+"at": "P39.L34",
+"label": "Section 7 › Para 7.3.3 – Calculation of Threshold Yield › Assumptions and limitations of the three methods"
+},
+{
+"at": "P40.L12",
+"label": "Section 7 › Para 7.3 › Para 7.3.4 (last season yield data not available at bidding)"
+},
+{
+"at": "P40.L18",
+"label": "Section 7 › Para 7.4 – Notification of Sum Insured"
+},
+{
+"at": "P40.L30",
+"label": "Section 7 › Para 7.5 – Notification of Seasonality Discipline"
+},
+{
+"at": "P40.L44",
+"label": "Section 7 › Para 7.6 – Weather Information Network Data System (WINDS) › Paras 7.6.1–7.6.5"
+},
+{
+"at": "P41.L25",
+"label": "Section 7 › Para 7.6 – WINDS › Paras 7.6.6–7.6.8 (WINDS tenders, notified AWS/ARG standards, renting of data)"
+},
+{
+"at": "P42.L1",
+"label": "Section 7 › Para 7.6 – WINDS › Paras 7.6.9–7.6.10 (use of weather data; Centre-State cost sharing table)"
+},
+{
+"at": "P42.L21",
+"label": "Section 7 › Para 7.6 – WINDS › Paras 7.6.11–7.6.14 (use and sharing of WINDS data)"
+},
+{
+"at": "P42.L40",
+"label": "Section 8 – Engagement of CSCs and Other Intermediaries for Coverage of Non-Loanee Farmers › Paras 8.1–8.3"
+},
+{
+"at": "P43.L16",
+"label": "Section 8 – Engagement of CSCs and Other Intermediaries › Paras 8.4–8.5 (no fee from farmers at CSC-VLE; wallet refunds)"
+},
+{
+"at": "P43.L31",
+"label": "Section 8 – Engagement of CSCs and Other Intermediaries › Para 8.6 (document checks, reversion and rejection of applications)"
+},
+{
+"at": "P44.L11",
+"label": "Section 8 – Engagement of CSCs and Other Intermediaries › Paras 8.7–8.9 (VLE training, Banking Correspondents, intermediaries)"
+},
+{
+"at": "P44.L35",
+"label": "Section 9 – Electronic Remittance of Funds › Paras 9.1–9.2 (PFMS, NCIP payment gateway)"
+},
+{
+"at": "P45.L10",
+"label": "Section 9 – Electronic Remittance of Funds › Paras 9.3–9.4 (rounding variance, single bank account)"
+},
+{
+"at": "P45.L29",
+"label": "Section 9 – Electronic Remittance of Funds › Paras 9.5–9.6 (verification before claim settlement)"
+},
+{
+"at": "P45.L44",
+"label": "Section 9 – Electronic Remittance of Funds › Paras 9.7–9.9 (Agri-Stack, AEPS and NEFT claim payment)"
+},
+{
+"at": "P46.L26",
+"label": "Section 10 – Census Code Mapping of Entities"
+},
+{
+"at": "P47.L1",
+"label": "Section 11 – Digitization of Land Records"
+},
+{
+"at": "P47.L11",
+"label": "Section 12 – Sum Insured/Coverage Limit"
+},
+{
+"at": "P47.L30",
+"label": "Section 13 – Premium Rates and Premium Subsidy › Para 13.1 – Table 1: Premium rate payable by the farmer"
+},
+{
+"at": "P48.L3",
+"label": "Section 13 – Premium Rates and Premium Subsidy › Payment of Government Subsidy › Paras 13.1.1–13.1.3 (50:50 and 90:10 sharing, APR cap)"
+},
+{
+"at": "P48.L26",
+"label": "Section 13 – Premium Rates and Premium Subsidy › Paras 13.1.4–13.1.7 (additional state subsidy, Central Nodal Agency)"
+},
+{
+"at": "P49.L3",
+"label": "Section 13 – Premium Rates and Premium Subsidy › Paras 13.1.8–13.1.9 (advance subsidy first instalment)"
+},
+{
+"at": "P49.L20",
+"label": "Section 13 – Premium Rates and Premium Subsidy › Paras 13.1.10–13.1.11 (claims before and after second instalment of subsidy)"
+},
+{
+"at": "P49.L37",
+"label": "Section 13 – Premium Rates and Premium Subsidy › Paras 13.1.12–13.1.14 (CAG access, Re. 1 token premium, delay penalty)"
+},
+{
+"at": "P50.L12",
+"label": "Section 14 – Budget for Administrative Expenses"
+},
+{
+"at": "P50.L26",
+"label": "Section 15 – Central Program Management Unit (CPMU) & State Program Management Unit (SPMU) › Paras 15.1–15.2"
+},
+{
+"at": "P50.L44",
+"label": "Section 15 – CPMU & SPMU › Paras 15.3–15.4 (risk rating methodology, State PMU)"
+},
+{
+"at": "P51.L19",
+"label": "Section 15 – CPMU & SPMU › Para 15.5 – Categories of States for SPMU experts (table)"
+},
+{
+"at": "P51.L64",
+"label": "Section 16 – Seasonality Discipline › Paras 16.1–16.3 (cut-off dates for enrolment)"
+},
+{
+"at": "P52.L17",
+"label": "Section 16 – Seasonality Discipline › Para 16.4 – Table 2: Seasonality discipline (rows 1–8: SLCCCI meeting to change of insured crop)"
+},
+{
+"at": "P53.L7",
+"label": "Section 16 – Seasonality Discipline › Para 16.4 – Table 2 (rows 9–11: opt-out, enrolment cut-off, declaration of prevented sowing)"
+},
+{
+"at": "P53.L65",
+"label": "Section 16 – Seasonality Discipline › Para 16.4 – Table 2 (rows 12–15: premium remittance, data upload, accept/reject/revert)"
+},
+{
+"at": "P54.L1",
+"label": "Section 16 – Seasonality Discipline › Para 16.4 – Table 2 (rows 16–21: auto-approval, MPMH, advance premium subsidy)"
+},
+{
+"at": "P54.L64",
+"label": "Section 16 – Seasonality Discipline › Para 16.4 – Table 2 (rows 22–26: YES-TECH reports, disputes, CCE worker training)"
+},
+{
+"at": "P55.L5",
+"label": "Section 16 – Seasonality Discipline › Para 16.4 – Table 2 (rows 27–31: CCE co-witnessing, SST, CCE schedule, CCE complaints)"
+},
+{
+"at": "P55.L82",
+"label": "Section 16 – Seasonality Discipline › Para 16.4 – Table 2 (rows 32–37: actual yield approval, 2nd tranche subsidy)"
+},
+{
+"at": "P56.L21",
+"label": "Section 16 – Seasonality Discipline › Para 16.4 – Table 2 (rows 38–42: final tranche subsidy, yield data approval)"
+},
+{
+"at": "P56.L66",
+"label": "Section 16 – Seasonality Discipline › Para 16.4 – Table 2 (rows 43–49: yield disputes, claim payment within 21 days, IC evaluation)"
+},
+{
+"at": "P57.L44",
+"label": "Section 16 – Seasonality Discipline › Paras 16.5–16.6 (cut-off date on public holiday or disruption)"
+},
+{
+"at": "P57.L59",
+"label": "Section 16 – Seasonality Discipline › Paras 16.7–16.8 (modified seasonality; no extension of cut-off dates)"
+},
+{
+"at": "P58.L6",
+"label": "Section 16 – Seasonality Discipline › Para 16.9 (extension of enrolment cut-off only with insurer consent, no central subsidy)"
+},
+{
+"at": "P58.L15",
+"label": "Section 16 – Seasonality Discipline › Paras 16.10–16.11 (special window for data entry and premium remittance)"
+},
+{
+"at": "P58.L31",
+"label": "Section 16 – Seasonality Discipline › Para 16.12 (auto-approval of CCE data, synthetic yield)"
+},
+{
+"at": "P58.L40",
+"label": "Section 16 – Seasonality Discipline › Para 16.13 (claims payable within 3 weeks of approval)"
+},
+{
+"at": "P59.L5",
+"label": "Section 16 – Seasonality Discipline › Paras 16.14–16.15 (12% penal interest on delayed claims)"
+},
+{
+"at": "P59.L22",
+"label": "Section 17 – Collection of Applications and Premium from Farmers › Para 17.1 (banks, PACS and intermediaries as enrolment channels)"
+},
+{
+"at": "P59.L45",
+"label": "Section 17 – Collection of Applications and Premium from Farmers › Paras 17.2–17.5 (upload on NCIP, one channel per land parcel, Bima Vahak)"
+},
+{
+"at": "P60.L23",
+"label": "Section 17 › Para 17.6 – Loanee Farmers › Para 17.6.1 (coverage of crop loan/KCC to extent of sum insured, unless opted out)"
+},
+{
+"at": "P60.L43",
+"label": "Section 17 › Para 17.6 – Loanee Farmers › Para 17.6.2 (cut-off date independent of loan disbursement; correct acreage)"
+},
+{
+"at": "P61.L15",
+"label": "Section 17 › Para 17.6 – Loanee Farmers › Para 17.6.3 (valid bank account and IFSC for direct claim transfer; AEPS)"
+},
+{
+"at": "P61.L28",
+"label": "Section 17 › Para 17.6 – Loanee Farmers › Paras 17.6.4–17.6.5 (excess acreage; add-on benefits only if premium debited)"
+},
+{
+"at": "P61.L41",
+"label": "Section 17 › Para 17.6 – Loanee Farmers › Para 17.6.6 – Table 3: Calculation of crop-wise Sum Insured for loanee farmers"
+},
+{
+"at": "P62.L49",
+"label": "Section 17 › Para 17.6 – Loanee Farmers › Paras 17.6.7–17.6.10 (bank records, uploading details, CBS integration)"
+},
+{
+"at": "P63.L19",
+"label": "Section 17 › Para 17.6 – Loanee Farmers › Para 17.6.11 (Opt-out mode for existing loanee farmers)"
+},
+{
+"at": "P63.L35",
+"label": "Section 17 › Para 17.6 – Loanee Farmers › Paras 17.6.12–17.6.14 (premium debit window, re-enrolment, opt-out form)"
+},
+{
+"at": "P64.L2",
+"label": "Section 17 › Para 17.6 – Loanee Farmers › Paras 17.6.15–17.6.17 (bank liability, refund of rejected applications)"
+},
+{
+"at": "P64.L17",
+"label": "Section 17 › Para 17.7 – Non-Loanee Farmers through Banks and other Channel Partners › Paras 17.7.1–17.7.3"
+},
+{
+"at": "P64.L38",
+"label": "Section 17 › Para 17.7 – Non-Loanee Farmers through Banks and Channel Partners › Paras 17.7.4–17.7.5 (CSC-VLE, PACS)"
+},
+{
+"at": "P65.L17",
+"label": "Section 17 › Para 17.7 – Non-Loanee Farmers through Banks and Channel Partners › Paras 17.7.6–17.7.7 (insurance intermediaries)"
+},
+{
+"at": "P65.L37",
+"label": "Section 17 › Para 17.7 – Non-Loanee Farmers › Paras 17.7.8–17.7.10 (refund of rejected applications, OTP/Aadhaar consent)"
+},
+{
+"at": "P66.L1",
+"label": "Section 17 › Para 17.8 – Non-Loanee Farmers directly to Insurance Companies or through Web Portal › Paras 17.8.1–17.8.2"
+},
+{
+"at": "P66.L18",
+"label": "Section 17 › Para 17.8 – Non-Loanee Farmers directly or through Web Portal › Paras 17.8.3–17.8.6 (insurable interest, rejection, refund)"
+},
+{
+"at": "P66.L43",
+"label": "Section 17 › Para 17.9 – Option for change of crop name by the Farmer"
+},
+{
+"at": "P67.L22",
+"label": "Section 17 – Collection of Applications and Premium › Para 17.10 (rejection of incomplete/late applications; liability for missed farmers)"
+},
+{
+"at": "P67.L39",
+"label": "Section 17 – Collection of Applications and Premium › Paras 17.11–17.12 (upload of insured farmer details; IC verification)"
+},
+{
+"at": "P68.L12",
+"label": "Section 17 – Collection of Applications and Premium › Para 17.13 (reconciliation of applications with premium challans)"
+},
+{
+"at": "P68.L31",
+"label": "Section 17 – Collection of Applications and Premium › Paras 17.14–17.15 (privacy of farmer details; deemed approval)"
+},
+{
+"at": "P69.L2",
+"label": "Section 17 – Collection of Applications and Premium › Para 17.16 (grounds to revise or correct applications)"
+},
+{
+"at": "P69.L18",
+"label": "Section 17 – Collection of Applications and Premium › Paras 17.17–17.20 (penalty, acknowledgement receipts, timelines)"
+},
+{
+"at": "P69.L39",
+"label": "Section 18 – Assessment of Loss / Shortfall in Yield › Para 18.1 – Wide-Spread Calamities (season-end yield)"
+},
+{
+"at": "P70.L15",
+"label": "Section 18 – Assessment of Loss / Shortfall in Yield › Para 18.2 (Area Approach and insurance unit)"
+},
+{
+"at": "P70.L30",
+"label": "Section 18 – Assessment of Loss › Para 18.3 – Table 4: Number of CCEs at IU level › Para 18.4 – Smart Sampling Methodology"
+},
+{
+"at": "P71.L3",
+"label": "Section 18 › Para 18.5 – Modalities for Conducting CCEs › Para 18.5.1 (CCE Agri App, Rs.150 incentive per CCE)"
+},
+{
+"at": "P71.L31",
+"label": "Section 18 › Para 18.5 – Modalities for Conducting CCEs › Paras 18.5.2–18.5.3 (YES-TECH weightage, plot selection, GCES)"
+},
+{
+"at": "P72.L1",
+"label": "Section 18 › Para 18.5 – Modalities for Conducting CCEs › Paras 18.5.4–18.5.8 (GCES experiments, SST, CCE Manual 2023)"
+},
+{
+"at": "P72.L20",
+"label": "Section 18 › Para 18.5 – Modalities for Conducting CCEs › Paras 18.5.9–18.5.10 (audit, geo-coding, outsourced agencies)"
+},
+{
+"at": "P72.L32",
+"label": "Section 18 › Para 18.5 – Modalities for Conducting CCEs › Para 18.5.11 – District level Steering Committee"
+},
+{
+"at": "P73.L1",
+"label": "Para 18.5.11 (contd.) – Insurance Company official in CCE Steering Committee and CCE schedules"
+},
+{
+"at": "P73.L21",
+"label": "Para 18.5.12 – Yield estimate when required number of CCEs could not be conducted"
+},
+{
+"at": "P73.L36",
+"label": "Para 18.5.13 – Modalities for Conducting CCEs for Multi-Picking Crops › Para 18.5.13.1 – number of pickings"
+},
+{
+"at": "P74.L2",
+"label": "Para 18.5.13 – Multi-Picking Crops › Paras 18.5.13.2-18.5.13.3 – statistical factor and Table 5 (yield calculation example)"
+},
+{
+"at": "P74.L41",
+"label": "Para 18.5.13 – Multi-Picking Crops › Paras 18.5.13.4-18.5.13.5 – picking date disputes and no proper CCE"
+},
+{
+"at": "P75.L2",
+"label": "Para 18.5.13 – Multi-Picking Crops › Para 18.5.13.6 – claims settled on CCE yield data on NCIP"
+},
+{
+"at": "P75.L18",
+"label": "Para 18.5.13 – Multi-Picking Crops › Para 18.5.13.7 – Insurance Companies' access to co-witness CCEs"
+},
+{
+"at": "P75.L33",
+"label": "Para 19 – Dispute resolution regarding Yield Data/Crop Loss Data › Paras 19.1-19.2 – yield dispute procedure and timelines"
+},
+{
+"at": "P77.L1",
+"label": "Para 19 – Dispute resolution regarding Yield Data › Paras 19.3-19.4 – Central Technical Advisory Committee (TAC)"
+},
+{
+"at": "P77.L20",
+"label": "Para 19 – Dispute resolution regarding Yield Data › Paras 19.5-19.6 – State Level Technical Advisory Committee (STAC)"
+},
+{
+"at": "P77.L31",
+"label": "Para 19.7 – SOP for Yield Assessment dispute cases › Para 19.7.1 – When to use this SOP (conditions)"
+},
+{
+"at": "P78.L9",
+"label": "Para 19.7 – SOP for Yield Assessment disputes › Paras 19.7.2-19.7.3 – Technical Agencies and data from State/UT"
+},
+{
+"at": "P78.L30",
+"label": "Para 19.7 – SOP for Yield Assessment disputes › Para 19.7.4 – Data to be provided by Insurance Company"
+},
+{
+"at": "P79.L1",
+"label": "Para 19.7 – SOP for Yield Assessment disputes › Para 19.7.5 – Analysis by Technical Agency › Steps (a)-(b)"
+},
+{
+"at": "P79.L24",
+"label": "Para 19.7 – SOP for Yield Assessment disputes › Para 19.7.5 – Analysis by Technical Agency › Steps (c)-(d)"
+},
+{
+"at": "P79.L36",
+"label": "Para 19.7.5 – Analysis by Technical Agency › Step (e) Vegetation Index from satellite data and Table 6 (resolution)"
+},
+{
+"at": "P80.L19",
+"label": "Para 19.7.5 – Analysis by Technical Agency › Steps (f) Crop Growth Modelling and (g) Identification of Outliers"
+},
+{
+"at": "P80.L40",
+"label": "Para 19.7.5 – Analysis by Technical Agency › Step (h) Computing Yield for the Outliers"
+},
+{
+"at": "P81.L15",
+"label": "Para 19.7 – SOP for Yield Assessment disputes › Paras 19.7.6-19.7.8 – time, funds and support for analysis"
+},
+{
+"at": "P81.L26",
+"label": "Para 19.7 – SOP for Yield Assessment disputes › Para 19.7.9 – General Suggestions to avoid dispute"
+},
+{
+"at": "P82.L1",
+"label": "Para 20 – Use of Innovative Technologies in Yield Estimation › Para 20.1 – Smart Sampling Technique (SST) › Para 20.1.1"
+},
+{
+"at": "P82.L21",
+"label": "Para 20.1 – Smart Sampling Technique (SST) › Paras 20.1.2-20.1.2.1 – input layers and Crop map"
+},
+{
+"at": "P82.L35",
+"label": "Para 20.1 – Smart Sampling Technique (SST) › Para 20.1.2.2 – Crop yield proxy map"
+},
+{
+"at": "P83.L1",
+"label": "Para 20.1 – Smart Sampling Technique (SST) › Para 20.1.3 – Selection of CCE fields"
+},
+{
+"at": "P83.L16",
+"label": "Para 20.1 – Smart Sampling Technique (SST) › Paras 20.1.4-20.1.5 – Crops to be covered and Variable Methodology"
+},
+{
+"at": "P83.L31",
+"label": "Para 20.1 – Smart Sampling Technique (SST) › Para 20.1.6 – crop calendar, notification of districts/crops, MNCFC role"
+},
+{
+"at": "P84.L7",
+"label": "Para 20.1 – Smart Sampling Technique (SST) › Para 20.1.7 – State/UT preparedness for SST"
+},
+{
+"at": "P84.L11",
+"label": "Para 20.2 – Direct Yield Estimation through Technology › Para 20.2.1 – YES-TECH › Paras 20.2.1.1-20.2.1.2"
+},
+{
+"at": "P84.L31",
+"label": "Para 20.2.1 – YES-TECH › Paras 20.2.1.3-20.2.1.6 – nation-wide rollout, Manual 2023, weightage to technology"
+},
+{
+"at": "P85.L5",
+"label": "Para 20.2.1 – YES-TECH › Para 20.2.1.7 – Weightage to technology if CCEs not done through CCE-Agri app (table)"
+},
+{
+"at": "P85.L14",
+"label": "Para 20.2.1 – YES-TECH › Para 20.2.1.8 – MITR and Technology Implementation Partner (TIP)"
+},
+{
+"at": "P85.L27",
+"label": "Para 20.2.1 – YES-TECH › Para 20.2.1.9 – Cost sharing between GoI and States/UTs (table)"
+},
+{
+"at": "P85.L41",
+"label": "Para 20.2.2 – Collection of Real-time Photos and Observations of Crops (CROPIC) › Paras 20.2.2.1-20.2.2.3"
+},
+{
+"at": "P86.L3",
+"label": "Para 20.2.2 – CROPIC › Paras 20.2.2.4-20.2.2.6 – CROPIC App and monetary incentive for crop photos"
+},
+{
+"at": "P86.L16",
+"label": "Para 20.3 – Concerns in Yield Data Quality and Timelines for Data Reporting › Para 20.3.1"
+},
+{
+"at": "P86.L25",
+"label": "Para 20.3 – Concerns in Yield Data Quality › Para 20.3.2 – Synthetic (technology derived) yield when CCE data delayed"
+},
+{
+"at": "P86.L43",
+"label": "Para 20.4 – Fund for Innovation and Technology (FIAT) › Paras 20.4.1-20.4.2 – creation and funding"
+},
+{
+"at": "P87.L12",
+"label": "Para 20.4 – Fund for Innovation and Technology (FIAT) › Paras 20.4.3-20.4.4 – activities funded"
+},
+{
+"at": "P87.L27",
+"label": "Para 20.5 – Support to the States and Insurance Companies for Technology Adoption"
+},
+{
+"at": "P87.L42",
+"label": "Para 20.6 – Training and Capacity Building"
+},
+{
+"at": "P88.L7",
+"label": "Para 21 – Assessment of Claims & Claim Settlement › Para 21.1 – claim liability and Government protection"
+},
+{
+"at": "P88.L22",
+"label": "Para 21.2 – Yield Loss due to Wide-spread Calamities under Basic Cover › Para 21.2.1 – claim formula and Threshold Yield illustration"
+},
+{
+"at": "P89.L6",
+"label": "Para 21.2 – Basic Cover › Para 21.2.2 – District Level Joint Committee (DLJC)"
+},
+{
+"at": "P89.L9",
+"label": "Para 21.3 – Prevented/Failed Sowing and Prevented Planting/Germination Claims › Para 21.3.1 – cover"
+},
+{
+"at": "P89.L17",
+"label": "Para 21.3 – Prevented Sowing › Para 21.3.2 – Eligibility Criteria › Paras 21.3.2.1-21.3.2.3"
+},
+{
+"at": "P89.L31",
+"label": "Para 21.3 – Prevented Sowing › Para 21.3.2 – Eligibility Criteria › Paras 21.3.2.4-21.3.2.5 – invocation and joint loss survey"
+},
+{
+"at": "P90.L3",
+"label": "Para 21.3 – Prevented Sowing › Para 21.3.2 – Eligibility › Paras 21.3.2.6-21.3.2.7 – STAC assessment and 25% of Sum Insured payable"
+},
+{
+"at": "P90.L17",
+"label": "Para 21.3 – Prevented Sowing › Para 21.3.3 – Proxy-Indicators"
+},
+{
+"at": "P90.L23",
+"label": "Para 21.3 – Prevented Sowing › Para 21.3.4 – Loss Assessment Procedure › Paras 21.3.4.1-21.3.4.2"
+},
+{
+"at": "P90.L40",
+"label": "Para 21.3 – Prevented Sowing › Para 21.3.4 – Loss Assessment Procedure › Para 21.3.4.3 – DLMC meeting and joint survey"
+},
+{
+"at": "P91.L6",
+"label": "Para 21.3 – Prevented Sowing › Para 21.3.4 – Loss Assessment Procedure › Paras 21.3.4.4-21.3.4.7"
+},
+{
+"at": "P91.L22",
+"label": "Para 21.3 – Prevented Sowing › Para 21.3.5 – Conditions › Paras 21.3.5.1-21.3.5.5"
+},
+{
+"at": "P91.L41",
+"label": "Para 21.3 – Prevented Sowing › Para 21.3.5 – Conditions › Paras 21.3.5.6-21.3.5.9 – termination of cover, premium remittance"
+},
+{
+"at": "P92.L11",
+"label": "Para 21.3 – Prevented Sowing › Para 21.3.5.10 – Illustration of prevented sowing payout"
+},
+{
+"at": "P92.L18",
+"label": "Para 21.3.5.11 – Table 8: Procedure and Timelines for Prevented Sowing claims › Row 1 – DLJC formation and notification details"
+},
+{
+"at": "P93.L22",
+"label": "Para 21.3.5.11 – Table 8: Prevented Sowing timelines › Row 2 – eligibility decision on proxy indicators (>75% affected area)"
+},
+{
+"at": "P94.L18",
+"label": "Para 21.3.5.11 – Table 8: Prevented Sowing timelines › Rows 3-6 – DLMC meeting, sample survey, notification, farmer data"
+},
+{
+"at": "P95.L1",
+"label": "Para 21.3.5.11 – Table 8: Prevented Sowing timelines › Rows 7-10 – disputes, claim assessment, payment, NCIP upload"
+},
+{
+"at": "P95.L53",
+"label": "Para 21.4 – On-Account Payment of Claims due to Mid-Season Adversity › Paras 21.4.1-21.4.2.3 – cover and eligibility"
+},
+{
+"at": "P96.L9",
+"label": "Para 21.4 – Mid-Season Adversity › Para 21.4.2 – Eligibility › Paras 21.4.2.4-21.4.2.5 – joint survey and technology assessment"
+},
+{
+"at": "P96.L24",
+"label": "Para 21.4 – Mid-Season Adversity › Para 21.4.2 – Eligibility › Paras 21.4.2.6-21.4.2.8 – premium debit, 25% payable, timing"
+},
+{
+"at": "P96.L40",
+"label": "Para 21.4 – Mid-Season Adversity › Para 21.4.2 – Eligibility › Paras 21.4.2.9-21.4.2.11 – maximum liability and payout modalities"
+},
+{
+"at": "P97.L5",
+"label": "Para 21.4 – Mid-Season Adversity › Para 21.4.3 – Proxy-Indicators"
+},
+{
+"at": "P97.L14",
+"label": "Para 21.4 – Mid-Season Adversity › Para 21.4.4 – Loss Assessment Procedure › Paras 21.4.4.1-21.4.4.2"
+},
+{
+"at": "P97.L35",
+"label": "Para 21.4 – Mid-Season Adversity › Para 21.4.4 – Loss Assessment Procedure › Paras 21.4.4.3-21.4.4.6"
+},
+{
+"at": "P98.L8",
+"label": "Para 21.4 – Mid-Season Adversity › Para 21.4.4 – Loss Assessment › Paras 21.4.4.7-21.4.4.9 – On-Account payment formula"
+},
+{
+"at": "P98.L20",
+"label": "Para 21.4 – Mid-Season Adversity › Para 21.4.5 – Timeframe for Loss Assessment and Submission of Report"
+},
+{
+"at": "P98.L36",
+"label": "Para 21.4 – Mid-Season Adversity › Para 21.4.6 – Conditions › Paras 21.4.6.1-21.4.6.5"
+},
+{
+"at": "P99.L13",
+"label": "Para 21.4 – Mid-Season Adversity › Para 21.4.6 – Illustration of on-account claims"
+},
+{
+"at": "P99.L25",
+"label": "Para 21.4.6.6 – Table 9: Procedure and Timelines for On-Account Payment (Mid-Season Adversity) › Row 1 – DLJC formation"
+},
+{
+"at": "P100.L21",
+"label": "Para 21.4.6.6 – Table 9: Mid-Season Adversity timelines › Row 2 – eligibility decision on proxy indicators"
+},
+{
+"at": "P101.L12",
+"label": "Para 21.4.6.6 – Table 9: Mid-Season Adversity timelines › Rows 3-5 – DLJC meeting, loss survey, disputes"
+},
+{
+"at": "P101.L63",
+"label": "Para 21.4.6.6 – Table 9: Mid-Season Adversity timelines › Rows 6-8 – assessment, payment, NCIP upload"
+},
+{
+"at": "P102.L8",
+"label": "Para 21.5 – Localized Calamity › Paras 21.5.1-21.5.3 – cover, inundation definition, joint survey"
+},
+{
+"at": "P102.L25",
+"label": "Para 21.5 – Localized Calamity › Para 21.5.4 – Eligibility Criteria › Paras 21.5.4.1-21.5.4.5"
+},
+{
+"at": "P102.L40",
+"label": "Para 21.5 – Localized Calamity › Para 21.5.4 – Eligibility › Paras 21.5.4.6-21.5.4.8 – payout, multiple events, proxy-indicators"
+},
+{
+"at": "P103.L10",
+"label": "Para 21.5 – Localized Calamity › Para 21.5.5 – Loss Assessment Procedure › Para 21.5.5.1 – Time and Method of Reporting"
+},
+{
+"at": "P103.L29",
+"label": "Para 21.5 – Localized Calamity › Para 21.5.5 – Loss Assessment › Paras 21.5.5.2-21.5.5.3 – claim formula and mobile App"
+},
+{
+"at": "P103.L37",
+"label": "Para 21.5 – Localized Calamity › Para 21.5.5 – Loss Assessment › Paras 21.5.5.4-21.5.5.6 – Channel of reporting (72 hours, 14447)"
+},
+{
+"at": "P104.L12",
+"label": "Para 21.5 – Localized Calamity › Para 21.5.6 – Documentary Evidence Required for Loss Assessment"
+},
+{
+"at": "P104.L30",
+"label": "Para 21.5 – Localized Calamity › Para 21.5.7 – Appointment of Loss Assessors by the Insurance Company"
+},
+{
+"at": "P105.L8",
+"label": "Para 21.5 – Localized Calamity › Para 21.5.8 – Time frame for Loss Assessment and Submission of Report"
+},
+{
+"at": "P105.L28",
+"label": "Para 21.5 – Localized Calamity › Para 21.5.8 – Wide-spread Localized Calamity (>25% area) and sample size"
+},
+{
+"at": "P106.L9",
+"label": "Para 21.5 – Localized Calamity › Para 21.5.9 – Conditions › Paras 21.5.9.1-21.5.9.3"
+},
+{
+"at": "P106.L25",
+"label": "Para 21.5 – Localized Calamity › Para 21.5.9 – Conditions › Paras 21.5.9.4-21.5.9.5 – joint survey and technology assessment"
+},
+{
+"at": "P106.L41",
+"label": "Para 21.5 – Localized Calamity › Para 21.5.9 – Conditions › Paras 21.5.9.6-21.5.9.8 – claim disbursement and eligibility"
+},
+{
+"at": "P107.L5",
+"label": "Para 21.5.10 – Table 10: Procedure and Timelines for Localized claims › Row 1 – farmer intimation within 72 hours"
+},
+{
+"at": "P108.L23",
+"label": "Para 21.5.10 – Table 10: Localized claims timelines › Rows 2-8 – forwarding, loss assessor, assessment, payment"
+},
+{
+"at": "P109.L8",
+"label": "Para 21.5.10 – Localized claims › Protocol for Area based Assessment (affected area >25%) › Row 1 – proxy indicators"
+},
+{
+"at": "P110.L1",
+"label": "Para 21.5.10 – Localized claims › Protocol for Area based Assessment › Rows 2-3 – DLJC meeting and loss survey"
+},
+{
+"at": "P110.L36",
+"label": "Para 21.5.10 – Localized claims › Protocol for Area based Assessment › Rows 4-7 – disputes, payout, NCIP upload"
+},
+{
+"at": "P110.L78",
+"label": "Para 21.5 – Localized Calamity › Notes 1-3 (inundation, hydrophilic crops, widespread) and claim illustration"
+},
+{
+"at": "P111.L13",
+"label": "Para 21.6 – Post-Harvest Losses › Paras 21.6.1-21.6.3 – cover, unseasonal rain trigger, joint survey"
+},
+{
+"at": "P111.L28",
+"label": "Para 21.6 – Post-Harvest Losses › Para 21.6.4 – Eligibility Criteria › Paras 21.6.4.1-21.6.4.4"
+},
+{
+"at": "P112.L1",
+"label": "Para 21.6 – Post-Harvest Losses › Paras 21.6.4.5-21.6.4.6 and Para 21.6.5 – maximum liability, payout, proxy-indicators"
+},
+{
+"at": "P112.L12",
+"label": "Para 21.6 – Post-Harvest Losses › Para 21.6.6 – Loss Assessment Procedure › Para 21.6.6.1 – Time and method of reporting"
+},
+{
+"at": "P112.L31",
+"label": "Para 21.6 – Post-Harvest Losses › Para 21.6.6 – Loss Assessment › Paras 21.6.6.2-21.6.6.3 – claim formula and mobile App"
+},
+{
+"at": "P112.L39",
+"label": "Para 21.6 – Post-Harvest Losses › Para 21.6.6 – Loss Assessment › Paras 21.6.6.4-21.6.6.6 – Channel of reporting"
+},
+{
+"at": "P113.L16",
+"label": "Para 21.6 – Post-Harvest Losses › Para 21.6.7 – Documentary Evidence required for Loss Assessment"
+},
+{
+"at": "P113.L34",
+"label": "Para 21.6 – Post-Harvest Losses › Para 21.6.8 – Appointment of Loss Assessors by the Insurance Company"
+},
+{
+"at": "P114.L8",
+"label": "Para 21.6 – Post-Harvest Losses › Para 21.6.9 – Time Frame for Loss Assessment and Submission of Report › Items A-F"
+},
+{
+"at": "P114.L28",
+"label": "Para 21.6 – Post-Harvest Losses › Para 21.6.9 – Items G-I – Wide-Spread Post Harvest Losses and sample size"
+},
+{
+"at": "P115.L7",
+"label": "Para 21.6 – Post-Harvest Losses › Para 21.6.10 – Conditions › Paras 21.6.10.1-21.6.10.3"
+},
+{
+"at": "P115.L23",
+"label": "Para 21.6 – Post-Harvest Losses › Para 21.6.10 – Conditions › Paras 21.6.10.4-21.6.10.5 – joint survey and technology assessment"
+},
+{
+"at": "P115.L39",
+"label": "Para 21.6 – Post-Harvest Losses › Para 21.6.10 – Conditions › Paras 21.6.10.6-21.6.10.8 – claim disbursement and eligibility"
+},
+{
+"at": "P116.L3",
+"label": "Para 21.6.11 – Table 11: Procedure and Timelines for Post-Harvest Loss › Row 1 – farmer intimation within 72 hours"
+},
+{
+"at": "P117.L11",
+"label": "Para 21.6.11 – Table 11: Post-Harvest Loss timelines › Rows 2-8 – forwarding, loss assessor, assessment, payment"
+},
+{
+"at": "P117.L53",
+"label": "Para 21.6.11 – Post-Harvest Loss › Protocol for Area based Assessment (affected area >25%) › Row 1 – proxy indicators"
+},
+{
+"at": "P118.L31",
+"label": "Para 21.6.11 – Post-Harvest Loss › Protocol for Area based Assessment › Rows 2-3 – DLJC meeting and loss survey"
+},
+{
+"at": "P118.L60",
+"label": "Para 21.6.11 – Post-Harvest Loss › Protocol for Area based Assessment › Rows 4-7 – disputes, payout, NCIP upload"
+},
+{
+"at": "P119.L14",
+"label": "Para 21.6 – Post-Harvest Losses › Note 3 (widespread losses) and claim illustration"
+},
+{
+"at": "P119.L23",
+"label": "Para 21.7 – Claim Settlement under Multiple Events of Similar or Different Perils › Paras 21.7.1-21.7.2"
+},
+{
+"at": "P119.L36",
+"label": "Para 21.7 – Multiple Events › Paras 21.7.3-21.7.4 – claims under identical covers"
+},
+{
+"at": "P120.L9",
+"label": "Para 21.7 – Multiple Events › Paras 21.7.5-21.7.6 – claims under different covers on balance Sum Insured"
+},
+{
+"at": "P120.L24",
+"label": "Para 21.7 – Multiple Events › Para 21.7.7 – Preventive Sowing ends cover; interplay of events › Para 21.7.8 flowchart heading"
+},
+{
+"at": "P121.L2",
+"label": "Para 22 – Participation of Loss Assessors/Evaluators › Para 22.1 – Empanelment Criteria › Para 22.1.1 (with Para 21.7.8 claim flowchart text)"
+},
+{
+"at": "P122.L2",
+"label": "Para 22.1 – Empanelment of Loss Assessment Agencies › Paras 22.1.2-22.1.4 – pre-qualification, evaluation, de-empanelment"
+},
+{
+"at": "P122.L17",
+"label": "Para 22.1 – Empanelment of Loss Assessment Agencies › Paras 22.1.5-22.1.7 – malpractice and Certified Crop Loss Assessors"
+},
+{
+"at": "P122.L33",
+"label": "Para 23 – Procedure for Settlement of Claims to the Farmers › Para 23.1 – Government subsidy tranches needed for claims"
+},
+{
+"at": "P122.L44",
+"label": "Para 23 – Settlement of Claims › Paras 23.2-23.3 – Threshold/Actual Yield upload on NCIP and loss data entry"
+},
+{
+"at": "P123.L23",
+"label": "Para 23 – Settlement of Claims › Paras 23.4-23.5 – approval of loss reports and claim payment through PFMS"
+},
+{
+"at": "P123.L43",
+"label": "Para 23 – Settlement of Claims › Para 23.6 – auto-approval of CCE data and Synthetic Yield if AY not submitted"
+},
+{
+"at": "P124.L3",
+"label": "Para 23 – Settlement of Claims › Para 23.7 – claim payment to loanee farmers (bank account, AEPS)"
+},
+{
+"at": "P124.L16",
+"label": "Para 23 – Settlement of Claims › Paras 23.8-23.9 – claim payment to non-loanee farmers via AEPS; change of account"
+},
+{
+"at": "P124.L29",
+"label": "Para 23 – Settlement of Claims › Paras 23.10-23.11 – claims to legal heir; unremitted claims to FIAT"
+},
+{
+"at": "P125.L1",
+"label": "Para 23 – Settlement of Claims › Paras 23.12-23.13 – add-on claims and SMS intimation of claim settlement"
+},
+{
+"at": "P125.L15",
+"label": "Para 23 – Settlement of Claims › Paras 23.14-23.15 – no reopening of claims after 30 days; PFMS verification"
+},
+{
+"at": "P125.L28",
+"label": "Para 23 – Settlement of Claims › Para 23.16 – minimum claim amount threshold (Options 1-3)"
+},
+{
+"at": "P125.L40",
+"label": "Para 24 – Important Conditions/ Clauses Applicable for Coverage of Risks › Paras 24.1-24.4"
+},
+{
+"at": "P126.L16",
+"label": "Para 25 – Acreage Discrepancy › Para 25.1 – excess coverage, de-duplication and change of insured crop"
+},
+{
+"at": "P127.L7",
+"label": "Para 25 – Acreage Discrepancy › Paras 25.2-25.3 – field verification and incorrect reporting of insured crop"
+},
+{
+"at": "P127.L22",
+"label": "Para 25 – Acreage Discrepancy › Para 25.4 – reporting large-scale excess insured area"
+},
+{
+"at": "P127.L30",
+"label": "Para 25 – Acreage Discrepancy › Para 25.5 – reporting excess insured area and ghost applications"
+},
+{
+"at": "P127.L46",
+"label": "Para 25 – Acreage Discrepancy › Paras 25.6-25.7 – application of Area Correction Factor (ACF)"
+},
+{
+"at": "P128.L16",
+"label": "Para 25 – Acreage Discrepancy › Paras 25.8-25.9 – forfeiture of premium for excess area and subsidy refund"
+},
+{
+"at": "P128.L26",
+"label": "Para 26 – Information Education & Communication (IEC) and Capacity Building › Para 26.1"
+},
+{
+"at": "P128.L42",
+"label": "Para 26 – IEC and Capacity Building › Paras 26.2-26.3 – challenges and objectives"
+},
+{
+"at": "P129.L21",
+"label": "Para 26 – IEC and Capacity Building › Para 26.4 – strategies › Paras 26.4.1-26.4.2"
+},
+{
+"at": "P129.L38",
+"label": "Para 26.4 – IEC strategies › Paras 26.4.3-26.4.6 – budget, village publicity, timing, social media"
+},
+{
+"at": "P130.L9",
+"label": "Para 26.4 – IEC strategies › Paras 26.4.7-26.4.8 – 0.5% of Gross Written Premium for IEC"
+},
+{
+"at": "P130.L17",
+"label": "Para 26.4 – IEC strategies › Para 26.4.9 – Central IEC Pool Fund and IEC advisory Committee"
+},
+{
+"at": "P130.L32",
+"label": "Para 26.4 – IEC strategies › Paras 26.4.10-26.4.12 – balance 0.25%, NER/Himalayan needs, upload of material"
+},
+{
+"at": "P130.L44",
+"label": "Para 26.4 – IEC strategies › Paras 26.4.13-26.4.16 – training institutes, master trainers, monitoring"
+},
+{
+"at": "P131.L18",
+"label": "Para 27 – Service Charges › Paras 27.1-27.3"
+},
+{
+"at": "P131.L34",
+"label": "Para 27 – Service Charges › Paras 27.4-27.6 – no charges for anomalous applications, delay interest 12%"
+},
+{
+"at": "P132.L6",
+"label": "Para 27 – Service Charges › Para 27.7 – Bank HQs and Bank Branches (4% of farmers' share)"
+},
+{
+"at": "P132.L26",
+"label": "Para 27 – Service Charges › Para 27.8 – CSC, BCs & Other Intermediaries › Para 27.8.1 – CSC e-Gov"
+},
+{
+"at": "P132.L38",
+"label": "Para 27.8 – CSC, BCs & Other Intermediaries › Paras 27.8.2-27.8.3 – CSCs, BCs and insurance intermediaries"
+},
+{
+"at": "P133.L10",
+"label": "Para 28 – Goods & Service Tax (GST) › Para 28.1 – premium exempted from GST"
+},
+{
+"at": "P133.L13",
+"label": "Para 29 – Monitoring and Review of the Scheme › Paras 29.1-29.2 – SLCCCI, NLMC and National Review Conference"
+},
+{
+"at": "P133.L27",
+"label": "Para 29 – Monitoring and Review › Para 29.3 – monitoring measures › Paras 29.3.1-29.3.2 – data submission and excess area"
+},
+{
+"at": "P134.L1",
+"label": "Para 29.3 – Monitoring measures › Paras 29.3.3-29.3.6 – claim calculation, DigiClaim, tracking status on NCIP"
+},
+{
+"at": "P134.L25",
+"label": "Para 29.3 – Monitoring measures › Paras 29.3.7-29.3.9 – verification of beneficiaries (5%, 10%, 1-2%)"
+},
+{
+"at": "P134.L34",
+"label": "Para 30 – Grievance Redressal Mechanism › Paras 30.1-30.2 – Taluka/District grievance redressal officer"
+},
+{
+"at": "P135.L3",
+"label": "Para 30 – Grievance Redressal › Para 30.3 – Appellate Committee (AC)/DGRC at District Level"
+},
+{
+"at": "P135.L21",
+"label": "Para 30 – Grievance Redressal › Para 30.4 – State Level Grievance Redressal Committee (SGRC)"
+},
+{
+"at": "P135.L32",
+"label": "Para 30 – Grievance Redressal › Para 30.5 – grievances raised directly at SGRC (over Rs. 25 Lakh), 15-day disposal"
+},
+{
+"at": "P135.L45",
+"label": "Para 30 – Grievance Redressal › Para 30.5 – State/UT responsibilities A-G for grievance redressal"
+},
+{
+"at": "P136.L20",
+"label": "Para 30.6 – Krishi Rakshak Portal & Helpline (KRPH) › Para 30.6.1 – toll-free number and ticket system"
+},
+{
+"at": "P136.L34",
+"label": "Para 30.6 – Krishi Rakshak Portal & Helpline (KRPH) › Paras 30.6.2-30.6.3 – portal features, escalation, 15 days"
+},
+{
+"at": "P137.L10",
+"label": "Para 30.6 – Krishi Rakshak Portal & Helpline (KRPH) › Paras 30.6.4-30.6.7 – other sources, Ticket ID, Bima Bharosa, re-opening"
+},
+{
+"at": "P137.L32",
+"label": "Para 30.7 – Grievance Redressal Mechanism by Insurance Company › Paras 30.7.1-30.7.2"
+},
+{
+"at": "P138.L1",
+"label": "Para 30.7 – Grievance Redressal by Insurance Company › Paras 30.7.3-30.7.5 – 15-day disposal, monthly report, KRPH"
+},
+{
+"at": "P138.L10",
+"label": "Para 30.8 – Committee to Examine Additional Claims due to Errors, Omissions and Commissions of financial Institutions"
+},
+{
+"at": "P138.L34",
+"label": "Para 31 – Empanelment and Selection of Insurance Companies (ICs) › Para 31.1 – Empanelment Criteria › Para 31.1.1"
+},
+{
+"at": "P139.L1",
+"label": "Para 31.1 – Empanelment Criteria › Para 31.1.2 – no surrender of clusters after L1 selection"
+},
+{
+"at": "P139.L15",
+"label": "Para 31.1 – Empanelment Criteria › Paras 31.1.3-31.1.5 – NER bidding, no outsourcing, co-insurance"
+},
+{
+"at": "P139.L30",
+"label": "Para 31.2 – Selection Criteria of Empaneled Insurance Companies as Implementing Agency (IA) › Paras 31.2.1-31.2.2"
+},
+{
+"at": "P140.L1",
+"label": "Para 31.2 – Selection of Implementing Agency › Paras 31.2.3-31.2.4 – L1 bidder and three-year selection"
+},
+{
+"at": "P140.L17",
+"label": "Para 31.2 – Selection of Implementing Agency › Paras 31.2.5-31.2.6 – coverage levels and data for tender"
+},
+{
+"at": "P140.L29",
+"label": "Para 32 – Clustering/Clubbing of Districts for Bidding by the State/UT › Para 32.1"
+},
+{
+"at": "P140.L43",
+"label": "Para 32 – Clustering of Districts › Paras 32.2-32.3 – high-risk districts and objectives of clustering"
+},
+{
+"at": "P141.L14",
+"label": "Para 32 – Clustering of Districts › Paras 32.4-32.5 – risk analysis using long-term yield data"
+},
+{
+"at": "P141.L26",
+"label": "Para 32 – Clustering of Districts › Paras 32.6-32.8 – satellite data for risk analysis; Annexure-III"
+},
+{
+"at": "P142.L1",
+"label": "Para 33 – Assessment of Performance and De-empanelment of Insurance Companies › Paras 33.1-33.3"
+},
+{
+"at": "P142.L17",
+"label": "Para 33 – Performance of Insurance Companies › Paras 33.4-33.6 – evaluation report and reward/punitive action"
+},
+{
+"at": "P142.L34",
+"label": "Para 34 – Evaluation of Efficiency of Nodal Departments of the State/UT"
+},
+{
+"at": "P142.L41",
+"label": "Para 35 – Evaluation of Efficiency of Districts"
+},
+{
+"at": "P143.L9",
+"label": "Para 36 – Evaluation of Efficiency of Banks"
+},
+{
+"at": "P143.L16",
+"label": "Para 37 – Evaluation of Efficiency of CSC-VLEs"
+},
+{
+"at": "P143.L23",
+"label": "Para 38 – Role and Responsibilities of Various Agencies › Para 38.1 – Government of India (GoI) › Paras 38.1.1-38.1.3"
+},
+{
+"at": "P144.L1",
+"label": "Para 38.1 – Role of Government of India (GoI) › Paras 38.1.4-38.1.9"
+},
+{
+"at": "P144.L19",
+"label": "Para 38.1 – Role of Government of India (GoI) › Paras 38.1.10-38.1.13"
+},
+{
+"at": "P144.L34",
+"label": "Para 38.1 – Role of Government of India (GoI) › Paras 38.1.14-38.1.18"
+},
+{
+"at": "P145.L13",
+"label": "Para 38.2 – Role of State Government/UT Administration › Paras 38.2.1-38.2.4"
+},
+{
+"at": "P145.L31",
+"label": "Para 38.2 – Role of State Government/UT Administration › Paras 38.2.5-38.2.8"
+},
+{
+"at": "P146.L1",
+"label": "Para 38 › 38.2 – Responsibilities of State Governments/UTs › Paras 38.2.9–38.2.13 (yield data, weather data, awareness, premium subsidy release)"
+},
+{
+"at": "P146.L19",
+"label": "Para 38 › 38.2 – Responsibilities of State Governments/UTs › Paras 38.2.14–38.2.20 (yield data, CCEs, AY/TY approval, seasonality, prevented sowing)"
+},
+{
+"at": "P147.L1",
+"label": "Para 38 › 38.2 – Responsibilities of State Governments/UTs › Paras 38.2.21–38.2.27 (CCE data, State PMU, office space, penalties)"
+},
+{
+"at": "P147.L16",
+"label": "Para 38 › 38.3 – Central PMUs and State PMUs › Paras 38.3.1–38.3.11 (roles)"
+},
+{
+"at": "P148.L6",
+"label": "Para 38 › 38.4 – Insurance Companies (ICs) › Paras 38.4.1–38.4.7 (liaison, claims, land record verification, commissions)"
+},
+{
+"at": "P148.L29",
+"label": "Para 38 › 38.4 – Insurance Companies (ICs) › Paras 38.4.8–38.4.13 (awareness, reports, AIDE App, grievances, coverage channels)"
+},
+{
+"at": "P149.L12",
+"label": "Para 38 › 38.4 – Insurance Companies (ICs) › Paras 38.4.14–38.4.15 (district/tehsil offices, CCE co-observation)"
+},
+{
+"at": "P149.L26",
+"label": "Para 38 › 38.4 – Insurance Companies (ICs) › Paras 38.4.16–38.4.19 (IEC plan, reconciliation, compliance)"
+},
+{
+"at": "P149.L39",
+"label": "Para 38 › 38.5 – Financial Institutions/Banks › Paras 38.5.1–38.5.7 (opt-out, non-loanee service, premium remittance)"
+},
+{
+"at": "P150.L18",
+"label": "Para 38 › 38.5 – Financial Institutions/Banks › Paras 38.5.8–38.5.9 (all loanee farmers insured, bank liable for claims)"
+},
+{
+"at": "P150.L38",
+"label": "Para 38 › 38.5 – Financial Institutions/Banks › Paras 38.5.10–38.5.14 (clarifications in 7 days, Aadhaar, bank liability for errors)"
+},
+{
+"at": "P151.L16",
+"label": "Para 38 › 38.5 – Financial Institutions/Banks › Paras 38.5.15–38.5.21 (educating farmers, records, premium debit, no re-enrolment)"
+},
+{
+"at": "P151.L36",
+"label": "Para 38 › 38.6 – Common Service Centre-Special Purpose Vehicle (CSC-SPV) › Paras 38.6.1–38.6.7"
+},
+{
+"at": "P152.L14",
+"label": "Para 38 › 38.6 – CSC-SPV › Paras 38.6.8–38.6.10 (VLE malpractice, CSC liability for rejected applications)"
+},
+{
+"at": "P152.L29",
+"label": "Para 38 › 38.7 – Common Service Centers-Village Level Entrepreneurs (CSC-VLE) › Paras 38.7.1–38.7.5 (awareness, Aadhaar, no extra charges)"
+},
+{
+"at": "P153.L11",
+"label": "Para 38 › 38.7 – CSC-VLE › Paras 38.7.6–38.7.10 (correct details, acknowledgement, unlawful activities, liability)"
+},
+{
+"at": "P153.L38",
+"label": "Para 38 › 38.8 – Designated Insurance Agents/Insurance Intermediaries › Paras 38.8.1–38.8.5"
+},
+{
+"at": "P154.L19",
+"label": "Para 38 › 38.8 – Insurance Intermediaries › Paras 38.8.6–38.8.10 (correct details, receipts, unlawful activities)"
+},
+{
+"at": "P155.L1",
+"label": "Para 38 › 38.8.11 & 38.9 – Liability for applications rejected due to intermediary/broker errors"
+},
+{
+"at": "P155.L13",
+"label": "Para 38 › 38.10 – Loanee Farmers › Paras 38.10.1–38.10.2 (opt-out declaration, crop change, Aadhaar)"
+},
+{
+"at": "P155.L29",
+"label": "Para 38 › 38.10 – Loanee Farmers › Paras 38.10.3–38.10.5 (cut-off date, loss intimation in 72 hours, no multiple insurance)"
+},
+{
+"at": "P156.L1",
+"label": "Para 38 › 38.11 – Non-Loanee Farmers › Paras 38.11.1–38.11.4 (Aadhaar, how to apply, documents, bank account)"
+},
+{
+"at": "P156.L26",
+"label": "Para 38 › 38.11 – Non-Loanee Farmers › Paras 38.11.5–38.11.9 (land ID, crop change, loss intimation, no multiple insurance)"
+},
+{
+"at": "P157.L5",
+"label": "Para 39 – National Crop Insurance Portal (NCIP) for Administration of Crop Insurance Program under PMFBY › Para 39.1.1 (overview)"
+},
+{
+"at": "P157.L24",
+"label": "Para 39 – National Crop Insurance Portal (NCIP) › Para 39.2 – Single IT platform and integration of stakeholders"
+},
+{
+"at": "P157.L42",
+"label": "Para 39 – NCIP › Para 39.3 & 39.4 – Different Modules of NCIP › 39.4.1 PFMS integration, 39.4.2 Online premium remittance"
+},
+{
+"at": "P158.L18",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.3 – Add-on Coverage of Crop Risk; 39.4.4 – Land Record Integration"
+},
+{
+"at": "P158.L41",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.5 – Location Master Management; 39.4.6 – Multi-lingual Portal"
+},
+{
+"at": "P159.L20",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.7 – Seasonality Discipline; 39.4.8 – CCE Agri App for Crop Yield Estimation (CCE schedule digitization)"
+},
+{
+"at": "P160.L3",
+"label": "Para 39 – NCIP › 39.4.8 CCE Agri App › (b) Smart Sampling Technique; (c) State Specific customization"
+},
+{
+"at": "P160.L14",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.9 – Digitization and Customized Notification (premium exemption, absolute amount, limited area)"
+},
+{
+"at": "P160.L39",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.10 – Subsidy Release Framework; 39.4.11 – Crop Insurance App for Self Service"
+},
+{
+"at": "P161.L16",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.12 – Monitoring Framework/MIS Dashboard"
+},
+{
+"at": "P161.L26",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.13 – DigiClaim: Automatic Claim Calculation and Settlement (claim types)"
+},
+{
+"at": "P162.L9",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.14 – Centralized Call Centre – KRPH (14447)"
+},
+{
+"at": "P162.L19",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.15 – WINDS – Hyperlocal Weather Data Platform"
+},
+{
+"at": "P162.L41",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.16 – AIDE App for Enrollment through Intermediaries"
+},
+{
+"at": "P163.L16",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.17 – SARTHI; 39.4.18 – Integration of NCIP with State/UT crop insurance portals"
+},
+{
+"at": "P163.L37",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.19 – Integration with External Agencies using Block Chain; 39.4.20 – SMS and Instant messaging"
+},
+{
+"at": "P164.L16",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.21 – Change of Crop/s; 39.4.22 – Aadhaar Vault implementation"
+},
+{
+"at": "P164.L35",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.23 – YES-TECH – Platform for Technology Based Yield Estimation"
+},
+{
+"at": "P165.L14",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.24 – Auto-Calculation of Service Charges"
+},
+{
+"at": "P165.L33",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.25 – NCIP as a Single Source of Truth for Risk Analysis"
+},
+{
+"at": "P166.L2",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.26 – Crop Monitoring through Digital Crop Survey (DCS) and CROPIC"
+},
+{
+"at": "P166.L26",
+"label": "Para 39 – NCIP › 39.4.26 DCS and CROPIC › Digital Crop Survey (DCS) data use and CROPIC digital system"
+},
+{
+"at": "P166.L40",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.27 – Integration with Agri-Stack & Krishi DSS"
+},
+{
+"at": "P167.L18",
+"label": "Para 39 – NCIP › 39.4 Modules › 39.4.28 – Validation with KCC Ecosystem; 39.4.29 – Integration with Various Digital Platforms"
+},
+{
+"at": "P168.L1",
+"label": "Annexure I – Add-on Coverage for Crop Loss due to Attack by Wild Animals › 1. Coverage; 2. Risks Covered"
+},
+{
+"at": "P168.L27",
+"label": "Annexure I – Wild Animals add-on cover › 3. Risk Acceptance › 3.1–3.3 (actuarial premium or corpus model)"
+},
+{
+"at": "P169.L8",
+"label": "Annexure I – Wild Animals add-on cover › 3. Risk Acceptance › 3.4–3.7 (liability, corpus fund, notional premium)"
+},
+{
+"at": "P169.L42",
+"label": "Annexure I – Wild Animals add-on cover › Claim Payment Illustration (Case I and Case II) and 3.8–3.9"
+},
+{
+"at": "P170.L26",
+"label": "Annexure I – Wild Animals add-on cover › 3.10 – Eligibility Criteria › 3.10.1–3.10.6"
+},
+{
+"at": "P171.L2",
+"label": "Annexure I – Wild Animals add-on cover › 3.10 – Eligibility Criteria › 3.10.7–3.10.12 (opting in, 30 days after sowing, 25% area)"
+},
+{
+"at": "P171.L22",
+"label": "Annexure I – Wild Animals add-on cover › 4. Proxy-Indicators; 5. Loss Assessment Procedure (reporting, claim formula)"
+},
+{
+"at": "P172.L16",
+"label": "Annexure I – Wild Animals add-on cover › 6. Channel of Reporting i.e. Whom to be Reported"
+},
+{
+"at": "P172.L35",
+"label": "Annexure I – Wild Animals add-on cover › 7. Documentary Evidence; 8. Appointment of Loss Assessors"
+},
+{
+"at": "P173.L22",
+"label": "Annexure I – Wild Animals add-on cover › 9. Time Frame for Loss Assessment and Claims Payment"
+},
+{
+"at": "P174.L1",
+"label": "Annexure II – Format for reporting excess area insured/acreage discrepancy for area correction factor (table)"
+},
+{
+"at": "P174.L131",
+"label": "Annexure II – Deduplication measures by insurance company before reporting excess insured area"
+},
+{
+"at": "P176.L1",
+"label": "Annexure III – Illustration for classification/clustering of risks and districts and L1 bidder › Method 1 › Define Risk Level (loss cost table)"
+},
+{
+"at": "P177.L1",
+"label": "Annexure III – Method 1 › iii. Define Coverage Level (Expected Sum Insured, coverage level codes)"
+},
+{
+"at": "P178.L1",
+"label": "Annexure III – Method 1 › d) Allocation of codes to districts, clusters; conditions for clustering of districts"
+},
+{
+"at": "P178.L28",
+"label": "Annexure III – Method 1 › Applicable conditions for Clustering/Clubbing of districts (L1 bidder rules)"
+},
+{
+"at": "P179.L1",
+"label": "Annexure III – Method 1 › Selection of Implementing Agency (L1) illustration; Method 2 – risk categories and cluster formation"
+},
+{
+"at": "P179.L28",
+"label": "Annexure III – Method 2 › Sample calculation to find L1 › Table 1 – company's weighted average premium in a district"
+},
+{
+"at": "P180.L41",
+"label": "Annexure III – Method 2 › Table 2 – company's weighted average premium in a cluster; selection of L1"
+},
+{
+"at": "P182.L1",
+"label": "Annexure IV – Checklist for STAC while disposing-off Yield Disputes under PMFBY and referring case to Central TAC (table)"
+},
+{
+"at": "P183.L13",
+"label": "Annexure IV – Triggers for MSA & Yield Disputes › i. Disputes under MSA (proxy indicators, definitions)"
+},
+{
+"at": "P184.L1",
+"label": "Annexure IV – Triggers for Yield Disputes › ii. Disputes under Final Yield (AY) – validation and data requirements"
+},
+{
+"at": "P184.L24",
+"label": "Annexure IV – Disputes under Final Yield (AY) › Data to be provided by State/UT Government/TIP and by Insurance Company"
+},
+{
+"at": "P186.L1",
+"label": "Annexure V – Claim settlement under multiple events at same land-parcel & crop › Scenario 1 – Preventive Sowing/Failed Germination only (table, part 1)"
+},
+{
+"at": "P186.L57",
+"label": "Annexure V – Multiple events claim settlement › Scenario 1 – Preventive Sowing/Failed Germination only (table, localized and mid-term rows)"
+},
+{
+"at": "P187.L40",
+"label": "Annexure V – Multiple events claim settlement › Scenario 1 – Preventive Sowing/Failed Germination only (table, part 3)"
+},
+{
+"at": "P188.L25",
+"label": "Annexure V – Multiple events claim settlement › Scenario 2 – Claim due to Yield Loss only (table, part 1)"
+},
+{
+"at": "P189.L23",
+"label": "Annexure V – Multiple events claim settlement › Scenario 2 – Claim due to Yield Loss only (table, part 2: localized, post-harvest, yield, total)"
+},
+{
+"at": "P190.L1",
+"label": "Annexure V – Multiple events claim settlement › Scenario 3 – Mid-Season Adversity & Yield Loss only (table, part 1)"
+},
+{
+"at": "P191.L1",
+"label": "Annexure V – Multiple events claim settlement › Scenario 3 – Mid-Season Adversity & Yield Loss only (table, part 2: localized, post-harvest, yield, total)"
+},
+{
+"at": "P191.L69",
+"label": "Annexure V – Multiple events claim settlement › Scenario 4 – Yield Loss & Post-Harvest Loss only (table, part 1)"
+},
+{
+"at": "P192.L68",
+"label": "Annexure V – Multiple events claim settlement › Scenario 4 – Yield Loss & Post-Harvest Loss only (table, part 2: localized, post-harvest, yield, total)"
+},
+{
+"at": "P193.L58",
+"label": "Annexure V – Multiple events claim settlement › Scenario 5 – Localized Loss & Yield Loss only (table, part 1)"
+},
+{
+"at": "P194.L57",
+"label": "Annexure V – Multiple events claim settlement › Scenario 5 – Localized Loss & Yield Loss only (table, part 2: localized, post-harvest, yield, total)"
+},
+{
+"at": "P195.L41",
+"label": "Annexure V – Multiple events claim settlement › Scenario 6 – Localized Loss & Post Harvest Loss only (table, part 1)"
+},
+{
+"at": "P196.L40",
+"label": "Annexure V – Multiple events claim settlement › Scenario 6 – Localized Loss & Post Harvest Loss only (table, part 2: localized, post-harvest, yield, total)"
+},
+{
+"at": "P197.L25",
+"label": "Annexure V – Multiple events claim settlement › Scenario 7 – Two Localized Losses only (table, part 1)"
+},
+{
+"at": "P198.L27",
+"label": "Annexure V – Multiple events claim settlement › Scenario 7 – Two Localized Losses only (table, part 2)"
+},
+{
+"at": "P199.L4",
+"label": "Annexure V – Multiple events claim settlement › Scenario 8 – Mid-Term Loss, Yield Loss & Post Harvest Loss only (table, part 1)"
+},
+{
+"at": "P200.L7",
+"label": "Annexure V – Multiple events claim settlement › Scenario 8 – Mid-Term Loss, Yield Loss & Post Harvest Loss only (table, part 2: localized, post-harvest, yield, total)"
+},
+{
+"at": "P200.L75",
+"label": "Annexure V – Multiple events claim settlement › Scenario 9 – Localised Loss, Mid Season Adversity, Yield Loss & Post Harvest Loss (table, part 1)"
+},
+{
+"at": "P201.L79",
+"label": "Annexure V – Multiple events claim settlement › Scenario 9 – Localised, MSA, Yield & Post Harvest Loss (table, part 2)"
+},
+{
+"at": "P202.L62",
+"label": "Annexure V – Multiple events claim settlement › Scenario 10 – Localized, Mid-Term, Localized, Yield & Post Harvest Loss (table, part 1)"
+},
+{
+"at": "P203.L67",
+"label": "Annexure V – Multiple events claim settlement › Scenario 10 – Localized, Mid-Term, Localized, Yield & Post Harvest Loss (table, part 2)"
+},
+{
+"at": "P204.L53",
+"label": "Annexure V – Multiple events claim settlement › Scenario 11 – Wide-Spread Localised Loss, Yield Loss & Post Harvest Loss (table, part 1)"
+},
+{
+"at": "P205.L72",
+"label": "Annexure V – Multiple events claim settlement › Scenario 11 – Wide-Spread Localised, Yield & Post Harvest Loss (table, part 2: localized, post-harvest, yield, total)"
+},
+{
+"at": "P206.L50",
+"label": "Annexure V – Multiple events claim settlement › Scenario 12 – Wide-Spread Localised Loss, Yield Loss & Widespread Post Harvest Loss (table, part 1)"
+},
+{
+"at": "P207.L76",
+"label": "Annexure V – Multiple events claim settlement › Scenario 12 – Wide-Spread Localised, Yield & Widespread Post Harvest Loss (table, part 2: localized, WSPH, yield, total)"
+},
+{
+"at": "P208.L71",
+"label": "Annexure V – Multiple events claim settlement › Scenario 13 – Wide-Spread Localised, Mid-term, Yield & Widespread Post Harvest Loss (table, part 1)"
+},
+{
+"at": "P210.L1",
+"label": "Annexure V – Multiple events claim settlement › Scenario 13 – Wide-Spread Localised, Mid-term, Yield & WSPH Loss (table, part 2)"
+},
+{
+"at": "P211.L1",
+"label": "Annexure VI – Opt-out form for PMFBY/RWBCIS Scheme (KCC loanee farmers, bank copy)"
+},
+{
+"at": "P211.L24",
+"label": "Annexure VI – Opt-out form for PMFBY/RWBCIS Scheme › Farmer Acknowledgement"
+}
+]
+}

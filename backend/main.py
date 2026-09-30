@@ -187,3 +187,9 @@ except Exception as e:
 # KEEP THIS AT THE VERY END
 if query_router is not None:
     app.include_router(query_router)
+# PIPELINE=v2 (Render -> Environment): load the new gold search at startup (any error -> questions use v1)
+try:
+    from backend.services import pipeline as _pipeline
+    _pipeline.warm_up()
+except Exception as e:
+    print(f"v2 pipeline warm-up skipped: {e}")

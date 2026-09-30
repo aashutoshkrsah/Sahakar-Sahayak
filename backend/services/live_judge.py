@@ -1,10 +1,17 @@
 """
-Live "AI check" -- every answer is graded by OTHER AIs, never by the one that wrote it.
+Live "AI check" -- every answer is graded by TWO other AIs, never by the one that wrote it.
 
-  Answer written by Sarvam      -> checked by Groq + Cloudflare
-  Answer written by Groq        -> checked by Cloudflare + Sarvam
-  Answer written by Cloudflare  -> checked by Groq + Sarvam
-  Search-only answer            -> not checked (it is the PDF text itself)
+Judges are taken from this list, in order, skipping the AI that wrote the answer, any AI without a key,
+and any AI that has used today's allowance. If a judge fails, the NEXT one on the list steps in, so an
+answer still gets two judges:
+
+  1. Groq (gpt-oss-20b)             LIVE_JUDGE_GROQ_DAILY=120
+  2. Gemma 4 31B (Gemini key)       LIVE_JUDGE_GEMMA_DAILY=3000
+  3. Gemini Flash Lite (Gemini key) LIVE_JUDGE_LITE_DAILY=300
+  4. Cloudflare Llama 3.3 70B       LIVE_JUDGE_CLOUDFLARE_DAILY=30   (small, so meaning search keeps its units)
+  5. Sarvam                         LIVE_JUDGE_SARVAM_DAILY=200      (only when Sarvam did not write the answer)
+
+  Normal case: Sarvam writes -> Groq + Gemma judge.
 
 How it works: /query remembers each answer for 30 minutes. Right after showing the
 answer, the website calls POST /judge with the answer's request ID; the judges run in
@@ -18,12 +25,7 @@ There is no answer key for live questions, so the judges check:
   language  was it written in the language the user chose
   grade     good / partly / poor
 
-Free-limit guard (per day, resets at midnight UTC), so the judges never use up the
-backup AIs' free quota:
-  LIVE_JUDGE=off                    turn the check off
-  LIVE_JUDGE_GROQ_DAILY=120         Groq checks per day   (judge model: GROQ_JUDGE_MODEL, default gpt-oss-20b)
-  LIVE_JUDGE_CLOUDFLARE_DAILY=80    Cloudflare checks per day
-  LIVE_JUDGE_SARVAM_DAILY=200       Sarvam checks per day (only used when Groq or Cloudflare wrote the answer)
+LIVE_JUDGE=off turns the check off. Daily allowances reset at midnight UTC (5:30 AM IST).
 """
 
 import os
@@ -44,14 +46,20 @@ ENABLED = os.getenv("LIVE_JUDGE", "on").strip().lower() not in ("off", "0", "fal
 GROQ_JUDGE_MODEL = os.getenv("GROQ_JUDGE_MODEL", "openai/gpt-oss-20b").strip()
 DAILY_LIMIT = {
     "groq": int(os.getenv("LIVE_JUDGE_GROQ_DAILY", "120")),
-    "cloudflare": int(os.getenv("LIVE_JUDGE_CLOUDFLARE_DAILY", "80")),
+    "gemma": int(os.getenv("LIVE_JUDGE_GEMMA_DAILY", "3000")),
+    "lite": int(os.getenv("LIVE_JUDGE_LITE_DAILY", "300")),
+    "cloudflare": int(os.getenv("LIVE_JUDGE_CLOUDFLARE_DAILY", "30")),
     "sarvam": int(os.getenv("LIVE_JUDGE_SARVAM_DAILY", "200")),
 }
+JUDGE_ORDER = ["groq", "gemma", "lite", "cloudflare", "sarvam"]
 JUDGE_NAMES = {
     "groq": f"Groq · {GROQ_JUDGE_MODEL.split('/')[-1]}",
+    "gemma": "Gemma 4 31B",
+    "lite": "Gemini Flash Lite",
     "cloudflare": "Cloudflare · Llama 3.3 70B",
     "sarvam": "Sarvam · sarvam-105b",
 }
+WRITER_IS = {"gemini": "lite"}        # the Gemini Flash Lite answer writer can't judge itself
 LANG_NAMES = {"en": "English", "hi": "Hindi", "kn": "Kannada", "ne": "Nepali", "ta": "Tamil", "te": "Telugu",
               "ml": "Malayalam", "mr": "Marathi", "bn": "Bengali", "gu": "Gujarati", "pa": "Punjabi", "or": "Odia"}
 TIMEOUT = 25
@@ -87,12 +95,23 @@ def remember(request_id, question, english_question, answer, language, trust_lev
             _answers.popitem(last=False)
 
 
+def _has_key(judge):
+    from backend.services import cloudflare, gemini
+    if judge == "groq":
+        return bool(os.getenv("GROQ_API_KEY", "").strip())
+    if judge in ("gemma", "lite"):
+        return gemini.configured()
+    if judge == "cloudflare":
+        return cloudflare.available()
+    if judge == "sarvam":
+        return llm_chain._sarvam is not None
+    return False
+
+
 def _judges_for(answered_by):
-    if answered_by == "groq":
-        return ["cloudflare", "sarvam"]
-    if answered_by == "cloudflare":
-        return ["groq", "sarvam"]
-    return ["groq", "cloudflare"]          # Sarvam wrote it (the normal case)
+    """Every judge that may check this answer, best first (never the writer)."""
+    writer = WRITER_IS.get(answered_by, answered_by)
+    return [j for j in JUDGE_ORDER if j != writer and _has_key(j)]
 
 
 def _take_quota(judge):
@@ -160,15 +179,13 @@ def _call(judge, prompt):
         if r.status_code != 200:
             raise RuntimeError(f"HTTP {r.status_code}: {r.text[:200]}")
         return ((r.json().get("choices") or [{}])[0].get("message") or {}).get("content") or ""
-    acct, token = os.getenv("CLOUDFLARE_ACCOUNT_ID", "").strip(), os.getenv("CLOUDFLARE_API_TOKEN", "").strip()
-    if not (acct and token):
-        raise RuntimeError("no Cloudflare keys")
-    r = requests.post(f"https://api.cloudflare.com/client/v4/accounts/{acct}/ai/run/{llm_chain.CF_LLM_MODEL}",
-                      timeout=TIMEOUT, headers={"Authorization": f"Bearer {token}"},
-                      json={"messages": msgs, "temperature": 0, "max_tokens": 200})
-    if r.status_code != 200:
-        raise RuntimeError(f"HTTP {r.status_code}: {r.text[:200]}")
-    res = r.json().get("result") or {}
+    if judge in ("gemma", "lite"):
+        from backend.services import gemini
+        return gemini.chat(msgs, model=gemini.GEMMA_MODEL if judge == "gemma" else gemini.LITE_MODEL,
+                           temperature=0, max_tokens=1500, timeout=TIMEOUT)
+    from backend.services import cloudflare
+    res = cloudflare.run(llm_chain.CF_LLM_MODEL, {"messages": msgs, "temperature": 0, "max_tokens": 200},
+                         timeout=TIMEOUT, what="judge") or {}
     txt = res.get("response")
     if txt is None and res.get("choices"):
         txt = (res["choices"][0].get("message") or {}).get("content")
@@ -237,15 +254,27 @@ def judge(request_id):
         return {"status": "skipped", "reason": "Search-only answer: it is the official text itself."}
 
     prompt = _prompt(item)
-    judges = _judges_for(item["answered_by"])
+    candidates = _judges_for(item["answered_by"])
     with _lock:
         _running.add(request_id)
+    results = []
     try:
-        with ThreadPoolExecutor(max_workers=len(judges)) as pool:
-            results = list(pool.map(lambda j: _one(request_id, j, prompt), judges))
+        # the first two judges run together; each one that fails is replaced by the next on the list
+        queue = list(candidates)
+        while queue and sum(1 for r in results if r.get("status") == "ok") < 2:
+            need = 2 - sum(1 for r in results if r.get("status") == "ok")
+            batch, queue = queue[:need], queue[need:]
+            with ThreadPoolExecutor(max_workers=len(batch)) as pool:
+                got = list(pool.map(lambda j: _one(request_id, j, prompt), batch))
+            for r in got:
+                if r.get("status") != "ok" and queue:
+                    log("JUDGE", f"🔁 {r['judge']} could not check ({r.get('status')}) -> {queue[0]} steps in")
+            results += got
     finally:
         with _lock:
             _running.discard(request_id)
+    if not results:
+        results = [{"judge": "none", "name": "no judge available", "status": "unavailable"}]
     scores = [r["score"] for r in results if r.get("status") == "ok" and r.get("score") is not None]
     score = round(sum(scores) / len(scores)) if scores else None
     out = {"status": "ok" if scores else "unavailable", "judges": results, "score": score, "verdict": verdict(score)}

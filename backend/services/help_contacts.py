@@ -7,6 +7,8 @@ Only verified numbers are used:
   - 14447         Krishi Rakshak Portal & Helpline (crop insurance) -- written in the
                   PMFBY Operational Guidelines 2023, para 21.5.5.4 (our doc1.pdf, page 103)
   - 1800-180-1551 Kisan Call Centre, toll-free -- Ministry of Agriculture (manage.gov.in/kcc)
+  - 14416         Tele-MANAS, national mental-health helpline (free, 24x7) -- shown FIRST, under any answer,
+                  when the message sounds like the person is in distress
 """
 
 import re
@@ -32,6 +34,13 @@ PM_KISAN_HELPDESK = {
     "display": "pmkisan.gov.in",
     "note": "Payment status, eKYC and complaints",
 }
+TELE_MANAS = {
+    "id": "tele_manas",
+    "label": "Tele-MANAS (someone to talk to)",
+    "phone": "14416",
+    "display": "14416",
+    "note": "Free · 24x7 · in your language · emergency: 112",
+}
 COOP_REGISTRAR = {
     "id": "registrar",
     "label": "Office of the Registrar of Co-operative Societies",
@@ -47,6 +56,13 @@ _COOP = re.compile(r"\b(co-?operative|cooperative|society|societies|pacs|bye-?la
 def helplines_for(question: str, trust_level: str, intent: str = "general", routed_docs=None) -> list:
     """Helplines to show under an answer. Empty for verified answers and refusals,
     unless the question is a complaint / dispute."""
+    from backend.services.rag_service import _DISTRESS
+    if _DISTRESS.search(question or ""):
+        return [TELE_MANAS] + _usual(question, trust_level, intent, routed_docs)
+    return _usual(question, trust_level, intent, routed_docs)
+
+
+def _usual(question, trust_level, intent, routed_docs):
     if trust_level in ("refused", "error", None):
         return []
     complaint = intent == "complaint_or_dispute"

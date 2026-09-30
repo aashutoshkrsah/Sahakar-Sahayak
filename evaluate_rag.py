@@ -118,8 +118,11 @@ JUDGES = {
 }
 if TEST_SET == "100":
     # Test 3: Gemma 4 31B (Gemini key) replaces the Cloudflare judge -- Cloudflare's units stay for meaning search
+    _gm = os.getenv("GEMMA_MODEL", "gemma-4-31b-it").strip()
+    _gname = {"gemma-4-31b-it": "Gemma 4 31B", "gemma-4-26b-a4b-it": "Gemma 4 26B",
+              "gemini-3.1-flash-lite": "Gemini 3.1 Flash Lite"}.get(_gm, _gm)
     JUDGES = {"sarvam": "Sarvam · sarvam-105b", "groq": f"Groq · {GROQ_JUDGE_MODEL.split('/')[-1]}",
-              "gemma": "Gemma 4 31B"}
+              "gemma": _gname}      # the Google judge (model chosen with GEMMA_MODEL; its real name is shown)
     for _c, _j in (("sarvam", ["groq", "gemma"]), ("groq", ["sarvam", "gemma"]), ("cloudflare", ["sarvam", "groq"]),
                    ("sarvam_plain", ["groq", "gemma"])):
         CONTESTANTS[_c]["judges"] = _j

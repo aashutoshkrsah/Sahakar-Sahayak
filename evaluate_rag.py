@@ -638,6 +638,17 @@ def _parse_grades(text, labels):
     return out
 
 
+def judge_names(data):
+    """Real names of the judges that graded THIS results file. The Google judge's model is saved when it grades
+    (GEMMA_MODEL can change between runs), so the report always names the model that was really used."""
+    names = dict(JUDGES)
+    old = ((data.get("summary") or {}).get("judges") or {}).get("names") or {}
+    if "gemma" in names and old.get("gemma"):
+        names["gemma"] = old["gemma"]
+    names.update(data.get("judge_models") or {})
+    return names
+
+
 def run_grading(judges, only=None, redo=False):
     from backend.services import llm_chain
 
@@ -700,6 +711,8 @@ def run_grading(judges, only=None, redo=False):
                 fails = 0
                 for c in order:
                     prev[c] = parsed[labels[c]]
+                if judge == "gemma":            # name the model only once it has really graded something
+                    data.setdefault("judge_models", {})["gemma"] = JUDGES["gemma"]
                 graded += 1
                 print(f"✅ [{i}/{len(data['questions'])}] {row['id']:<6} " +
                       "  ".join(f"{CONTESTANTS[c]['short']}={prev[c]['grade']}" for c in order))
@@ -743,12 +756,12 @@ def _judge_score(rows, c, judge):
 def summarise(data):
     rows = data["questions"]
     out = {"generated_at": datetime.now().strftime("%Y-%m-%d %H:%M"), "questions": len(rows),
-           "contestants": {}, "judges": {"names": JUDGES}}
+           "contestants": {}, "judges": {"names": judge_names(data)}}
     for c, meta in CONTESTANTS.items():
         have = [r for r in rows if c in r["runs"] and not r["runs"][c].get("error")]
         if not have:
             continue
-        b = {"name": meta["name"], "short": meta["short"], "judged_by": [JUDGES[j] for j in meta["judges"]],
+        b = {"name": meta["name"], "short": meta["short"], "judged_by": [judge_names(data).get(j, j) for j in meta["judges"]],
              "answered": len(have), "errors": sum(1 for r in rows if (r["runs"].get(c) or {}).get("error"))}
         b.update(_block(have, c))
         b["by_judge"] = {j: _judge_score(have, c, j) for j in meta["judges"] if _judge_score(have, c, j)}
@@ -792,7 +805,7 @@ def summarise(data):
     s0 = (out["contestants"].get("sarvam_plain") or {}).get("by_judge", {}).get("groq")
     if s1 and s0 and s1["score"] is not None and s0["score"] is not None:
         out["documents_add"] = {"with": s1["score"], "without": s0["score"],
-                                "points": round(s1["score"] - s0["score"], 2), "judge": JUDGES["groq"]}
+                                "points": round(s1["score"] - s0["score"], 2), "judge": judge_names(data)["groq"]}
 
     # How often do two judges agree on the same answer?
     both = same = 0
@@ -874,7 +887,7 @@ def markdown(data):
           row("Fully correct answers", lambda b: _f(b.get("fully_correct"))),
           row("Judged by", lambda b: " + ".join(b["judged_by"])),
           row("Answered / graded", lambda b: f"{b['answered']} / {b['graded']}")]
-    for j, name in JUDGES.items():
+    for j, name in judge_names(data).items():
         L.append(row(f"Score from {name}", lambda b, j=j: _f((b["by_judge"].get(j) or {}).get("score"))))
     if s.get("plain_words"):
         L += ["", "## In plain words", ""] + [f"- {x}" for x in s["plain_words"]]
@@ -906,8 +919,11 @@ def markdown(data):
               f"| 'Not in the PDFs' questions NOT falsely marked Verified | {_f(sr['not_in_docs_honest'])} |", ""]
     first = {
         "200": "- 200 brand-new, very hard questions in 7 groups, written after Test 1 and never seen by the app; every document answer key has an exact quote from the PDF page (machine-checked) and was checked by a separate reviewer.",
-        "100": "- 100 new, very hard questions in 7 groups, each a 4-5 line real-life story with distracting details, the real question buried near the end and often a second part; written before the new system was tested and never used to tune it; every document answer key has an exact quote from the PDF page (machine-checked) and was checked by a separate reviewer.\n- Judges for Test 3: Sarvam, Groq and Gemma 4 31B (Google); Gemma replaces the Cloudflare judge so Cloudflare's free units stay for meaning search.",
+        "100": "- 100 new, very hard questions in 7 groups, each a 4-5 line real-life story with distracting details, the real question buried near the end and often a second part; written before the new system was tested and never used to tune it; every document answer key has an exact quote from the PDF page (machine-checked) and was checked by a separate reviewer.",
     }.get(TEST_SET, "- 45 questions in 7 groups, picked from a bank of 200; every document answer key has an exact quote from the PDF page (machine-checked). The app was never tuned on them.")
+    if TEST_SET == "100":
+        first += (f"\n- Judges for Test 3: Sarvam, Groq and {judge_names(data).get('gemma', 'a Google model')} (Google); "
+                  "the Google judge replaces the Cloudflare judge so Cloudflare's free units stay for meaning search.")
     L += ["## How this test works", "", first,
           "- Three AIs from three companies each answer using our document search; each answer is graded by the other AIs, never by itself, without knowing who wrote it.",
           "- Sarvam alone (same instructions, no documents) shows what our search adds.",

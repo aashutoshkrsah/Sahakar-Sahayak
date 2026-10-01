@@ -12,13 +12,18 @@
 Every answer tells the user **where it came from**: an official government PDF (with a clickable link to the exact page) or general guidance that should be confirmed with the cooperative office.
 
 - 🌐 **Live app:** https://sahakar-sahayak-frontend.onrender.com
-- 📊 **Accuracy test results:** Test 1 (45 questions) https://sahakar-sahayak-4.onrender.com/scoreboard · Test 2 (200 new questions) https://sahakar-sahayak-4.onrender.com/scoreboard/test2
+- 📊 **Accuracy test results:** Test 1 (45 questions) https://sahakar-sahayak-4.onrender.com/scoreboard · Test 2 (200 new questions) https://sahakar-sahayak-4.onrender.com/scoreboard/test2 · Test 3 (100 long questions) https://sahakar-sahayak-4.onrender.com/scoreboard/test3
+- 📈 **Statistics & Question Explorer (charts, statistics, every answer):** https://sahakar-sahayak-4.onrender.com/scoreboard/explore
+- 🩺 **Live system status:** https://sahakar-sahayak-4.onrender.com/health/details
 - 🔐 **Admin dashboard (for SIH judges):** https://sahakar-sahayak-frontend.onrender.com/admin — password `sih2026demo`, or click **Open with demo password** (view-only; phone numbers and e-mails are hidden)
 - ⚙️ **API docs (Swagger):** https://sahakar-sahayak-4.onrender.com/docs
 
 > Hosted on free servers — if the app has been idle, the first answer can take up to a minute while the server wakes up.
 
 ### 🏆 Results at a glance
+- **Test 3 — 100 long, story-style questions, new v2 system:** Sarvam alone **26.5%** → with our search **81.0%** (95% range 74.5–87.5%). Same questions, paired: **+54.5 points** (range +45.8 to +63.2), better on 76 questions and worse on 4, p < 0.001, Cohen's h 1.16 (large effect).
+- **Better than before on harder questions:** Test 2 (old v1 system) 62.0% → Test 3 (v2) **81.0%**, while Sarvam alone (the control) stayed at 26.5% in both. The correct official PDF is now ranked first for **95%** of questions (Test 2: 78%).
+- **Trustworthy grading:** two judges from different companies agree on 81% of answers, Cohen's kappa **0.66** (substantial agreement).
 - **Our document search more than doubles accuracy:** Sarvam answers **30.56%** correctly on its own and **72.78%** with Sahakar Sahayak's search.
 - **Confirmed on 200 brand-new, much harder questions (Test 2):** Sarvam alone **26.50%** → with our search **62.00%**.
 - **Tested fairly:** 45 hard questions in 4 languages; three AIs from three companies (Sarvam, Groq, Cloudflare) grade **each other's** answers, never their own.
@@ -94,25 +99,48 @@ flowchart LR
 
 A passage is only used if its keyword **or** meaning match is strong enough. If nothing qualifies, the answer is labelled *General guidance* and no source is shown — the app never pretends an answer came from a document when it didn't.
 
-**Resilience — the triple fallback engine**
+**The v2 system (the default): the Medallion pipeline**
 
-| Step | 1st choice | If it fails | If that fails | Last resort |
-|---|---|---|---|---|
-| Rewrite the question in English | Sarvam `sarvam-105b` | Groq `gpt-oss-120b` | Cloudflare Llama 3.3 70B | search with the original words |
-| Write the answer | Sarvam | Groq | Cloudflare | **search-only mode**: the best PDF passage, word for word, with its source |
-| Meaning search | Cloudflare `bge-m3` | — | — | keyword + spelling search |
+The PDFs are prepared once, in four layers, and the result is saved in the repo (`backend/pipeline/`, `backend/data/medallion/`):
 
-An AI that fails (error, timeout, empty reply) is rested for 60 seconds so the next users don't wait for it. Every step is printed in the Render logs with the question's request ID, for example:
+| Layer | What happens |
+|---|---|
+| 🥉 Bronze | the raw text of every PDF page, with the same page numbers the app shows |
+| 🥈 Silver | cleaned text: broken words fixed, repeated headers/footers and lone page numbers removed |
+| ✂️ AI cutter | an AI marks where each section starts (e.g. *Section 28 – Special general meeting*) — it only places cut points and labels, it never rewrites the law |
+| 🥇 Gold | **1,394 whole-section pieces**, checked automatically: nothing lost, nothing invented, every piece labelled |
+| 💎 Platinum labels | every piece carries its full address, e.g. `Karnataka Co-operative Societies Act, 1959 › Chapter IV › Section 28 – Special general meeting › Page 64` |
+
+Then, for every question: the same three search signals pick 20 candidates → a **senior librarian** (Cloudflare `bge-reranker-base`) re-reads the question with each candidate and re-orders them → the best 5 go to the writer, which must **quote first and answer second**, mention every case, name both documents when they differ, and never add numbers that aren't in the sources (a **number check** flags any that slip through). Exact repeats of well-graded answers are reused from an **answer cache** (never prices, never low-scored answers). All meaning-numbers, the test questions' numbers and the librarian's scores are saved in the repo, so a deploy rebuilds nothing and the Re-check button makes **no AI call for search**.
+
+**Resilience — every step has a backup, and the app never has to be fixed by hand**
+
+| Step | 1st choice | Backups, in order | Last resort |
+|---|---|---|---|
+| Pipeline | v2 (Medallion), the default | v1 for that question; v1 for 10 minutes after 3 v2 failures in a row or a failed startup self-check (e.g. a missing file), then v2 is checked and retried automatically | — |
+| Rewrite the question in English | Sarvam `sarvam-105b` | Groq `gpt-oss-120b` → Cloudflare Llama 3.3 70B → Gemini Flash Lite | search with the original words |
+| Meaning numbers of the question | saved numbers | Cloudflare account 1 → Cloudflare account 2 → Gemini Embedding (its own saved copy of the pieces) | keyword + spelling search |
+| Senior librarian | saved scores | Cloudflare (both accounts) | normal search order |
+| Write the answer | Sarvam | Groq → Cloudflare → Gemini Flash Lite | **search-only mode**: the best PDF passage, word for word, with its source |
+| Live AI check (2 judges) | Groq + Gemma 4 | Gemini Flash Lite → Cloudflare (max 30/day) → Sarvam (never the AI that wrote the answer) | "not checked" label |
+
+Small talk ("hi", "what is your name?", "thank you") gets a friendly built-in reply with no search. A message that sounds like distress gets the **Tele-MANAS 14416** helpline. An AI that fails is rested for 60 seconds so the next users don't wait for it.
+
+**Reading the Render logs.** A startup block shows the state of everything; then every question prints its full story with a request ID. Search the logs for:
+- `STARTUP CHECK` — pipeline, saved data, Cloudflare accounts, answer chain and judges, each ✅/❌
+- `HANDOVER` — whenever something failed and the next one took charge
+- `SUMMARY` — one line per question: who did what
+- `PIPELINE SWITCH` — v2 was rested after repeated failures (and `PIPELINE BACK` when it returns)
 
 ```
-[REQ a3f9c2] [QUERY] 📩 new question | language=hi | 'fasal bima claim kitne din me'
-[REQ a3f9c2] [LLM] ▶ sarvam (translate) model=sarvam-105b
-[REQ a3f9c2] [LLM] ❌ sarvam failed translate after 0.41s: status_code: 429 ...  -> switching to groq
-[REQ a3f9c2] [LLM] ✅ groq answered translate in 0.62s (61 chars, provider id=req_01k...)
-[REQ a3f9c2] [SEARCH] 🔎 best 84.06% | keyword 66.67% | ... | doc1.pdf p.103 | 6 pieces | 150 ms
-[REQ a3f9c2] [LLM] ⏭ skipping sarvam (answer): failed 1s ago, cooling down 60s -> groq
-[REQ a3f9c2] [QUERY] 🏁 finished in 2.41s | translated by groq | answered by groq | trust=verified
+[REQ a3f9c2] [LLM] ❌ sarvam failed answer after 30.02s: timed out after 30s
+[REQ a3f9c2] [LLM] 🔀 HANDOVER [answer] sarvam failed → groq takes charge
+[REQ a3f9c2] [CLOUDFLARE] 🔀 HANDOVER [cloudflare librarian] account 1: resting → account 2 takes charge
+[REQ a3f9c2] [SUMMARY] ═══ SUMMARY ═══ pipeline=v2 | meaning=cloudflare (live) | librarian=on (live) | translated=sarvam | answered=groq | trust=verified | cache=miss | 3.20s
+[REQ a3f9c2] [JUDGE] ═══ JUDGES ═══ groq + gemma checked this answer
 ```
+
+The same information is live at **`/health/details`**.
 
 The chat shows which AI answered (a small note appears when a backup was used), and the scorecard shows the request ID.
 
@@ -167,9 +195,35 @@ Written after Test 1 and never seen by the app (the app was not changed while it
 
 Full tables: [`benchmark_report_200.md`](benchmark_report_200.md) · every question, answer and grade: [Test 2 results page](https://sahakar-sahayak-4.onrender.com/scoreboard/test2).
 
+### Test 3: 100 long, story-style questions (new v2 system)
+
+Each question is a 4–5 line real-life story (a farmer, a PACS secretary, a bank officer…) with distracting details, the real question buried near the end, and often a second part. Written before the v2 system was tested; every document answer key has an exact quote from the cited PDF page and was checked by a separate reviewer. Judges: Sarvam, Groq and a Google model (Gemini 3.1 Flash Lite in this run — it replaced the Cloudflare judge so Cloudflare's free units stay for meaning search).
+
+| Contestant | Score (95% range) | Fully correct |
+|---|---|---|
+| **Sarvam + our documents (the live app)** | **81.0%** (74.5–87.5) | 68% |
+| Groq gpt-oss-120b + our documents | 80.0% (72.8–86.5) | 69% |
+| Cloudflare Llama 3.3 70B + our documents | 74.0% (66.2–81.2) | 61% |
+| Sarvam alone (no documents) | 26.5% (19.2–34.0) | 14% |
+
+- **What our search adds (paired, same 100 questions): +54.5 points** (range +45.8 to +63.2); better on 76 questions, same on 20, worse on 4; sign test p < 0.001; Cohen's h 1.16 (large).
+- **Sarvam vs Groq is a tie** (+1.0 point, range −5.8 to +7.8). Every AI using our documents is far above Sarvam alone.
+- Correct official PDF ranked first for **95%** of document questions (MRR 0.96); exact page found for 82%.
+- The green **Verified** badge is trustworthy: 82% of Verified answers were fully correct (average grade 91%).
+- Strongest: answers with several cases (97%). Weakest — next step: questions with a wrong assumption to correct (56%).
+
+**How to read the statistics** (all computed from the saved results, explained with an (i) button on the Explorer page):
+- **95% range (bootstrap):** the questions are re-drawn with replacement 2,000 times; the middle 95% of the scores is the range. Overlapping ranges = a tie.
+- **Paired gain:** the same questions with and without our documents, compared question by question.
+- **Sign test p-value:** the chance that "better on 76, worse on 4" happens by luck if documents didn't matter.
+- **Cohen's h:** how big the difference is (0.2 small, 0.5 medium, 0.8+ large).
+- **Cohen's kappa:** judge agreement with luck removed (0.61–0.80 = substantial).
+
+Full tables: [`benchmark_report_100.md`](benchmark_report_100.md) · charts and every answer: [Statistics & Question Explorer](https://sahakar-sahayak-4.onrender.com/scoreboard/explore?test=3).
+
 **Contestants.** Three AIs from three companies each answer every question **using our document search**: Sarvam (`sarvam-105b`), Groq (`gpt-oss-120b`) and Cloudflare (Llama 3.3 70B). A fourth contestant, **Sarvam alone** with the same instructions but no documents, shows what our search adds.
 
-**Judges — nobody grades its own work.** Sarvam's answers are graded by Groq and Cloudflare, Groq's by Sarvam and Cloudflare, Cloudflare's by Sarvam and Groq (Sarvam-alone by Groq and Cloudflare). Judges see shuffled labels, so they don't know who wrote which answer. Grades: correct / partial / wrong against the answer key. Free automatic checks run too: key fact present, answer script matches the chosen language, off-topic refused, no wrong refusals, correct PDF shown, search rank.
+**Judges — nobody grades its own work.** In Tests 1 and 2, Sarvam's answers are graded by Groq and Cloudflare, Groq's by Sarvam and Cloudflare, Cloudflare's by Sarvam and Groq (Sarvam-alone by Groq and Cloudflare). In Test 3 a Google model takes Cloudflare's judging seat. Judges see shuffled labels, so they don't know who wrote which answer. Grades: correct / partial / wrong against the answer key. Free automatic checks run too: key fact present, answer script matches the chosen language, off-topic refused, no wrong refusals, correct PDF shown, search rank.
 
 **See it live:** **https://sahakar-sahayak-4.onrender.com/scoreboard** (Test 1) and **https://sahakar-sahayak-4.onrender.com/scoreboard/test2** (Test 2) — every question, every answer and every grade. Visitors can only re-run the free search check (254 English-text document questions from both question banks), so nobody can spend the team's AI credits from that page. Latest numbers are also in [`benchmark_report.md`](benchmark_report.md).
 
@@ -184,6 +238,11 @@ python3 evaluate_rag.py            # free search-only check, no AI at all
 # Test 2 (200 new questions, saved to benchmark_results_200.json / benchmark_report_200.md)
 python3 evaluate_rag.py --set 200 --run
 python3 evaluate_rag.py --set 200 --grade
+
+# Test 3 (100 long questions, new v2 system)
+python3 -m backend.pipeline.embed          # once: save every meaning-number in the repo
+python3 evaluate_rag.py --set 100 --pipeline v2 --run
+GEMMA_MODEL=gemini-3.1-flash-lite python3 evaluate_rag.py --set 100 --pipeline v2 --grade
 ```
 
 Both steps save after every question and continue where they stopped. A budget guard keeps Groq and Cloudflare inside their free daily limits.
@@ -306,10 +365,14 @@ Set these in Render → Environment (never commit real values). See `.env.exampl
 |---|---|
 | `SARVAM_API_KEY` | Sarvam AI (question rewriting, answers, speech-to-text) |
 | `GROQ_API_KEY` | 1st backup AI (free key from console.groq.com) · optional `GROQ_MODEL` |
-| `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` | Meaning search + 2nd backup AI · optional `CLOUDFLARE_LLM_MODEL` |
+| `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` | Meaning search, senior librarian, 2nd backup AI · optional `CLOUDFLARE_LLM_MODEL` |
+| `CLOUDFLARE_ACCOUNT_ID_2`, `CLOUDFLARE_API_TOKEN_2` | Optional: a second Cloudflare account, used automatically when the first one's daily units run out |
+| `GEMINI_API_KEY` | Google AI Studio key: Gemma 4 judge, Gemini Flash Lite (spare judge + last backup writer), Gemini Embedding (backup meaning search) · optional `GEMMA_MODEL`, `GEMINI_LITE_MODEL`, `GEMINI_EMBED_MODEL` |
+| `PIPELINE` | Not needed: the new v2 (Medallion) system is the default and the app switches to v1 by itself when v2 fails (startup self-check, per question, and after 3 failures in a row), logging why. Set `PIPELINE=v1` only to force the old system · optional `PIPELINE_FAIL_LIMIT` (3), `PIPELINE_REST_MINUTES` (10) |
+| `LIBRARIAN_DAILY` | Optional: live senior-librarian calls per day (default 2000), so it never eats the meaning-search budget |
 | `INSIGHTS_KEY` | Password for the admin insights page (`/admin`) |
-| `LIVE_JUDGE`, `LIVE_JUDGE_GROQ_DAILY`, `LIVE_JUDGE_CLOUDFLARE_DAILY`, `GROQ_JUDGE_MODEL` | Optional: live AI check on/off (default on) and its daily limits (120 Groq / 80 Cloudflare checks), so the backups' free quota is never used up |
-| `LLM_ORDER`, `LLM_TIMEOUT`, `LLM_COOLDOWN` | Optional: AI order (default `sarvam,groq,cloudflare`), seconds per call (30), rest after a failure (60) |
+| `LIVE_JUDGE`, `LIVE_JUDGE_GROQ_DAILY`, `LIVE_JUDGE_GEMMA_DAILY`, `LIVE_JUDGE_LITE_DAILY`, `LIVE_JUDGE_CLOUDFLARE_DAILY`, `LIVE_JUDGE_SARVAM_DAILY`, `GROQ_JUDGE_MODEL` | Optional: live AI check on/off (default on) and its daily limits (120 Groq / 3000 Gemma / 300 Flash Lite / 30 Cloudflare / 200 Sarvam), so free quotas are never used up |
+| `LLM_ORDER`, `LLM_TIMEOUT`, `LLM_COOLDOWN` | Optional: AI order (default `sarvam,groq,cloudflare,gemini`), seconds per call (30), rest after a failure (60) |
 | `BHASHINI_USER_ID`, `BHASHINI_API_KEY` | Bhashini speech |
 | `JWT_SECRET` | Login tokens |
 | `EMAIL_API_KEY`, `SENDER_EMAIL` | Email OTP (Brevo) |
@@ -396,7 +459,7 @@ test_search.py             search smoke test
 
 ## 🛣️ Limitations & next steps
 
-- Knowledge base covers Karnataka + central cooperative law; other states' Acts can be added by dropping PDFs into `backend/data/documents/`.
+- Knowledge base covers Karnataka + central cooperative law. For another state's own law the app now says clearly that the Karnataka Act doesn't apply there and gives general guidance; other states' Acts can be added by dropping PDFs into `backend/data/documents/` and re-running the Medallion pipeline.
 - Scanned (image-only) PDFs can't be read yet — OCR is a planned addition.
 - Planned: state selection for state-specific rules and more states' Acts.
 - Each question is answered on its own: a follow-up like *"and what documents for that?"* doesn't remember the previous question yet (conversation memory is planned).

@@ -122,21 +122,25 @@ def similarities(text, options):
     """options = [(engine, piece_matrix, transform)] in order of preference (transform maps the engine's
     similarities onto Cloudflare's scale, or None). Returns (sims, engine, source) or (None, None, reasons)."""
     reasons = []
+    names = {"cf": "cloudflare", "gemini": "gemini backup"}
     for engine, matrix, transform in options:
         if matrix is None:
-            reasons.append(f"{engine}: no saved piece numbers")
+            reasons.append(f"{names.get(engine, engine)}: no saved piece numbers")
             continue
+        if reasons:
+            log("MEANING", f"🔀 HANDOVER [meaning] {reasons[-1][:160]} → {names.get(engine, engine)} takes charge")
         v, src = query_vector(text, engine)
         if v is None:
-            reasons.append(f"{engine}: {src}")
+            reasons.append(f"{names.get(engine, engine)}: {src}")
             continue
         if v.shape[0] != matrix.shape[1]:
-            reasons.append(f"{engine}: size mismatch")
+            reasons.append(f"{names.get(engine, engine)}: size mismatch")
             continue
         sims = matrix @ v
         if transform is not None:
             sims = transform(sims)
         return sims, engine, src
+    log("MEANING", f"🔀 HANDOVER [meaning] every meaning engine failed ({'; '.join(reasons)[:200]}) → word search only")
     return None, None, "; ".join(reasons)
 
 

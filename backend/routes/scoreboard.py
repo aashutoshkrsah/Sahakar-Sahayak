@@ -96,6 +96,28 @@ def scoreboard_100_json():
     return JSONResponse(_load_official("benchmark_results_100.json") or {})
 
 
+@router.get("/scoreboard/explore", response_class=HTMLResponse, include_in_schema=False)
+def explore_page():
+    """Statistics & Question Explorer: charts, statistics and every question with every AI's answer."""
+    with open(os.path.join(ROOT, "backend", "static", "explore.html"), encoding="utf-8") as f:
+        return HTMLResponse(f.read())
+
+
+@router.get("/scoreboard/stats/{test}.json", include_in_schema=False)
+def explore_stats(test: str):
+    from backend.services import bench_stats
+    if test not in bench_stats.TESTS:
+        return JSONResponse({}, status_code=404)
+    data = bench_stats.compute(test)
+    return JSONResponse(data or {}, status_code=200 if data else 404)
+
+
+@router.get("/scoreboard/progress.json", include_in_schema=False)
+def explore_progress():
+    from backend.services import bench_stats
+    return JSONResponse(bench_stats.progress())
+
+
 @router.get("/scoreboard.json", include_in_schema=False)
 def scoreboard_json():
     return JSONResponse(_load_official() or {})
@@ -130,7 +152,7 @@ GROUPS = {
 }
 LANGS = {"en": "English", "hi": "Hindi", "kn": "Kannada", "ne": "Nepali"}
 GRADE_CLASS = {"correct": "ok", "partial": "mid", "wrong": "bad"}
-JUDGE_SHORT = {"sarvam": "Sarvam", "groq": "Groq", "cloudflare": "Cloudflare", "gemma": "Gemma"}
+JUDGE_SHORT = {"sarvam": "Sarvam", "groq": "Groq", "cloudflare": "Cloudflare", "gemma": "Google judge"}
 ALL_JUDGES = ("sarvam", "groq", "cloudflare", "gemma")
 
 
@@ -299,8 +321,8 @@ def scoreboard_test2_page():
 
 INTRO_TEST3 = """<div class="muted">A third test with 100 new questions, each a 4-5 line real-life story (a farmer, a PACS secretary, a
 bank officer...) with distracting details, the real question buried near the end, and often a second part. Every answer key
-has an exact quote from an official government PDF. Sarvam, Groq and Cloudflare answer; Sarvam, Groq and Gemma 4 grade them
-(nobody grades its own answers) · <a href="/scoreboard_100.json">raw JSON</a></div>
+has an exact quote from an official government PDF. Sarvam, Groq and Cloudflare answer; Sarvam, Groq and a Google model
+(Gemini 3.1 Flash Lite in this run) grade them -- nobody grades its own answers · <a href="/scoreboard_100.json">raw JSON</a></div>
 <p class="muted small">Not the same as the <b>Scorecard</b> and <b>AI check</b> under each answer in the app: those grade one live
 answer; this page tests the whole system on a fixed set of questions.</p>"""
 
@@ -376,8 +398,12 @@ summary{{cursor:pointer;font-size:15px;line-height:1.6}}.tag{{display:inline-blo
 .tabs{{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}}
 .tab{{text-decoration:none;font-weight:700;font-size:15px;border:1px solid var(--brand);border-radius:999px;padding:7px 16px;color:var(--brand);background:var(--card)}}
 .tab.on{{background:var(--brand);color:var(--bg)}}
+.explore{{display:block;text-decoration:none;font-weight:700;font-size:17px;background:var(--brand);color:var(--bg);border-radius:14px;padding:12px 16px;margin:0 0 18px}}
+.explore span{{display:block;font-weight:400;font-size:14px;opacity:.9}}
 </style></head><body><main>
 {_nav(active)}
+<a class="explore" href="/scoreboard/explore?test={ {"test1": "1", "test2": "2", "test3": "3"}.get(active, "3") }">📊 Open Statistics &amp; Question Explorer →
+<span>charts, statistics and every question with every AI's answer</span></a>
 <h1>{h1}</h1>
 {intro}
 {main}

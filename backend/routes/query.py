@@ -18,6 +18,7 @@ from backend.services.reqlog import new_request_id, log
 from backend.services import pipeline          # PIPELINE=v1 (today) or v2 (gold pieces + new rules), with auto fallback
 from backend.services import answer_cache
 from backend.services.help_contacts import helplines_for
+from backend.services.small_talk import small_talk
 from backend.services import analytics
 from backend.services import live_judge
 from backend.services import mandi_prices
@@ -63,9 +64,23 @@ def query(request: QueryRequest):
                 confidence=result.get("confidence"), response_ms=total_ms, topics=[], answered_by=result.get("answered_by"),
                 report=result.get("search_report"), top_page=(result.get("sources") or [{}])[0].get("page"))
             log("CACHE", f"♻️ exact repeat of REQ {from_rid} -- saved answer reused, no AI calls ({total_ms / 1000:.2f}s)")
+            log("SUMMARY", f"═══ SUMMARY ═══ cache=HIT (reused REQ {from_rid}) | answered={result.get('answered_by')} | "
+                           f"no AI calls | {total_ms / 1000:.2f}s")
             return JSONResponse(content=jsonable_encoder(result), media_type="application/json; charset=utf-8")
 
-        # 3. Translate code-mixed input into clean English (Sarvam -> Groq -> Cloudflare)
+        # 2c. Small talk ("hi", "what is your name?", "thank you"): a friendly built-in reply, no search, no AI
+        small = small_talk(cleaned_query, language)
+        if small:
+            total_ms = round((time.perf_counter() - started) * 1000, 2)
+            small["search_report"].update({"total_time_ms": total_ms, "request_id": rid, "search_query": cleaned_query})
+            analytics.log_query(question=cleaned_query, english_question=cleaned_query, language=language,
+                                intent="small_talk", trust_level="general", answer_source="general", top_document=None,
+                                confidence=0.0, response_ms=total_ms, topics=[], answered_by="built_in",
+                                report=small["search_report"], top_page=None)
+            log("SUMMARY", f"═══ SUMMARY ═══ small talk → built-in friendly reply | no search, no AI | {total_ms / 1000:.2f}s")
+            return JSONResponse(content=jsonable_encoder(small), media_type="application/json; charset=utf-8")
+
+        # 3. Translate code-mixed input into clean English (Sarvam -> Groq -> Cloudflare -> Gemini)
         english_query, translated_by = normalize_query(cleaned_query)
 
         # 4. Detect intent
@@ -86,17 +101,22 @@ def query(request: QueryRequest):
             prices = None
         price_context = mandi_prices.as_context(prices)
 
-        # 6. Generate answer in user's UI language (Sarvam -> Groq -> Cloudflare -> search-only)
-        result = get_answer(
-            query=english_query,
-            language=language,
-            intent=intent,
-            retrieved_docs=retrieved_docs,
-            search_stats=search_stats,
-            original_query=cleaned_query,
-            extra_context=price_context,
-            **({"pipeline": "v2"} if pipeline_used == "v2" else {}),
-        )
+        # 6. Generate answer in user's UI language (Sarvam -> Groq -> Cloudflare -> Gemini -> search-only).
+        #    If the v2 answer step crashes, THIS question is redone with v1 (search + answer) automatically.
+        answer_args = dict(query=english_query, language=language, intent=intent, original_query=cleaned_query,
+                           extra_context=price_context)
+        if pipeline_used == "v2":
+            try:
+                result = get_answer(retrieved_docs=retrieved_docs, search_stats=search_stats, pipeline="v2", **answer_args)
+                pipeline.report_success()
+            except Exception as e:
+                pipeline.report_failure("answer step", e)
+                retrieved_docs, search_stats = pipeline.v1.search(english_query, boost_terms=boost)
+                search_stats["pipeline"], pipeline_used = "v1", "v1"
+                routed = search_stats.get("scheme_routing") or []
+                result = get_answer(retrieved_docs=retrieved_docs, search_stats=search_stats, **answer_args)
+        else:
+            result = get_answer(retrieved_docs=retrieved_docs, search_stats=search_stats, **answer_args)
         result["prices"] = prices
 
         result["language"] = language
@@ -137,6 +157,7 @@ def query(request: QueryRequest):
         log("QUERY", f"🏁 finished in {total_ms / 1000:.2f}s | translated by {translated_by or 'none'} | "
                      f"answered by {result.get('answered_by')} | trust={result.get('trust_level')} | "
                      f"helplines={len(result['helplines'])}")
+        log("SUMMARY", _summary(pipeline_used, search_stats, translated_by, result, total_ms, cache="miss"))
 
         return JSONResponse(
             content=jsonable_encoder(result),
@@ -149,6 +170,32 @@ def query(request: QueryRequest):
             status_code=500,
             detail=f"Failed to process query (request {rid}): {str(e)}"
         )
+
+
+def _summary(pipeline_used, stats, translated_by, result, total_ms, cache):
+    """One line at the end of every question: who did what (search the Render logs for 'SUMMARY')."""
+    stats = stats or {}
+    if stats.get("meaning_available"):
+        eng = {"cf": "cloudflare", "gemini": "GEMINI BACKUP"}.get(stats.get("meaning_engine", "cf"), stats.get("meaning_engine"))
+        meaning = f"{eng} ({stats.get('meaning_from', 'live')})"
+    else:
+        meaning = "OFF (word search only)"
+    if pipeline_used == "v2":
+        lib = ("on" + f" ({stats.get('librarian_from')})" if stats.get("reranked") else
+               "not needed (0-1 candidates)" if not stats.get("librarian_needed") else
+               f"SKIPPED ({stats.get('librarian_from') or 'failed'})")
+    else:
+        lib = "— (v1 has no librarian)"
+    return (f"═══ SUMMARY ═══ pipeline={pipeline_used} | meaning={meaning} | librarian={lib} | "
+            f"translated={translated_by or 'none'} | answered={result.get('answered_by')} | "
+            f"trust={result.get('trust_level')} | cache={cache} | {total_ms / 1000:.2f}s")
+
+
+@router.get("/health/details", include_in_schema=False)
+def health_details():
+    """Live status of every moving part (which pipeline, which accounts are used up, which AIs have keys)."""
+    from backend.services import status
+    return JSONResponse(content=jsonable_encoder(status.details()))
 
 
 class JudgeRequest(BaseModel):

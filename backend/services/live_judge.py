@@ -250,8 +250,8 @@ def judge(request_id):
         item = _answers.get(request_id)
     if not item or time.time() - item["t"] > KEEP_SECONDS:
         return {"status": "unavailable", "reason": "This answer is too old to check (or the server restarted)."}
-    if item["answered_by"] in (None, "search_only"):
-        return {"status": "skipped", "reason": "Search-only answer: it is the official text itself."}
+    if item["answered_by"] in (None, "search_only", "built_in"):
+        return {"status": "skipped", "reason": "Search-only or built-in answer: nothing written by an AI to check."}
 
     prompt = _prompt(item)
     candidates = _judges_for(item["answered_by"])
@@ -268,13 +268,16 @@ def judge(request_id):
                 got = list(pool.map(lambda j: _one(request_id, j, prompt), batch))
             for r in got:
                 if r.get("status") != "ok" and queue:
-                    log("JUDGE", f"🔁 {r['judge']} could not check ({r.get('status')}) -> {queue[0]} steps in")
+                    log("JUDGE", f"🔀 HANDOVER [judge] {r['judge']} could not check ({r.get('status')}) → {queue[0]} takes charge")
             results += got
     finally:
         with _lock:
             _running.discard(request_id)
     if not results:
         results = [{"judge": "none", "name": "no judge available", "status": "unavailable"}]
+    ok = [r["judge"] for r in results if r.get("status") == "ok"]
+    log("JUDGE", f"═══ JUDGES ═══ {' + '.join(ok) or 'NONE'} checked this answer"
+                 + ("" if len(ok) >= 2 else f" (only {len(ok)} of 2 -- every other judge was busy or out of today's allowance)"))
     scores = [r["score"] for r in results if r.get("status") == "ok" and r.get("score") is not None]
     score = round(sum(scores) / len(scores)) if scores else None
     out = {"status": "ok" if scores else "unavailable", "judges": results, "score": score, "verdict": verdict(score)}

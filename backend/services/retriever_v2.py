@@ -1,5 +1,5 @@
 """
-Sahakar Sahayak -- document search, version 2 (used only when PIPELINE=v2).
+Sahakar Sahayak -- document search, version 2 (the default; see backend/services/pipeline.py).
 
 Same three matching methods as version 1 (exact words / word parts / meaning), but on the
 GOLD pieces made by the Medallion pipeline (backend/pipeline/): whole sections cut by an AI
@@ -252,6 +252,8 @@ def _rerank(query, texts, stats=None):
     scores, src = meaning.rerank(query, texts, _rerank_live)
     if stats is not None:
         stats["librarian_from"] = src
+    if scores is None:
+        log("SEARCH", f"🔀 HANDOVER [librarian] senior librarian skipped ({src}) → normal search order takes charge")
     return scores
 
 

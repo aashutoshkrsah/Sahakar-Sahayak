@@ -1,6 +1,6 @@
 """
 Answer cache: the same question asked again gets the saved answer instantly, with no AI calls
-(saves Sarvam / Groq / Cloudflare credits). On when PIPELINE=v2 (or ANSWER_CACHE=on).
+(saves Sarvam / Groq / Cloudflare credits). On whenever the v2 system is in use (the default), or with ANSWER_CACHE=on.
 
 Safety rules:
   - EXACT repeats only: same words after lower-casing and removing punctuation/extra spaces,

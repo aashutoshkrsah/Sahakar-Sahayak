@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sahakar Sahayak · Statistics & Question Explorer</title>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f5f7f4;--surface:#fcfcfb;--card:#ffffff;--line:#e3e7e2;--grid:#e8eae6;
+  --ink:#0b0b0b;--ink2:#52514e;--muted:#77766f;--brand:#15803d;--brand-ink:#ffffff;--brand-soft:#e6f4ea;
+  --s-sarvam:#2a78d6;--s-groq:#eb6834;--s-cloudflare:#1baf7a;--s-plain:#8a8984;
+  --good:#0ca30c;--warn:#fab219;--bad:#d03b3b;
+  --h1:#cde2fb;--h2:#9ec5f4;--h3:#6da7ec;--h4:#3987e5;--h5:#256abf;--h6:#184f95;--h7:#0d366b;
+  --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 16px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme:dark){
+  :root{color-scheme:dark;
+    --bg:#111412;--surface:#1a1a19;--card:#1a1d1b;--line:#2c322e;--grid:#2a2e2b;
+    --ink:#ffffff;--ink2:#c3c2b7;--muted:#9a998f;--brand:#4ade80;--brand-ink:#0b1a10;--brand-soft:#15311f;
+    --s-sarvam:#3987e5;--s-groq:#d95926;--s-cloudflare:#199e70;--s-plain:#7c7b76;
+    --h1:#0d366b;--h2:#104281;--h3:#184f95;--h4:#256abf;--h5:#3987e5;--h6:#6da7ec;--h7:#9ec5f4;
+    --shadow:none;}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--brand)}
+.wrap{max-width:1180px;margin:0 auto;padding:18px 16px 60px}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+h1{font-size:22px;margin:0}
+.sub{color:var(--ink2);font-size:14px;margin:2px 0 0}
+.back{font-size:14px;text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;color:var(--ink2)}
+.seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:3px;gap:2px}
+.seg button{font:inherit;font-size:14px;border:0;background:transparent;color:var(--ink2);padding:7px 14px;border-radius:9px;cursor:pointer}
+.seg button.on{background:var(--brand);color:var(--brand-ink);font-weight:700}
+.tabs{display:flex;gap:6px;margin:18px 0 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.tabs button{font:inherit;font-size:15px;border:0;background:none;color:var(--ink2);padding:10px 14px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px}
+.tabs button.on{color:var(--ink);font-weight:700;border-bottom-color:var(--brand)}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow);min-width:0}
+.card h2{font-size:16px;margin:0 0 2px;display:flex;align-items:center;gap:6px}
+.card .note{color:var(--ink2);font-size:13px;margin:0 0 10px}
+.takeaway{font-size:14px;margin:10px 0 0;padding:8px 10px;border-radius:10px;background:var(--brand-soft)}
+.tile .k{color:var(--ink2);font-size:13px;display:flex;align-items:center;gap:6px}
+.tile .v{font-size:28px;font-weight:700;line-height:1.15;margin-top:4px;font-variant-numeric:tabular-nums}
+.tile .d{color:var(--muted);font-size:13px;margin-top:2px}
+.hero .v{font-size:44px;color:var(--ink)}
+.info{border:1px solid var(--line);background:var(--surface);color:var(--ink2);border-radius:999px;width:20px;height:20px;font-size:12px;line-height:18px;text-align:center;cursor:pointer;padding:0;flex:none}
+.pop{display:none;font-size:13px;color:var(--ink2);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin:6px 0 8px}
+.pop.show{display:block}
+svg{display:block;max-width:100%;height:auto}
+svg text{fill:var(--ink2);font-size:12px}
+svg .lbl{fill:var(--ink);font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--ink2);margin:8px 0 0}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.key{width:12px;height:12px;border-radius:3px;display:inline-block}
+.keyl{width:14px;height:3px;border-radius:2px;display:inline-block}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tablewrap{overflow-x:auto}
+.cell{cursor:pointer}
+.cell:hover rect,.cell:focus rect{stroke:var(--ink);stroke-width:2}
+.mark:hover,.mark:focus{opacity:.8}
+#tip{position:fixed;pointer-events:none;z-index:10;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px;box-shadow:0 6px 24px rgba(0,0,0,.15);display:none;max-width:280px}
+#tip b{font-size:15px}
+#tip .t2{color:var(--ink2)}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;position:sticky;top:0;z-index:5}
+.filters select,.filters input[type=search]{font:inherit;font-size:14px;padding:7px 9px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink);max-width:100%}
+.filters input[type=search]{flex:1;min-width:160px}
+.filters label{font-size:14px;color:var(--ink2);display:inline-flex;gap:6px;align-items:center}
+.btn{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:7px 12px;cursor:pointer}
+.count{font-size:14px;color:var(--ink2);margin:10px 2px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+.q .head{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:6px}
+.tag{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:1px 8px;color:var(--ink2)}
+.tag.id{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--ink)}
+.tag.warn{border-color:var(--bad);color:var(--bad)}
+.q .text{font-size:15px;margin:4px 0 8px}
+.keybox{font-size:14px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin:6px 0}
+.ans{border-top:1px solid var(--line);padding:8px 0 4px}
+.ans summary{cursor:pointer;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px}
+.ans .body{font-size:14px;white-space:pre-wrap;margin:6px 0 2px;color:var(--ink)}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
+.chip{font-size:12px;font-weight:700;border-radius:6px;padding:1px 7px;border:1px solid transparent;display:inline-flex;gap:4px;align-items:center}
+.chip.correct{color:var(--good);border-color:var(--good)}
+.chip.partial{color:#9a6a00;border-color:var(--warn)}
+.chip.wrong{color:var(--bad);border-color:var(--bad)}
+@media (prefers-color-scheme:dark){.chip.partial{color:var(--warn)}}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.hide{display:none!important}
+.more{display:block;margin:14px auto}
+.empty{color:var(--ink2);padding:30px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>📊 Statistics &amp; Question Explorer</h1>
+      <p class="sub" id="subtitle">Sahakar Sahayak accuracy tests: every number below comes from the saved test results (no AI is called when you open this page).</p>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <div class="seg" id="testSwitch" role="tablist" aria-label="Choose a test"></div>
+      <a class="back" id="backLink" href="/scoreboard">← Back to scoreboard</a>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button data-tab="overview" class="on">📈 Overview</button>
+    <button data-tab="strengths">🔍 Strengths &amp; weaknesses</button>
+    <button data-tab="questions">📋 Questions</button>
+  </nav>
+
+  <main id="app"><p class="empty">Loading…</p></main>
+</div>
+<div id="tip" role="tooltip"></div>
+
+<script>
+"use strict";
+const AI = {
+  sarvam:       {label: "Sarvam + our PDFs", short: "Sarvam + PDFs", color: "var(--s-sarvam)"},
+  groq:         {label: "Groq + our PDFs", short: "Groq + PDFs", color: "var(--s-groq)"},
+  cloudflare:   {label: "Cloudflare Llama + our PDFs", short: "Cloudflare + PDFs", color: "var(--s-cloudflare)"},
+  sarvam_plain: {label: "Sarvam alone (no PDFs)", short: "Sarvam alone", color: "var(--s-plain)"},
+};
+const GRADE_NAMES = {correct: "Correct", partial: "Partly correct", wrong: "Wrong"};
+const INFO = {
+  score: "Each answer gets 1 (correct), ½ (partly) or 0 (wrong) from each of its two judges; the score is the average. The range underneath is the 95% bootstrap range: if we had asked a different set of similar questions, the score would very likely land inside it.",
+  gain: "Paired gain: the SAME questions were answered by Sarvam with our PDFs and by Sarvam alone. We subtract question by question and average. The range never touching 0 means the gain is real.",
+  p: "Sign test: count questions where our PDFs made the answer better vs worse. If the PDFs did nothing, better and worse would be a coin flip. The p-value is the chance of a split this lopsided by pure luck. Below 0.001 = not luck.",
+  h: "Cohen's h tells how BIG the difference is (the p-value only says it's real). About 0.2 = small, 0.5 = medium, 0.8 or more = large.",
+  split: "How the live app's answers were graded: fully correct, partly correct, or wrong (average of its two judges).",
+  kappa: "Cohen's kappa: how much the two judges agree after removing agreement that would happen by luck. 0 = only luck, 1 = perfect. 0.61–0.80 is called 'substantial'.",
+  search: "How often our document search put the correct official PDF at #1. MRR: 1 point if the right PDF is 1st, ½ if 2nd, ⅓ if 3rd… averaged. 0.96 = almost always first.",
+  time: "Median = half the answers were faster than this. p95 = 95 out of 100 answers were faster than this.",
+  dots: "The dot is the score; the bar is its 95% range. When two bars overlap a lot, the difference could be luck — call it a tie.",
+  donut: "The live app (Sarvam + our PDFs): share of answers that were correct, partly correct or wrong.",
+  progress: "The same AI (Sarvam) in every test, with and without our PDFs. Test 3 used the new v2 system (Medallion pipeline). Sarvam alone is the control: it shows how hard each question set was without our documents.",
+  compare: "Each row compares two systems on the same questions. Better/same/worse counts questions; the range and p-value say whether the difference is real or could be luck.",
+  heat: "Darker blue = higher score. Click a square to see exactly those questions in the Questions tab.",
+  dumbbell: "Grey dot = Sarvam alone, blue dot = Sarvam with our PDFs, for each question type. The line between them is what our search adds.",
+  funnel: "How often the correct official PDF was ranked 1st, in the top 3, anywhere in the passages sent to the AI, and whether the exact page was among them.",
+  calib: "Calibration: of the answers the app itself marked 🟢 Verified, how many the judges graded fully correct. It checks whether the green badge can be trusted.",
+  judges: "Each judge's average grade for each AI. Similar numbers across judges mean no single judge decided the result.",
+  hardest: "Questions that every AI using our PDFs got completely wrong: the best to-do list for improving the app.",
+};
+
+const state = {test: "3", tab: "overview", data: {}, progress: null,
+               filters: {group: "", language: "", doc: "", ai: "", grade: "", allWrong: false, text: ""}, shown: 30};
+const app = document.getElementById("app");
+const tip = document.getElementById("tip");
+
+// ---------- small helpers ----------
+function el(tag, attrs, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (k === "class") e.className = v;
+    else if (k === "text") e.textContent = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if (v !== undefined && v !== null && v !== false) e.setAttribute(k, v);
+  }
+  for (const k of kids.flat()) if (k !== null && k !== undefined && k !== false) e.append(k.nodeType ? k : document.createTextNode(k));
+  return e;
+}
+const NS = "http://www.w3.org/2000/svg";
+function s(tag, attrs, ...kids) {
+  const e = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs || {})) if (v !== undefined && v !== null) e.setAttribute(k, v);
+  for (const k of kids.flat()) if (k !== null && k !== undefined) e.append(k.nodeType ? k : document.createTextNode(k));
+  return e;
+}
+const fmt = (x, d = 1) => (x === null || x === undefined) ? "—" : Number(x).toFixed(d);
+const pct = (x, d = 1) => (x === null || x === undefined) ? "—" : `${Number(x).toFixed(d)}%`;
+const rng = r => r ? `range ${fmt(r[0])}–${fmt(r[1])}%` : "";
+function pval(p) { if (p === null || p === undefined) return "—"; if (p < 0.001) return "< 0.001"; return p.toFixed(p < 0.01 ? 3 : 2); }
+function gradeOf(score) { if (score === null || score === undefined) return null; return score >= 0.999 ? "correct" : score <= 0.001 ? "wrong" : "partial"; }
+
+function showTip(evt, lines) {
+  tip.replaceChildren();
+  lines.forEach((ln, i) => tip.append(el(i === 0 ? "b" : "div", {class: i === 0 ? "" : "t2", text: ln}), i === 0 ? el("br") : ""));
+  tip.style.display = "block";
+  const x = Math.min(evt.clientX + 14, window.innerWidth - tip.offsetWidth - 8);
+  const y = Math.min(evt.clientY + 14, window.innerHeight - tip.offsetHeight - 8);
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+}
+function hideTip() { tip.style.display = "none"; }
+function hover(node, lines) {
+  node.setAttribute("tabindex", "0");
+  node.addEventListener("pointermove", e => showTip(e, lines));
+  node.addEventListener("pointerleave", hideTip);
+  node.addEventListener("focus", () => { const r = node.getBoundingClientRect(); showTip({clientX: r.right, clientY: r.top}, lines); });
+  node.addEventListener("blur", hideTip);
+}
+function infoBtn(key) {
+  const pop = el("div", {class: "pop", text: INFO[key] || ""});
+  const b = el("button", {class: "info", "aria-label": "How to read this", text: "i", onclick: () => pop.classList.toggle("show")});
+  return [b, pop];
+}
+function card(title, infoKey, ...body) {
+  const [b, pop] = infoKey ? infoBtn(infoKey) : [null, null];
+  return el("section", {class: "card"}, el("h2", {}, title, b), pop, ...body);
+}
+function legend(items, line) {
+  return el("div", {class: "legend"}, items.map(([name, color]) =>
+    el("span", {}, el("i", {class: line ? "keyl" : "key", style: `background:${color}`}), name)));
+}
+
+// ---------- data ----------
+async function load(test) {
+  if (!state.data[test]) {
+    const r = await fetch(`/scoreboard/stats/${test}.json`);
+    state.data[test] = r.ok ? await r.json() : null;
+  }
+  if (!state.progress) {
+    const r = await fetch("/scoreboard/progress.json");
+    state.progress = r.ok ? await r.json() : [];
+  }
+  return state.data[test];
+}
+
+// ---------- charts ----------
+function dotRangeChart(d) {
+  const order = d.order;
+  const W = 560, rowH = 42, L = 150, R = 60, T = 26, H = T + rowH * order.length + 20;
+  const x = v => L + (W - L - R) * v / 100;
+  const svg = s("svg", {viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Score of each AI with its 95% range"});
+  for (let t = 0; t <= 100; t += 20) {
+    svg.append(s("line", {x1: x(t), x2: x(t), y1: T - 6, y2: H - 18, stroke: "var(--grid)", "stroke-width": 1}));
+    svg.append(s("text", {x: x(t), y: H - 4, "text-anchor": "middle"}, `${t}%`));
+  }
+  order.forEach((c, i) => {
+    const info = d.contestants[c]; const y = T + rowH * i + rowH / 2;
+    svg.append(s("text", {x: 0, y: y + 4, class: "lbl"}, AI[c] ? AI[c].short : c));
+    const g = s("g", {class: "mark"});
+    if (info.range) g.append(s("line", {x1: x(info.range[0]), x2: x(info.range[1]), y1: y, y2: y, stroke: AI[c].color, "stroke-width": 6, "stroke-linecap": "round", opacity: .35}));
+    g.append(s("circle", {cx: x(info.score), cy: y, r: 7, fill: AI[c].color, stroke: "var(--card)", "stroke-width": 2}));
+    g.append(s("rect", {x: L, y: y - rowH / 2, width: W - L - R, height: rowH, fill: "transparent"}));
+    svg.append(g);
+    svg.append(s("text", {x: W - R + 8, y: y + 4, class: "lbl"}, pct(info.score)));
+    hover(g, [pct(info.score), AI[c].label, info.range ? `95% range ${fmt(info.range[0])}–${fmt(info.range[1])}%` : "", `${info.n} questions`]);
+  });
+  return svg;
+}
+
+function donut(d) {
+  const c = d.contestants.sarvam; if (!c) return el("p", {class: "muted", text: "No data"});
+  const parts = [["correct", c.grades.correct, "var(--good)"], ["partial", c.grades.partial, "var(--warn)"], ["wrong", c.grades.wrong, "var(--bad)"]];
+  const total = parts.reduce((a, p) => a + p[1], 0) || 1;
+  const size = 200, r = 78, w = 26, cx = size / 2, cy = size / 2;
+  const svg = s("svg", {viewBox: `0 0 ${size} ${size}`, width: 200, role: "img", "aria-label": "Live app grades"});
+  let a0 = -Math.PI / 2;
+  parts.forEach(([name, n, color]) => {
+    if (!n) return;
+    const a1 = a0 + 2 * Math.PI * n / total - 0.03;
+    const large = (a1 - a0) > Math.PI ? 1 : 0;
+    const p = (a, rr) => [cx + rr * Math.cos(a), cy + rr * Math.sin(a)];
+    const [x0, y0] = p(a0, r), [x1, y1] = p(a1, r);
+    const path = s("path", {d: `M${x0},${y0} A${r},${r} 0 ${large} 1 ${x1},${y1}`, fill: "none", stroke: color, "stroke-width": w, class: "mark", style: "cursor:pointer"});
+    hover(path, [`${n} answers (${(100 * n / total).toFixed(0)}%)`, GRADE_NAMES[name], "Click to list these questions"]);
+    path.addEventListener("click", () => { hideTip(); openQuestions({ai: "sarvam", grade: name}); });
+    svg.append(path);
+    a0 = a1 + 0.03;
+  });
+  svg.append(s("text", {x: cx, y: cy - 2, "text-anchor": "middle", class: "lbl", style: "font-size:26px"}, `${Math.round(100 * c.grades.correct / total)}%`));
+  svg.append(s("text", {x: cx, y: cy + 18, "text-anchor": "middle"}, "fully correct"));
+  const box = el("div", {style: "display:flex;gap:16px;align-items:center;flex-wrap:wrap"}, svg,
+    el("div", {}, parts.map(([name, n, color]) => el("div", {style: "display:flex;gap:8px;align-items:center;margin:6px 0"},
+      el("i", {class: "key", style: `background:${color}`}), el("b", {text: `${n}`}), el("span", {class: "muted", text: GRADE_NAMES[name]})))));
+  return box;
+}
+
+function stacked(d) {
+  const order = d.order, W = 560, rowH = 34, L = 150, R = 10, T = 6, H = T + rowH * order.length + 4;
+  const svg = s("svg", {viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Grade split for each AI"});
+  const cols = {correct: "var(--good)", partial: "var(--warn)", wrong: "var(--bad)"};
+  order.forEach((c, i) => {
+    const g = d.contestants[c].grades, tot = g.correct + g.partial + g.wrong || 1, y = T + i * rowH;
+    svg.append(s("text", {x: 0, y: y + 17, class: "lbl"}, AI[c].short));
+    let x0 = L;
+    ["correct", "partial", "wrong"].forEach(k => {
+      const w = (W - L - R) * g[k] / tot; if (w <= 0) return;
+      const r = s("rect", {x: x0 + 1, y: y + 4, width: Math.max(0, w - 2), height: 20, rx: 3, fill: cols[k], class: "mark", style: "cursor:pointer"});
+      hover(r, [`${g[k]} of ${tot} (${(100 * g[k] / tot).toFixed(0)}%)`, `${AI[c].label}: ${GRADE_NAMES[k]}`, "Click to list these questions"]);
+      r.addEventListener("click", () => { hideTip(); openQuestions({ai: c, grade: k}); });
+      svg.append(r);
+      if (w > 34) svg.append(s("text", {x: x0 + w / 2, y: y + 18, "text-anchor": "middle", style: `fill:${k === "partial" ? "#1a1a19" : "#fff"};font-weight:600;pointer-events:none`}, `${Math.round(100 * g[k] / tot)}%`));
+      x0 += w;
+    });
+  });
+  return el("div", {}, svg, legend([["Correct", "var(--good)"], ["Partly correct", "var(--warn)"], ["Wrong", "var(--bad)"]]));
+}
+
+function progressChart() {
+  const P = state.progress || []; if (!P.length) return el("p", {class: "muted", text: "No data"});
+  const W = 560, H = 260, L = 56, R = 30, T = 22, B = 44;
+  const x = i => L + (W - L - R) * (P.length === 1 ? 0.5 : i / (P.length - 1));
+  const y = v => T + (H - T - B) * (1 - v / 100);
+  const svg = s("svg", {viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Progress across tests"});
+  for (let t = 0; t <= 100; t += 25) {
+    svg.append(s("line", {x1: L, x2: W - R, y1: y(t), y2: y(t), stroke: "var(--grid)"}));
+    svg.append(s("text", {x: L - 8, y: y(t) + 4, "text-anchor": "end"}, `${t}%`));
+  }
+  [["with", "var(--s-sarvam)", "Sarvam + our PDFs"], ["without", "var(--s-plain)", "Sarvam alone"]].forEach(([k, color, name]) => {
+    const pts = P.map((p, i) => [x(i), y(p[k].score || 0)]);
+    svg.append(s("polyline", {points: pts.map(p => p.join(",")).join(" "), fill: "none", stroke: color, "stroke-width": 2, "stroke-linejoin": "round"}));
+    P.forEach((p, i) => {
+      const g = s("g", {class: "mark"});
+      if (p[k].range) g.append(s("line", {x1: x(i), x2: x(i), y1: y(p[k].range[0]), y2: y(p[k].range[1]), stroke: color, "stroke-width": 6, "stroke-linecap": "round", opacity: .3}));
+      g.append(s("circle", {cx: x(i), cy: y(p[k].score), r: 6, fill: color, stroke: "var(--card)", "stroke-width": 2}));
+      g.append(s("circle", {cx: x(i), cy: y(p[k].score), r: 16, fill: "transparent"}));
+      hover(g, [pct(p[k].score), `${name} · ${p.name} (${p.pipeline})`, p[k].range ? `95% range ${fmt(p[k].range[0])}–${fmt(p[k].range[1])}%` : "", `${p.n} questions`]);
+      svg.append(g);
+      if (k === "with") svg.append(s("text", {x: x(i), y: y(p[k].score) - 14, "text-anchor": "middle", class: "lbl"}, pct(p[k].score, 0)));
+    });
+  });
+  P.forEach((p, i) => {
+    const anchor = i === 0 ? "start" : i === P.length - 1 ? "end" : "middle", ax = i === 0 ? x(i) - 12 : i === P.length - 1 ? x(i) + 12 : x(i);
+    svg.append(s("text", {x: ax, y: H - 22, "text-anchor": anchor, class: "lbl"}, p.name));
+    svg.append(s("text", {x: ax, y: H - 6, "text-anchor": anchor}, `${p.n} Q · ${p.pipeline === "v2" ? "v2 Medallion" : "v1"}`));
+  });
+  return el("div", {}, svg, legend([["Sarvam + our PDFs", "var(--s-sarvam)"], ["Sarvam alone (control)", "var(--s-plain)"]], true));
+}
+
+function progressText() {
+  const P = state.progress || []; if (P.length < 2) return "";
+  const wo = P.map(p => p.without.score).filter(v => v !== null), best = P.reduce((a, p) => (p.with.score || 0) > (a.with.score || 0) ? p : a, P[0]);
+  return `Sarvam alone (the control) stays between ${Math.round(Math.min(...wo))}% and ${Math.round(Math.max(...wo))}% in every test, so the question sets are about equally hard without our documents. With our PDFs, the best score is ${pct(best.with.score, 0)} in ${best.name} (${best.pipeline === "v2" ? "new v2 Medallion system" : best.pipeline}).`;
+}
+const DARK = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+function heatStep(v) { return Math.min(6, Math.floor(v / 100 * 7)); }
+function heatColor(v) {
+  if (v === null || v === undefined) return "var(--grid)";
+  return `var(--h${heatStep(v) + 1})`;
+}
+function heatInk(v) {
+  if (v === null || v === undefined) return "var(--ink)";
+  const st = heatStep(v);
+  return DARK ? (st >= 4 ? "#0b0b0b" : "#ffffff") : (st >= 3 ? "#ffffff" : "#0b0b0b");
+}
+function heatmap(d, key, labels, onPick) {
+  const rows = d.order, cols = Object.keys(labels).filter(k => rows.some(c => d.contestants[c][key][k]));
+  const cw = 96, ch = 40, L = 136, T = 64, W = L + cw * cols.length + 4, H = T + ch * rows.length + 4;
+  const svg = s("svg", {viewBox: `0 0 ${W} ${H}`, width: W, role: "img", "aria-label": "Score heatmap", style: `min-width:${Math.min(W, 560)}px`});
+  cols.forEach((k, j) => {
+    const words = String(labels[k]).split(" "); let lines = [], cur = "";
+    words.forEach(w => { if ((cur + " " + w).trim().length > 14) { lines.push(cur); cur = w; } else cur = (cur + " " + w).trim(); });
+    lines.push(cur); lines = lines.filter(Boolean).slice(0, 3);
+    lines.forEach((ln, li) => svg.append(s("text", {x: L + cw * j + cw / 2, y: T - 8 - 14 * (lines.length - 1 - li), "text-anchor": "middle"}, ln)));
+  });
+  rows.forEach((c, i) => {
+    svg.append(s("text", {x: 0, y: T + ch * i + ch / 2 + 4, class: "lbl"}, AI[c].short));
+    cols.forEach((k, j) => {
+      const cell = d.contestants[c][key][k]; const v = cell ? cell.score : null;
+      const g = s("g", {class: "cell"});
+      g.append(s("rect", {x: L + cw * j + 1, y: T + ch * i + 1, width: cw - 2, height: ch - 2, rx: 6, fill: heatColor(v)}));
+      g.append(s("text", {x: L + cw * j + cw / 2, y: T + ch * i + ch / 2 + 4, "text-anchor": "middle",
+        style: `font-weight:600;fill:${heatInk(v)};pointer-events:none`}, v === null ? "—" : `${Math.round(v)}`));
+      hover(g, [v === null ? "no questions" : pct(v), `${AI[c].label}`, `${labels[k]} · ${cell ? cell.n : 0} questions`, onPick ? "Click to see these questions" : ""]);
+      if (onPick && cell) g.addEventListener("click", () => { hideTip(); onPick(c, k); });
+      svg.append(g);
+    });
+  });
+  return el("div", {class: "tablewrap"}, svg);
+}
+
+function dumbbell(d) {
+  const w = d.contestants.sarvam, wo = d.contestants.sarvam_plain; if (!w || !wo) return el("p", {class: "muted", text: "No data"});
+  const keys = Object.keys(d.groups).filter(k => w.by_group[k] && wo.by_group[k]);
+  const W = 600, rowH = 34, L = 222, R = 50, T = 8, H = T + rowH * keys.length + 24;
+  const x = v => L + (W - L - R) * v / 100;
+  const svg = s("svg", {viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "What our search adds per question type"});
+  for (let t = 0; t <= 100; t += 25) { svg.append(s("line", {x1: x(t), x2: x(t), y1: T, y2: H - 20, stroke: "var(--grid)"})); svg.append(s("text", {x: x(t), y: H - 4, "text-anchor": "middle"}, `${t}%`)); }
+  keys.forEach((k, i) => {
+    const y = T + rowH * i + rowH / 2, a = wo.by_group[k].score, b = w.by_group[k].score;
+    svg.append(s("text", {x: 0, y: y + 4, class: "lbl"}, d.groups[k]));
+    const g = s("g", {class: "mark"});
+    g.append(s("line", {x1: x(a), x2: x(b), y1: y, y2: y, stroke: "var(--grid)", "stroke-width": 4, "stroke-linecap": "round"}));
+    g.append(s("circle", {cx: x(a), cy: y, r: 6, fill: "var(--s-plain)", stroke: "var(--card)", "stroke-width": 2}));
+    g.append(s("circle", {cx: x(b), cy: y, r: 7, fill: "var(--s-sarvam)", stroke: "var(--card)", "stroke-width": 2}));
+    g.append(s("rect", {x: L, y: y - rowH / 2, width: W - L - R, height: rowH, fill: "transparent"}));
+    hover(g, [`${b - a >= 0 ? "+" : ""}${fmt(b - a)} points`, d.groups[k], `Sarvam alone ${pct(a)} → with our PDFs ${pct(b)}`, `${w.by_group[k].n} questions`]);
+    svg.append(g);
+    svg.append(s("text", {x: W - R + 8, y: y + 4, class: "lbl"}, `${b - a >= 0 ? "+" : ""}${Math.round(b - a)}`));
+  });
+  return el("div", {}, svg, legend([["Sarvam alone", "var(--s-plain)"], ["Sarvam + our PDFs", "var(--s-sarvam)"]]));
+}
+
+function funnel(d) {
+  const sr = d.search || {};
+  const rows = [["Correct PDF ranked #1", sr.hit_at_1], ["Correct PDF in the top 3", sr.hit_at_3], ["Correct PDF sent to the AI", sr.hit_at_6], ["Exact page sent to the AI", sr.page_at_6]];
+  const W = 560, rowH = 36, L = 200, R = 60, H = rowH * rows.length + 6;
+  const svg = s("svg", {viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Search funnel"});
+  const steps = ["var(--h6)", "var(--h5)", "var(--h4)", "var(--h3)"];
+  rows.forEach(([name, v], i) => {
+    const y = i * rowH + 4, w = (W - L - R) * (v || 0) / 100;
+    svg.append(s("text", {x: 0, y: y + 18, class: "lbl"}, name));
+    const r = s("rect", {x: L, y: y + 4, width: Math.max(0, w), height: 22, rx: 4, fill: steps[i], class: "mark"});
+    hover(r, [pct(v), name, "Share of document questions (English text)"]);
+    svg.append(r);
+    svg.append(s("text", {x: L + w + 8, y: y + 20, class: "lbl"}, pct(v, 0)));
+  });
+  return svg;
+}
+
+function table(head, rows) {
+  return el("div", {class: "tablewrap"}, el("table", {},
+    el("thead", {}, el("tr", {}, head.map(h => el("th", {text: h})))),
+    el("tbody", {}, rows.map(r => el("tr", {}, r.map((v, i) => el("td", {class: i ? "num" : "", text: v})))))));
+}
+
+// ---------- tabs ----------
+function tile(label, value, detail, infoKey, hero) {
+  const [b, pop] = infoKey ? infoBtn(infoKey) : [null, null];
+  return el("div", {class: "card tile" + (hero ? " hero" : "")}, el("div", {class: "k"}, label, b), pop,
+    el("div", {class: "v", text: value}), el("div", {class: "d", text: detail || ""}));
+}
+
+function verdict(x) {
+  const outside = x.range && (x.range[0] > 0 || x.range[1] < 0);
+  return outside && x.p_value < 0.05 ? "real difference" : outside ? "borderline (small sample)" : "tie (could be luck)";
+}
+function overview(d) {
+  const c = d.contestants, S = c.sarvam || {}, cmp = d.comparisons.find(x => x.a === "sarvam" && x.b === "sarvam_plain");
+  const tot = S.grades ? S.grades.correct + S.grades.partial + S.grades.wrong : 0;
+  const tiles = el("div", {class: "grid g4"},
+    tile("Score of the live app (Sarvam + our PDFs)", pct(S.score), rng(S.range), "score", true),
+    tile("What our PDF search adds (paired)", cmp ? `+${fmt(cmp.gain)} pts` : "—", cmp && cmp.range ? `range +${fmt(cmp.range[0])} to +${fmt(cmp.range[1])} points` : "", "gain", true),
+    tile("Could it be luck? (sign-test p-value)", cmp ? `p ${pval(cmp.p_value)}` : "—", cmp ? `better on ${cmp.better}, same on ${cmp.same}, worse on ${cmp.worse} questions` : "", "p"),
+    tile("How big is the gain? (Cohen's h)", cmp ? fmt(cmp.cohen_h, 2) : "—", cmp ? `${cmp.effect} effect` : "", "h"),
+    tile("Answers fully correct / partly / wrong", S.grades ? `${Math.round(100 * S.grades.correct / tot)}% · ${Math.round(100 * S.grades.partial / tot)}% · ${Math.round(100 * S.grades.wrong / tot)}%` : "—", S.grades ? `${S.grades.correct} · ${S.grades.partial} · ${S.grades.wrong} of ${tot} answers` : "", "split"),
+    tile("Can we trust the grading? (Cohen's kappa)", d.judges.kappa !== null ? fmt(d.judges.kappa, 2) : "—", d.judges.kappa !== null ? `${d.judges.kappa_words} agreement · judges agreed on ${pct(d.judges.agreement, 0)} of ${d.judges.pairs}` : "", "kappa"),
+    tile("Right PDF found first", pct(d.search.hit_at_1, 0), d.search.mrr !== undefined ? `MRR ${fmt(d.search.mrr, 2)} (1.00 = always first)` : "", "search"),
+    tile("Answer time (median / p95)", S.time_median ? `${fmt(S.time_median, 1)} s` : "—", S.time_p95 ? `95% of answers within ${fmt(S.time_p95, 1)} s` : "", "time"),
+  );
+  const best = S.best_area ? d.groups[S.best_area] : "—", worst = S.worst_area ? d.groups[S.worst_area] : "—";
+  const tie = d.comparisons.find(x => x.a === "sarvam" && x.b === "groq");
+  const cmpRows = d.comparisons.map(x => [`${AI[x.a].short} vs ${AI[x.b].short}`, `${x.gain >= 0 ? "+" : ""}${fmt(x.gain)} pts`,
+    x.range ? `${fmt(x.range[0])} to ${fmt(x.range[1])}` : "—", `${x.better} / ${x.same} / ${x.worse}`, pval(x.p_value),
+    verdict(x)]);
+  return el("div", {class: "grid"},
+    tiles,
+    el("div", {class: "grid g2"},
+      card("Who scores best? (score and its 95% range)", "dots", dotRangeChart(d),
+        el("p", {class: "takeaway", text: tie ? `Sarvam vs Groq: ${tie.gain >= 0 ? "+" : ""}${fmt(tie.gain)} points, range ${tie.range ? fmt(tie.range[0]) : "—"} to ${tie.range ? fmt(tie.range[1]) : "—"} →${verdict(tie)}. Every AI using our PDFs is far above Sarvam alone.` : ""})),
+      card("How the live app's answers were graded", "donut", donut(d),
+        el("p", {class: "takeaway", text: `Strongest area: ${best}. Weakest: ${worst}. Spread across question types: ${fmt(S.category_spread)} points (lower = more even).`}))),
+    el("div", {class: "grid g2"},
+      card("Progress: Test 1 → Test 2 → Test 3", "progress", progressChart(),
+        el("p", {class: "takeaway", text: progressText()})),
+      card("Grade split for every AI", "split", stacked(d))),
+    card("Head-to-head comparisons (same questions)", "compare",
+      table(["Comparison", "Difference", "95% range", "Better / same / worse", "p-value", "Verdict"], cmpRows)),
+  );
+}
+
+function strengths(d) {
+  const S = d.contestants.sarvam || {};
+  const pick = (c, k) => openQuestions({ai: c, group: k});
+  const calib = d.calibration;
+  const judgeRows = d.order.map(c => [AI[c].short, ...Object.keys(d.judge_names).map(j => d.contestants[c].by_judge[j] !== undefined ? pct(d.contestants[c].by_judge[j]) : "—")]);
+  const docRows = Object.keys(d.docs).filter(k => k !== "none" && S.by_doc && S.by_doc[k]).sort((a, b) => S.by_doc[b].n - S.by_doc[a].n)
+    .map(k => [d.docs[k], String(S.by_doc[k].n), ...d.order.map(c => d.contestants[c].by_doc[k] ? pct(d.contestants[c].by_doc[k].score, 0) : "—")]);
+  const docLabels = {}; Object.keys(d.docs).forEach(k => { if (k !== "none") docLabels[k] = (d.docs_short || {})[k] || d.docs[k]; });
+  const hardest = d.questions.filter(q => q.all_wrong);
+  return el("div", {class: "grid"},
+    card("Where each AI is strong or weak (by question type)", "heat", heatmap(d, "by_group", d.groups, pick),
+      legend([["low score", "var(--h1)"], ["", "var(--h3)"], ["", "var(--h5)"], ["high score", "var(--h7)"]]),
+      el("p", {class: "takeaway", text: d.order.filter(c => c !== "sarvam_plain").map(c => `${AI[c].short}: best at ${d.groups[d.contestants[c].best_area] || "—"}, weakest at ${d.groups[d.contestants[c].worst_area] || "—"}`).join(" · ")})),
+    el("div", {class: "grid g2"},
+      card("What our PDF search adds, per question type", "dumbbell", dumbbell(d)),
+      card("How well our search finds the right document", "funnel", funnel(d),
+        el("p", {class: "takeaway", text: `The correct official PDF is ranked first for ${pct(d.search.hit_at_1, 0)} of document questions.`}))),
+    card("By language", "heat", heatmap(d, "by_language", d.languages, (c, k) => openQuestions({ai: c, language: k}))),
+    card("By official PDF (click a square to see its questions)", "heat", heatmap(d, "by_doc", docLabels, (c, k) => openQuestions({ai: c, doc: k})),
+      el("details", {style: "margin-top:10px"}, el("summary", {class: "small", text: "Show as a table with full PDF names"}),
+        table(["Official PDF", "Questions", ...d.order.map(c => AI[c].short)], docRows))),
+    el("div", {class: "grid g2"},
+      card("Can the green 'Verified' badge be trusted?", "calib",
+        calib ? el("div", {}, el("div", {class: "tile"}, el("div", {class: "v", text: pct(calib.fully_correct, 0)}),
+          el("div", {class: "d", text: `of the ${calib.verified_answers} answers marked 🟢 Verified were fully correct (average grade ${pct(calib.score, 0)})`}))) : el("p", {class: "muted", text: "No verified answers"}),
+        table(["Honesty and safety check", "Live app"], [
+          ["'Not in the PDFs' questions NOT falsely marked Verified", pct(d.search.not_in_docs_honest, 0)],
+          ["Off-topic questions correctly refused", pct((S.auto || {}).offtopic_refused, 0)],
+          ["Farming questions wrongly refused (lower is better)", pct((S.auto || {}).wrongly_refused, 0)],
+          ["Answer in the chosen language's script", pct((S.auto || {}).right_language, 0)]])),
+      card("Do the judges agree? (each judge's average grade)", "judges",
+        table(["AI", ...Object.values(d.judge_names)], judgeRows),
+        el("p", {class: "takeaway", text: `Judges gave the same grade ${pct(d.judges.agreement, 0)} of the time; Cohen's kappa ${fmt(d.judges.kappa, 2)} (${d.judges.kappa_words}).`}))),
+    card(`Questions every AI got wrong (${hardest.length})`, "hardest",
+      hardest.length ? el("div", {}, hardest.map(q => el("div", {class: "small", style: "padding:6px 0;border-bottom:1px solid var(--line)"},
+        el("span", {class: "tag id", text: q.id}), " ", el("span", {class: "tag", text: d.groups[q.group] || q.group}), " ",
+        el("span", {class: "tag", text: d.docs[q.doc] || "No PDF"}), " ", q.q.length > 180 ? q.q.slice(0, 180) + "…" : q.q)),
+        el("button", {class: "btn", style: "margin-top:10px", text: "Open these in the Questions tab →", onclick: () => openQuestions({allWrong: true})}))
+        : el("p", {class: "muted", text: "None — every question was answered correctly by at least one AI."})),
+  );
+}
+
+// ---------- questions ----------
+function openQuestions(f) {
+  state.filters = Object.assign({group: "", language: "", doc: "", ai: "", grade: "", allWrong: false, text: ""}, f);
+  state.shown = 30;
+  switchTab("questions");
+  window.scrollTo({top: 0});
+}
+function matches(q, f, d) {
+  if (f.group && q.group !== f.group) return false;
+  if (f.language && q.language !== f.language) return false;
+  if (f.doc && q.doc !== f.doc) return false;
+  if (f.allWrong && !q.all_wrong) return false;
+  if (f.ai && !q.runs[f.ai]) return false;
+  if (f.grade) {
+    const ais = f.ai ? [f.ai] : Object.keys(q.runs);
+    if (!ais.some(c => gradeOf(q.runs[c] && q.runs[c].score) === f.grade)) return false;
+  }
+  if (f.text) {
+    const t = f.text.toLowerCase();
+    const hay = [q.id, q.q, q.reference, d.docs[q.doc] || "", ...Object.values(q.runs).map(r => r.answer || "")].join(" ").toLowerCase();
+    if (!hay.includes(t)) return false;
+  }
+  return true;
+}
+function select(label, value, options, onchange) {
+  return el("select", {"aria-label": label, onchange: e => onchange(e.target.value)},
+    el("option", {value: "", text: label}), options.map(([v, t]) => { const o = el("option", {value: v, text: t}); if (v === value) o.selected = true; return o; }));
+}
+function questions(d) {
+  const f = state.filters;
+  const upd = (k, v) => { state.filters[k] = v; state.shown = 30; render(); };
+  const docOpts = Object.keys(d.docs).map(k => [k, d.docs[k]]);
+  const bar = el("div", {class: "filters"},
+    select("All question types", f.group, Object.entries(d.groups), v => upd("group", v)),
+    select("All languages", f.language, Object.entries(d.languages), v => upd("language", v)),
+    select("All PDFs", f.doc, docOpts, v => upd("doc", v)),
+    select("All AIs", f.ai, d.order.map(c => [c, AI[c].label]), v => upd("ai", v)),
+    select("Any grade", f.grade, Object.entries(GRADE_NAMES), v => upd("grade", v)),
+    el("label", {}, (() => { const c = el("input", {type: "checkbox", onchange: e => upd("allWrong", e.target.checked)}); c.checked = f.allWrong; return c; })(), "❌ every AI wrong"),
+    (() => { const i = el("input", {type: "search", placeholder: "Search words, e.g. KCC or Section 28", value: f.text || ""});
+      let t; i.addEventListener("input", () => { clearTimeout(t); t = setTimeout(() => { state.filters.text = i.value.trim(); state.shown = 30; renderList(); }, 250); }); return i; })(),
+    el("button", {class: "btn", text: "Reset", onclick: () => openQuestions({})}),
+  );
+  const list = el("div", {id: "qlist"});
+  const box = el("div", {}, bar, list);
+  setTimeout(renderList, 0);
+  return box;
+}
+function renderList() {
+  const d = state.data[state.test], list = document.getElementById("qlist"); if (!d || !list) return;
+  const all = d.questions.filter(q => matches(q, state.filters, d));
+  list.replaceChildren(el("div", {class: "count", text: `${all.length} of ${d.questions.length} questions shown`}));
+  if (!all.length) { list.append(el("p", {class: "empty", text: "No question matches these filters."})); return; }
+  all.slice(0, state.shown).forEach(q => list.append(qcard(q, d)));
+  if (all.length > state.shown) list.append(el("button", {class: "btn more", text: `Show ${Math.min(30, all.length - state.shown)} more`, onclick: () => { state.shown += 30; renderList(); }}));
+}
+function qcard(q, d) {
+  const key = el("div", {class: "keybox"}, el("b", {text: "Answer key: "}), q.reference || "—",
+    q.doc !== "none" ? el("div", {class: "muted small", text: `${d.docs[q.doc]}${q.pages.length ? " · page " + q.pages.join(", ") : ""}`}) : null);
+  const answers = d.order.filter(c => q.runs[c]).map(c => {
+    const r = q.runs[c], g = gradeOf(r.score);
+    const chips = Object.entries(r.grades).map(([j, v]) => {
+      const ch = el("span", {class: `chip ${v.grade}`, title: v.reason || "", text: `${(d.judge_names[j] || j).split(" · ")[0]}: ${v.grade}`});
+      return ch;
+    });
+    const open = state.filters.ai === c;
+    const det = el("details", {class: "ans"}, el("summary", {},
+      el("i", {class: "dot", style: `background:${AI[c].color}`}), el("b", {text: AI[c].label}),
+      g ? el("span", {class: `chip ${g}`, text: `${GRADE_NAMES[g]} (${Math.round(100 * r.score)}%)`}) : el("span", {class: "muted small", text: "not graded"}),
+      el("span", {class: "muted small", text: r.time ? `${fmt(r.time, 1)} s` : ""})),
+      el("div", {class: "body", text: r.answer || "(no answer)"}),
+      el("div", {style: "display:flex;flex-wrap:wrap;gap:6px;margin-top:6px"}, chips,
+        el("span", {class: "muted small", text: "hover a grade to read the judge's reason"})));
+    if (open) det.open = true;
+    return det;
+  });
+  return el("article", {class: "q"},
+    el("div", {class: "head"}, el("span", {class: "tag id", text: q.id}), el("span", {class: "tag", text: d.groups[q.group] || q.group}),
+      el("span", {class: "tag", text: d.languages[q.language] || q.language}), q.doc !== "none" ? el("span", {class: "tag", text: d.docs[q.doc]}) : null,
+      q.all_wrong ? el("span", {class: "tag warn", text: "❌ every AI wrong"}) : null),
+    el("div", {class: "text", text: q.q}), key, answers);
+}
+
+// ---------- shell ----------
+function switchTab(t) {
+  state.tab = t;
+  document.querySelectorAll(".tabs button").forEach(b => b.classList.toggle("on", b.dataset.tab === t));
+  const u = new URL(location.href); u.searchParams.set("tab", t); u.searchParams.set("test", state.test); history.replaceState(null, "", u);
+  render();
+}
+async function render() {
+  hideTip();
+  const d = await load(state.test);
+  if (!d) { app.replaceChildren(el("p", {class: "empty", text: "Results for this test are not published yet."})); return; }
+  document.getElementById("subtitle").textContent =
+    `${d.name}: ${d.about} · system ${d.pipeline === "v2" ? "v2 (Medallion pipeline)" : d.pipeline} · graded ${d.generated_at || ""} · every number comes from the saved results (no AI is called here).`;
+  document.getElementById("backLink").href = d.test === "1" ? "/scoreboard" : `/scoreboard/test${d.test}`;
+  app.replaceChildren(state.tab === "overview" ? overview(d) : state.tab === "strengths" ? strengths(d) : questions(d));
+}
+function init() {
+  const u = new URL(location.href);
+  state.test = ["1", "2", "3"].includes(u.searchParams.get("test")) ? u.searchParams.get("test") : "3";
+  state.tab = ["overview", "strengths", "questions"].includes(u.searchParams.get("tab")) ? u.searchParams.get("tab") : "overview";
+  const sw = document.getElementById("testSwitch");
+  [["1", "Test 1"], ["2", "Test 2"], ["3", "Test 3"]].forEach(([t, name]) => sw.append(el("button", {
+    class: t === state.test ? "on" : "", text: name, onclick: e => {
+      state.test = t; sw.querySelectorAll("button").forEach(b => b.classList.toggle("on", b === e.target));
+      state.filters = {group: "", language: "", doc: "", ai: "", grade: "", allWrong: false, text: ""}; switchTab(state.tab);
+    }})));
+  document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => switchTab(b.dataset.tab)));
+  switchTab(state.tab);
+}
+init();
+</script>
+</body>
+</html>

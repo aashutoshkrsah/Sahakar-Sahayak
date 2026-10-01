@@ -143,8 +143,21 @@ _PRICES_RULE = ("give the prices from the '[Mandi prices ...]' note in the Conte
 def build_system_prompt(target_lang: str, with_prices: bool = False) -> str:
     """The answer-writing instructions (same for every AI in the chain).
     with_prices=True only for price questions (mandi_prices.py); every other question gets the exact old text."""
-    prompt = _base_system_prompt(target_lang)
+    prompt = _base_system_prompt(target_lang) + _STATE_SCOPE_RULE
     return prompt.replace(_NO_PRICES_RULE, _PRICES_RULE) if with_prices else prompt
+
+
+# Which state's law applies: our official documents are the KARNATAKA Co-operative Societies Act plus central
+# (all-India) schemes, RBI directions and the Multi-State Act. A question about another state's own co-operative
+# law must not be answered from the Karnataka Act as if it applied there.
+_STATE_SCOPE_RULE = (
+    "\nScope of the documents: the state law in the Context is the KARNATAKA Co-operative Societies Act, 1959; the "
+    "other documents are central (all-India) schemes, RBI directions and the Multi-State Co-operative Societies Act, "
+    "which apply in every state. If the user asks about the co-operative law or rules of ANOTHER state (for example "
+    "Maharashtra, Tamil Nadu, Kerala), say clearly that the Karnataka Act does not apply there and that our documents "
+    "do not cover that state's law, give only general guidance, and suggest that state's Registrar of Co-operative "
+    "Societies. Central schemes such as PM-KISAN, PMFBY and KCC apply in every state."
+)
 
 
 def _base_system_prompt(target_lang: str) -> str:
@@ -181,7 +194,7 @@ def _base_system_prompt(target_lang: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Version 2 answer rules (only when PIPELINE=v2, see backend/services/pipeline.py)
+# Version 2 answer rules (used by the v2 system, the default -- see backend/services/pipeline.py)
 # ---------------------------------------------------------------------------
 def _v2_rules(target_lang: str) -> str:
     return (

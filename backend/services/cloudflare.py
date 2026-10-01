@@ -86,6 +86,8 @@ def run(model: str, payload: dict, timeout: float, what: str = "call"):
         if not _usable(label):
             errors.append(f"{label}: resting")
             continue
+        if errors:
+            log("CLOUDFLARE", f"🔀 HANDOVER [cloudflare {what}] {errors[-1][:140]} → {label} takes charge")
         tried += 1
         try:
             r = _http.post(f"https://api.cloudflare.com/client/v4/accounts/{acct}/ai/run/{model}",
@@ -117,4 +119,5 @@ def run(model: str, payload: dict, timeout: float, what: str = "call"):
             errors.append(f"{label}: {type(e).__name__} {str(e)[:120]}")
     if tried == 0 and not errors:
         errors.append("no account available")
+    log("CLOUDFLARE", f"❌ every Cloudflare account failed for {what} ({'; '.join(errors)[:200]})")
     raise CloudflareError(f"Cloudflare {what} failed ({'; '.join(errors)[:400]})")

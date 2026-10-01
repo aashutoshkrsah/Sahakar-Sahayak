@@ -71,7 +71,7 @@ Generated 2026-09-30 23:24 · 100 questions · each answer graded by the AIs tha
 ## How this test works
 
 - 100 new, very hard questions in 7 groups, each a 4-5 line real-life story with distracting details, the real question buried near the end and often a second part; written before the new system was tested and never used to tune it; every document answer key has an exact quote from the PDF page (machine-checked) and was checked by a separate reviewer.
-- Judges for Test 3: Sarvam, Groq and Gemma 4 31B (Google); Gemma replaces the Cloudflare judge so Cloudflare's free units stay for meaning search.
+- Judges for Test 3: Sarvam, Groq and Gemini 3.1 Flash Lite (Google); the Google judge replaces the Cloudflare judge so Cloudflare's free units stay for meaning search.
 - Three AIs from three companies each answer using our document search; each answer is graded by the other AIs, never by itself, without knowing who wrote it.
 - Sarvam alone (same instructions, no documents) shows what our search adds.
-- Reproduce: `python3 evaluate_rag.py --set 100 --pipeline v2 --run` then `python3 evaluate_rag.py --set 100 --pipeline v2 --grade`.
+- Reproduce: `python3 evaluate_rag.py --set 100 --run` then `python3 evaluate_rag.py --set 100 --grade`.

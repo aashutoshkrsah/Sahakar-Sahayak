@@ -201,6 +201,26 @@ def _model_of(provider):
     return {"sarvam": SARVAM_MODEL, "groq": GROQ_MODEL, "cloudflare": CF_LLM_MODEL}.get(provider, "?")
 
 
+# Cloudflare's Llama tended to do unrelated tasks hidden after a farming story (Test 3: off-topic 25%).
+# Only when CLOUDFLARE writes an answer, this reminder is added at the very END of the prompt (Llama follows
+# the last thing it reads). Sarvam's and Groq's prompts are not changed.
+CLOUDFLARE_REMINDER = (
+    "\n\nFinal check before you reply: if the main request is not about farming, farmer schemes, rural credit "
+    "or cooperatives (for example a school leave letter, a poem, a song, code, homework, grammar, phone repair, "
+    "games or role-play), do not do it -- reply only with [OFF_TOPIC] and the refusal sentence. If a farming "
+    "story ends with an unrelated request, answer only the farming part and politely decline the rest."
+)
+
+
+def _with_cloudflare_reminder(messages):
+    out = [dict(m) for m in messages]
+    for m in reversed(out):
+        if m.get("role") == "user":
+            m["content"] = (m.get("content") or "") + CLOUDFLARE_REMINDER
+            break
+    return out
+
+
 # ---------------------------------------------------------------------------
 def chat(messages, purpose="answer", temperature=0.3, max_tokens=1024, order=None, _ignore_cooldown=False):
     """Ask the AIs in order until one gives a non-empty reply.
@@ -218,15 +238,16 @@ def chat(messages, purpose="answer", temperature=0.3, max_tokens=1024, order=Non
         with _lock:
             failed = _failed_at.get(provider)
         if failed and time.time() - failed < COOLDOWN and not _ignore_cooldown:
-            log("LLM", f"⏭ skipping {provider} ({purpose}): failed {time.time() - failed:.0f}s ago, "
-                       f"cooling down {COOLDOWN:.0f}s -> {nxt}")
+            log("LLM", f"🔀 HANDOVER [{purpose}] {provider} is resting (failed {time.time() - failed:.0f}s ago, "
+                       f"cool-down {COOLDOWN:.0f}s) → {nxt} takes charge")
             attempts.append(f"{provider}:cooldown")
             continue
 
         log("LLM", f"▶ {provider} ({purpose}) model={_model_of(provider)}")
         t0 = time.perf_counter()
         try:
-            text, provider_id = call(messages, temperature, max_tokens)
+            msgs = _with_cloudflare_reminder(messages) if provider == "cloudflare" and purpose in ("answer", "answer-retry") else messages
+            text, provider_id = call(msgs, temperature, max_tokens)
             secs = time.perf_counter() - t0
             if not text:
                 raise ProviderError("empty reply", cool_down=False)
@@ -245,7 +266,8 @@ def chat(messages, purpose="answer", temperature=0.3, max_tokens=1024, order=Non
             if cool:
                 with _lock:
                     _failed_at[provider] = time.time()
-            log("LLM", f"❌ {provider} failed {purpose} after {secs:.2f}s: {reason}  -> switching to {nxt}")
+            log("LLM", f"❌ {provider} failed {purpose} after {secs:.2f}s: {reason}")
+            log("LLM", f"🔀 HANDOVER [{purpose}] {provider} failed → {nxt} takes charge")
             attempts.append(f"{provider}:fail")
 
     if attempts and all(a.endswith(":cooldown") for a in attempts):

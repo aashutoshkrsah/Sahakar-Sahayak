@@ -6,12 +6,12 @@ and any AI that has used today's allowance. If a judge fails, the NEXT one on th
 answer still gets two judges:
 
   1. Groq (gpt-oss-20b)             LIVE_JUDGE_GROQ_DAILY=120
-  2. Gemma 4 31B (Gemini key)       LIVE_JUDGE_GEMMA_DAILY=3000
-  3. Gemini Flash Lite (Gemini key) LIVE_JUDGE_LITE_DAILY=300
+  2. Gemini Flash Lite (Gemini key) LIVE_JUDGE_LITE_DAILY=300
+  3. Gemma 4 31B (Gemini key)       LIVE_JUDGE_GEMMA_DAILY=3000   (often fails on Google's side, so it comes after Lite)
   4. Cloudflare Llama 3.3 70B       LIVE_JUDGE_CLOUDFLARE_DAILY=30   (small, so meaning search keeps its units)
   5. Sarvam                         LIVE_JUDGE_SARVAM_DAILY=200      (only when Sarvam did not write the answer)
 
-  Normal case: Sarvam writes -> Groq + Gemma judge.
+  Normal case: Sarvam writes -> Groq + Gemini Flash Lite judge.
 
 How it works: /query remembers each answer for 30 minutes. Right after showing the
 answer, the website calls POST /judge with the answer's request ID; the judges run in
@@ -51,7 +51,7 @@ DAILY_LIMIT = {
     "cloudflare": int(os.getenv("LIVE_JUDGE_CLOUDFLARE_DAILY", "30")),
     "sarvam": int(os.getenv("LIVE_JUDGE_SARVAM_DAILY", "200")),
 }
-JUDGE_ORDER = ["groq", "gemma", "lite", "cloudflare", "sarvam"]
+JUDGE_ORDER = ["groq", "lite", "gemma", "cloudflare", "sarvam"]   # Gemma after Flash Lite: Gemma often fails on Google's side
 JUDGE_NAMES = {
     "groq": f"Groq · {GROQ_JUDGE_MODEL.split('/')[-1]}",
     "gemma": "Gemma 4 31B",

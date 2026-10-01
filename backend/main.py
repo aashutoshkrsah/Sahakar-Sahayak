@@ -103,6 +103,11 @@ async def transcribe_voice(file: UploadFile = File(...), language: str = Form("e
 
         # Pass the dynamic language from the frontend into the Voice Engine
         text, detected_language = convert_audio_to_text(temp_path, language)
+        try:   # farm words often misheard (e.g. "Monday prices" -> "mandi prices")
+            from anadi_voice_engine import fix_heard_words
+            text = fix_heard_words(text)
+        except Exception as e:
+            print(f"[VOICE-IN] farm-word fix skipped: {e}")
 
         return {
             "text": text,

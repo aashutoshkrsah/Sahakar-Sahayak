@@ -58,7 +58,7 @@ Every answer tells the user **where it came from**: an official government PDF (
 | 🌾 **Mandi prices (only when asked)** | Ask *"tomato bhav Kolar mandi?"* or *"ಈರುಳ್ಳಿ ಬೆಲೆ ಎಷ್ಟು?"* and the answer gives the latest Karnataka mandi prices (min / usual / max, ₹ per quintal, with the date) plus a small price table and the official AGMARKNET link. The prices are official AGMARKNET data (Govt. of India), read from a file that the open-source [karnataka-mandi-rates](https://github.com/Sheethal00/karnataka-mandi-rates) project refreshes every hour — so the farmer never waits for the slow government site, and no API key is needed. Prices appear **only** for price questions: PM-Kisan, KCC, MSP, insurance or loan questions never get them, and every other question works exactly as before. Prices older than 7 days are not shown (only the AGMARKNET link). Every price answer is labelled with its date: 🟢 *today* / *yesterday*, or 🟠 *"25 Sep, 3 days old · prices may have changed"* — the app never calls old prices "today's". |
 | ☎️ **Talk to a person** | Under answers that aren't fully verified (and under complaints), the app shows official helplines — Kisan Call Centre 1800-180-1551, crop-insurance helpline 14447, PM-KISAN helpdesk, the Registrar's office — tap to call. |
 | 📈 **Admin insights** | A password-protected `/admin` page: every recent question with its **scorecard and AI-check score**, most asked questions, languages, schemes, which AI answered, and the **knowledge gaps** — questions the PDFs couldn't answer, i.e. which document to add next. Download everything as CSV. |
-| 🔊 **Voice in, voice out** | Speak your question and hear the answer. Speech-to-text has its own 3-level fallback (**Sarvam → Bhashini → Google**), and read-aloud falls back from **Bhashini → Google** — so voice also never goes silent. (English, Hindi, Kannada; Nepali voice is planned.) |
+| 🔊 **Voice in, voice out** | Speak your question and hear the answer. Speech-to-text has its own 3-level fallback (**Sarvam → Bhashini → Google**), and read-aloud uses **Sarvam → Bhashini → Google** (Nepali: Google Nepali → Hindi voice) — so voice also never goes silent. |
 | 📤 **Share the full answer** | One tap shares the question, full answer and source link to WhatsApp (or any app on a phone). |
 | 🔐 **Secure sign-up** | Email **and** phone OTP verification, hashed OTPs, attempt limits, resend cooldown; the account is only created after both are verified. **Forgot password?** on the login page: enter your email or mobile, get a 6-digit code (email via Brevo, SMS via the gateway), then set a new password. |
 | 🤖 **Telegram bot** | The same assistant on Telegram, with a language menu (Kannada / English / Hindi). |
@@ -86,7 +86,7 @@ flowchart LR
     E --> F["Sarvam AI writes a short answer<br/>in the user's language<br/>(backups: Groq → Cloudflare → search-only)"]
     F --> G["Trust card + source link<br/>+ scorecard + share"]
     F --> J["Live AI check:<br/>other AIs grade the answer"]
-    F --> H["Text-to-speech<br/>Bhashini → Google"]
+    F --> H["Text-to-speech<br/>Sarvam → Bhashini → Google"]
 ```
 
 **Scoring (per passage)**
@@ -122,9 +122,10 @@ Then, for every question: the same three search signals pick 20 candidates → a
 | Meaning numbers of the question | saved numbers | Cloudflare account 1 → Cloudflare account 2 → Gemini Embedding (its own saved copy of the pieces) | keyword + spelling search |
 | Senior librarian | saved scores | Cloudflare (both accounts) | normal search order |
 | Write the answer | Sarvam | Groq → Cloudflare → Gemini Flash Lite | **search-only mode**: the best PDF passage, word for word, with its source |
-| Live AI check (2 judges) | Groq + Gemma 4 | Gemini Flash Lite → Cloudflare (max 30/day) → Sarvam (never the AI that wrote the answer) | "not checked" label |
+| Live AI check (2 judges) | Groq + Gemini Flash Lite | Gemma 4 → Cloudflare (max 30/day) → Sarvam (never the AI that wrote the answer) | "not checked" label |
+| Read the answer aloud | Sarvam Bulbul (Indian voices) | Bhashini (female) → Google (Indian accent); Nepali: Google Nepali → Hindi voice | text only |
 
-Small talk ("hi", "what is your name?", "thank you") gets a friendly built-in reply with no search. A message that sounds like distress gets the **Tele-MANAS 14416** helpline. An AI that fails is rested for 60 seconds so the next users don't wait for it.
+Small talk ("hi", "what is your name?", "thank you") gets a friendly built-in reply with no search. Farm words that speech-to-text often mishears are corrected ("Monday prices" → "mandi prices"); when a backup voice reads English, Indian words are spelled the way they sound (mandi → mundee) — the text on screen never changes. A message that sounds like distress gets the **Tele-MANAS 14416** helpline. An AI that fails is rested for 60 seconds so the next users don't wait for it.
 
 **Reading the Render logs.** A startup block shows the state of everything; then every question prints its full story with a request ID. Search the logs for:
 - `STARTUP CHECK` — pipeline, saved data, Cloudflare accounts, answer chain and judges, each ✅/❌
@@ -364,6 +365,7 @@ Set these in Render → Environment (never commit real values). See `.env.exampl
 | Variable | Used for |
 |---|---|
 | `SARVAM_API_KEY` | Sarvam AI (question rewriting, answers, speech-to-text) |
+| `SARVAM_TTS_API_KEY` | Optional: a separate Sarvam key just for reading answers aloud (falls back to `SARVAM_API_KEY`) · optional `SARVAM_TTS_SPEAKER` (default `priya`) |
 | `GROQ_API_KEY` | 1st backup AI (free key from console.groq.com) · optional `GROQ_MODEL` |
 | `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` | Meaning search, senior librarian, 2nd backup AI · optional `CLOUDFLARE_LLM_MODEL` |
 | `CLOUDFLARE_ACCOUNT_ID_2`, `CLOUDFLARE_API_TOKEN_2` | Optional: a second Cloudflare account, used automatically when the first one's daily units run out |

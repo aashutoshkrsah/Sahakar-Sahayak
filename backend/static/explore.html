@@ -38,7 +38,7 @@ h1{font-size:22px;margin:0}
 .tabs button.on{color:var(--ink);font-weight:700;border-bottom-color:var(--brand)}
 .grid{display:grid;gap:14px}
 .g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
-.g4{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow);min-width:0}
 .card h2{font-size:16px;margin:0 0 2px;display:flex;align-items:center;gap:6px}
 .card .note{color:var(--ink2);font-size:13px;margin:0 0 10px}
@@ -130,7 +130,7 @@ const AI = {
 };
 const GRADE_NAMES = {correct: "Correct", partial: "Partly correct", wrong: "Wrong"};
 const INFO = {
-  score: "Each answer gets 1 (correct), ½ (partly) or 0 (wrong) from each of its two judges; the score is the average. The range underneath is the 95% bootstrap range: if we had asked a different set of similar questions, the score would very likely land inside it.",
+  score: "Two AI judges grade every answer: correct = 1, partly = ½, wrong = 0. The score is the average. 'Most likely between' is the 95% range: with a different set of similar questions, the score would very likely land there.",
   gain: "Paired gain: the SAME questions were answered by Sarvam with our PDFs and by Sarvam alone. We subtract question by question and average. The range never touching 0 means the gain is real.",
   p: "Sign test: count questions where our PDFs made the answer better vs worse. If the PDFs did nothing, better and worse would be a coin flip. The p-value is the chance of a split this lopsided by pure luck. Below 0.001 = not luck.",
   h: "Cohen's h tells how BIG the difference is (the p-value only says it's real). About 0.2 = small, 0.5 = medium, 0.8 or more = large.",
@@ -175,6 +175,7 @@ function s(tag, attrs, ...kids) {
   return e;
 }
 const fmt = (x, d = 1) => (x === null || x === undefined) ? "—" : Number(x).toFixed(d);
+const nice = x => (x === null || x === undefined) ? "—" : `${Math.abs(x - Math.round(x)) < 0.05 ? Math.round(x) : Number(x).toFixed(1)}%`;
 const pct = (x, d = 1) => (x === null || x === undefined) ? "—" : `${Number(x).toFixed(d)}%`;
 const rng = r => r ? `range ${fmt(r[0])}–${fmt(r[1])}%` : "";
 function pval(p) { if (p === null || p === undefined) return "—"; if (p < 0.001) return "< 0.001"; return p.toFixed(p < 0.01 ? 3 : 2); }
@@ -300,7 +301,7 @@ function progressChart() {
   const W = 560, H = 260, L = 56, R = 30, T = 22, B = 44;
   const x = i => L + (W - L - R) * (P.length === 1 ? 0.5 : i / (P.length - 1));
   const y = v => T + (H - T - B) * (1 - v / 100);
-  const svg = s("svg", {viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Progress across tests"});
+  const svg = s("svg", {viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Progress across tests", style: "max-width:720px;margin:0 auto"});
   for (let t = 0; t <= 100; t += 25) {
     svg.append(s("line", {x1: L, x2: W - R, y1: y(t), y2: y(t), stroke: "var(--grid)"}));
     svg.append(s("text", {x: L - 8, y: y(t) + 4, "text-anchor": "end"}, `${t}%`));
@@ -329,7 +330,7 @@ function progressChart() {
 function progressText() {
   const P = state.progress || []; if (P.length < 2) return "";
   const wo = P.map(p => p.without.score).filter(v => v !== null), best = P.reduce((a, p) => (p.with.score || 0) > (a.with.score || 0) ? p : a, P[0]);
-  return `Sarvam alone (the control) stays between ${Math.round(Math.min(...wo))}% and ${Math.round(Math.max(...wo))}% in every test, so the question sets are about equally hard without our documents. With our PDFs, the best score is ${pct(best.with.score, 0)} in ${best.name} (${best.pipeline === "v2" ? "new v2 Medallion system" : best.pipeline}).`;
+  return `Sarvam alone (the control) stays between ${nice(Math.min(...wo))} and ${nice(Math.max(...wo))} in every test, so the question sets are about equally hard without our documents. With our PDFs, the best score is ${nice(best.with.score)} in ${best.name} (${best.pipeline === "v2" ? "new v2 Medallion system" : best.pipeline}).`;
 }
 const DARK = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
 function heatStep(v) { return Math.min(6, Math.floor(v / 100 * 7)); }
@@ -425,37 +426,60 @@ function verdict(x) {
   return outside && x.p_value < 0.05 ? "real difference" : outside ? "borderline (small sample)" : "tie (could be luck)";
 }
 function overview(d) {
-  const c = d.contestants, S = c.sarvam || {}, cmp = d.comparisons.find(x => x.a === "sarvam" && x.b === "sarvam_plain");
+  const c = d.contestants, S = c.sarvam || {}, P = c.sarvam_plain || {}, cmp = d.comparisons.find(x => x.a === "sarvam" && x.b === "sarvam_plain");
   const tot = S.grades ? S.grades.correct + S.grades.partial + S.grades.wrong : 0;
-  const tiles = el("div", {class: "grid g4"},
-    tile("Score of the live app (Sarvam + our PDFs)", pct(S.score), rng(S.range), "score", true),
-    tile("What our PDF search adds (paired)", cmp ? `+${fmt(cmp.gain)} pts` : "—", cmp && cmp.range ? `range +${fmt(cmp.range[0])} to +${fmt(cmp.range[1])} points` : "", "gain", true),
-    tile("Could it be luck? (sign-test p-value)", cmp ? `p ${pval(cmp.p_value)}` : "—", cmp ? `better on ${cmp.better}, same on ${cmp.same}, worse on ${cmp.worse} questions` : "", "p"),
-    tile("How big is the gain? (Cohen's h)", cmp ? fmt(cmp.cohen_h, 2) : "—", cmp ? `${cmp.effect} effect` : "", "h"),
-    tile("Answers fully correct / partly / wrong", S.grades ? `${Math.round(100 * S.grades.correct / tot)}% · ${Math.round(100 * S.grades.partial / tot)}% · ${Math.round(100 * S.grades.wrong / tot)}%` : "—", S.grades ? `${S.grades.correct} · ${S.grades.partial} · ${S.grades.wrong} of ${tot} answers` : "", "split"),
-    tile("Can we trust the grading? (Cohen's kappa)", d.judges.kappa !== null ? fmt(d.judges.kappa, 2) : "—", d.judges.kappa !== null ? `${d.judges.kappa_words} agreement · judges agreed on ${pct(d.judges.agreement, 0)} of ${d.judges.pairs}` : "", "kappa"),
-    tile("Right PDF found first", pct(d.search.hit_at_1, 0), d.search.mrr !== undefined ? `MRR ${fmt(d.search.mrr, 2)} (1.00 = always first)` : "", "search"),
-    tile("Answer time (median / p95)", S.time_median ? `${fmt(S.time_median, 1)} s` : "—", S.time_p95 ? `95% of answers within ${fmt(S.time_p95, 1)} s` : "", "time"),
-  );
-  const best = S.best_area ? d.groups[S.best_area] : "—", worst = S.worst_area ? d.groups[S.worst_area] : "—";
   const tie = d.comparisons.find(x => x.a === "sarvam" && x.b === "groq");
-  const cmpRows = d.comparisons.map(x => [`${AI[x.a].short} vs ${AI[x.b].short}`, `${x.gain >= 0 ? "+" : ""}${fmt(x.gain)} pts`,
-    x.range ? `${fmt(x.range[0])} to ${fmt(x.range[1])}` : "—", `${x.better} / ${x.same} / ${x.worse}`, pval(x.p_value),
-    verdict(x)]);
-  return el("div", {class: "grid"},
-    tiles,
-    el("div", {class: "grid g2"},
-      card("Who scores best? (score and its 95% range)", "dots", dotRangeChart(d),
-        el("p", {class: "takeaway", text: tie ? `Sarvam vs Groq: ${tie.gain >= 0 ? "+" : ""}${fmt(tie.gain)} points, range ${tie.range ? fmt(tie.range[0]) : "—"} to ${tie.range ? fmt(tie.range[1]) : "—"} →${verdict(tie)}. Every AI using our PDFs is far above Sarvam alone.` : ""})),
-      card("How the live app's answers were graded", "donut", donut(d),
-        el("p", {class: "takeaway", text: `Strongest area: ${best}. Weakest: ${worst}. Spread across question types: ${fmt(S.category_spread)} points (lower = more even).`}))),
-    el("div", {class: "grid g2"},
-      card("Progress: Test 1 → Test 2 → Test 3", "progress", progressChart(),
-        el("p", {class: "takeaway", text: progressText()})),
-      card("Grade split for every AI", "split", stacked(d))),
-    card("Head-to-head comparisons (same questions)", "compare",
-      table(["Comparison", "Difference", "95% range", "Better / same / worse", "p-value", "Verdict"], cmpRows)),
+  const best = S.best_area ? d.groups[S.best_area] : "—", worst = S.worst_area ? d.groups[S.worst_area] : "—";
+
+  // 1) One sentence anyone can read
+  const banner = el("section", {class: "card", style: "border:2px solid var(--brand)"},
+    el("div", {style: "font-size:20px;line-height:1.45"},
+      `On ${d.questions_total} hard questions, the app answered `, el("b", {text: nice(S.score)}), " correctly. ",
+      "The same AI without our document search managed only ", el("b", {text: nice(P.score)}), "."));
+
+  // 2) Four cards in plain words
+  const simple = el("div", {class: "grid g4"},
+    tile("✅ Correct answers", nice(S.score), S.range ? `most likely between ${Math.round(S.range[0])}% and ${Math.round(S.range[1])}%` : "", "score", true),
+    tile("📚 What our search adds", cmp ? `+${nice(cmp.gain).replace("%", "")} points` : "—", `${nice(P.score)} → ${nice(S.score)} on the same questions`, "gain", true),
+    tile("🎲 Could it be luck?", cmp && cmp.p_value < 0.001 ? "No" : cmp && cmp.p_value < 0.05 ? "Very unlikely" : "Maybe",
+      cmp ? `our search helped on ${cmp.better} questions and hurt on only ${cmp.worse}` : "", "p", true),
+    tile("🎯 Right document found first", pct(d.search.hit_at_1, 0), "how often the correct official PDF came out on top", "search", true),
+    tile("⚖️ Can we trust the grading?", d.judges.kappa === null ? "—" : d.judges.kappa > 0.6 ? "Yes" : d.judges.kappa > 0.4 ? "Mostly" : "Partly",
+      d.judges.kappa === null ? "" : `two judges from different companies gave the same grade ${pct(d.judges.agreement, 0)} of the time (kappa ${fmt(d.judges.kappa, 2)}, ${d.judges.kappa_words})`, "kappa", true),
   );
+
+  // 3) Three pictures
+  const charts = el("div", {class: "grid g2"},
+    card("Who scores best?", "dots", dotRangeChart(d),
+      el("p", {class: "takeaway", text: tie && tie.range && tie.range[0] < 0 && tie.range[1] > 0
+        ? "Sarvam and Groq are tied (their bars overlap). Every AI using our documents is far ahead of Sarvam alone."
+        : "Every AI using our documents is far ahead of Sarvam alone."})),
+    card("How the live app's answers were graded", "donut", donut(d),
+      el("p", {class: "takeaway", text: `Best at: ${best}. Needs work: ${worst}.`})));
+  const progress = card("Progress across our three tests", "progress", progressChart(), el("p", {class: "takeaway", text: progressText()}));
+
+  // 4) Everything else, folded away for those who want it
+  const expertTiles = el("div", {class: "grid g4"},
+    tile("p-value (sign test)", cmp ? pval(cmp.p_value) : "—", cmp ? `better ${cmp.better} · same ${cmp.same} · worse ${cmp.worse}` : "", "p"),
+    tile("Effect size (Cohen's h)", cmp ? fmt(cmp.cohen_h, 2) : "—", cmp ? `${cmp.effect} effect` : "", "h"),
+    tile("Judge agreement (Cohen's kappa)", d.judges.kappa !== null ? fmt(d.judges.kappa, 2) : "—", d.judges.kappa !== null ? `${d.judges.kappa_words} · same grade ${pct(d.judges.agreement, 0)} of ${d.judges.pairs}` : "", "kappa"),
+    tile("Answer time (median / p95)", S.time_median ? `${fmt(S.time_median, 1)} s / ${fmt(S.time_p95, 1)} s` : "—", "", "time"),
+    tile("Fully / partly / wrong", S.grades ? `${S.grades.correct} · ${S.grades.partial} · ${S.grades.wrong}` : "—", `of ${tot} answers`, "split"),
+    tile("Search ranking (MRR)", d.search.mrr !== undefined ? fmt(d.search.mrr, 2) : "—", "1.00 = right PDF always first", "search"),
+    tile("Paired gain range", cmp && cmp.range ? `+${fmt(cmp.range[0])} to +${fmt(cmp.range[1])}` : "—", "points, 95% bootstrap", "gain"),
+    tile("Spread across question types", fmt(S.category_spread), "points (lower = more even)", null));
+  const cmpRows = d.comparisons.map(x => [`${AI[x.a].short} vs ${AI[x.b].short}`, `${x.gain >= 0 ? "+" : ""}${fmt(x.gain)} pts`,
+    x.range ? `${fmt(x.range[0])} to ${fmt(x.range[1])}` : "—", `${x.better} / ${x.same} / ${x.worse}`, pval(x.p_value), verdict(x)]);
+  const expert = el("details", {class: "card"},
+    el("summary", {style: "cursor:pointer;font-weight:700;font-size:16px", text: "🔬 For statisticians: all the numbers behind this page"}),
+    el("p", {class: "note", style: "margin-top:8px", text: "Every number has an (i) button that explains it in one sentence."}),
+    expertTiles,
+    el("div", {class: "grid", style: "margin-top:14px"},
+      card("Head-to-head comparisons (same questions)", "compare",
+        table(["Comparison", "Difference", "95% range", "Better / same / worse", "p-value", "Verdict"], cmpRows)),
+      card("Grade split for every AI", "split", stacked(d))));
+
+  return el("div", {class: "grid"}, banner, simple, charts, progress, expert);
 }
 
 function strengths(d) {
@@ -488,8 +512,9 @@ function strengths(d) {
           ["Off-topic questions correctly refused", pct((S.auto || {}).offtopic_refused, 0)],
           ["Farming questions wrongly refused (lower is better)", pct((S.auto || {}).wrongly_refused, 0)],
           ["Answer in the chosen language's script", pct((S.auto || {}).right_language, 0)]])),
-      card("Do the judges agree? (each judge's average grade)", "judges",
-        table(["AI", ...Object.values(d.judge_names)], judgeRows),
+      card("Do the judges agree?", "judges",
+        el("details", {}, el("summary", {class: "small", style: "cursor:pointer", text: "Show each judge's average grade"}),
+          table(["AI", ...Object.values(d.judge_names)], judgeRows)),
         el("p", {class: "takeaway", text: `Judges gave the same grade ${pct(d.judges.agreement, 0)} of the time; Cohen's kappa ${fmt(d.judges.kappa, 2)} (${d.judges.kappa_words}).`}))),
     card(`Questions every AI got wrong (${hardest.length})`, "hardest",
       hardest.length ? el("div", {}, hardest.map(q => el("div", {class: "small", style: "padding:6px 0;border-bottom:1px solid var(--line)"},

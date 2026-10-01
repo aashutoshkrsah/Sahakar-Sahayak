@@ -158,6 +158,11 @@ def warm_up():
     except Exception as e:
         log("PIPELINE", f"⚠️ self-check could not run: {e}")
     try:
+        from backend.services import bench_stats
+        bench_stats.warm_up_in_background()          # Explorer statistics ready before anyone opens the page
+    except Exception as e:
+        log("PIPELINE", f"⚠️ Explorer statistics warm-up skipped: {e}")
+    try:
         from backend.services import status
         status.startup_report()
     except Exception as e:

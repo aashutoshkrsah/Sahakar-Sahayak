@@ -21,7 +21,7 @@ Every answer tells the user **where it came from**: an official government PDF (
 > Hosted on free servers — if the app has been idle, the first answer can take up to a minute while the server wakes up.
 
 ### 🏆 Results at a glance
-- **Test 3 — 100 long, story-style questions, new v2 system:** Sarvam alone **26.5%** → with our search **81.0%** (95% range 74.5–87.5%). Same questions, paired: **+54.5 points** (range +45.8 to +63.2), better on 76 questions and worse on 4, p < 0.001, Cohen's h 1.16 (large effect).
+- **Test 3 — 100 long, story-style questions, new v2 system:** Sarvam alone **26.5%** → with our search **81.0%** (95% range 74–87%). Same questions, paired: **+54.5 points** (range +45.2 to +63.2), better on 76 questions and worse on 4, p < 0.001, Cohen's h 1.16 (large effect).
 - **Better than before on harder questions:** Test 2 (old v1 system) 62.0% → Test 3 (v2) **81.0%**, while Sarvam alone (the control) stayed at 26.5% in both. The correct official PDF is now ranked first for **95%** of questions (Test 2: 78%).
 - **Trustworthy grading:** two judges from different companies agree on 81% of answers, Cohen's kappa **0.66** (substantial agreement).
 - **Our document search more than doubles accuracy:** Sarvam answers **30.56%** correctly on its own and **72.78%** with Sahakar Sahayak's search.
@@ -201,19 +201,19 @@ Each question is a 4–5 line real-life story (a farmer, a PACS secretary, a ban
 
 | Contestant | Score (95% range) | Fully correct |
 |---|---|---|
-| **Sarvam + our documents (the live app)** | **81.0%** (74.5–87.5) | 68% |
-| Groq gpt-oss-120b + our documents | 80.0% (72.8–86.5) | 69% |
-| Cloudflare Llama 3.3 70B + our documents | 74.0% (66.2–81.2) | 61% |
-| Sarvam alone (no documents) | 26.5% (19.2–34.0) | 14% |
+| **Sarvam + our documents (the live app)** | **81.0%** (74.0–87.0) | 68% |
+| Groq gpt-oss-120b + our documents | 80.0% (72.8–86.8) | 69% |
+| Cloudflare Llama 3.3 70B + our documents | 74.0% (66.8–81.5) | 61% |
+| Sarvam alone (no documents) | 26.5% (19.2–33.8) | 14% |
 
-- **What our search adds (paired, same 100 questions): +54.5 points** (range +45.8 to +63.2); better on 76 questions, same on 20, worse on 4; sign test p < 0.001; Cohen's h 1.16 (large).
-- **Sarvam vs Groq is a tie** (+1.0 point, range −5.8 to +7.8). Every AI using our documents is far above Sarvam alone.
+- **What our search adds (paired, same 100 questions): +54.5 points** (range +45.2 to +63.2); better on 76 questions, same on 20, worse on 4; sign test p < 0.001; Cohen's h 1.16 (large).
+- **Sarvam vs Groq is a tie** (+1.0 point, range −6.0 to +7.8). Every AI using our documents is far above Sarvam alone.
 - Correct official PDF ranked first for **95%** of document questions (MRR 0.96); exact page found for 82%.
 - The green **Verified** badge is trustworthy: 82% of Verified answers were fully correct (average grade 91%).
 - Strongest: answers with several cases (97%). Weakest — next step: questions with a wrong assumption to correct (56%).
 
 **How to read the statistics** (all computed from the saved results, explained with an (i) button on the Explorer page):
-- **95% range (bootstrap):** the questions are re-drawn with replacement 2,000 times; the middle 95% of the scores is the range. Overlapping ranges = a tie.
+- **95% range (bootstrap):** the questions are re-drawn with replacement 2,000 times (computed with NumPy); the middle 95% of the scores is the range. Overlapping ranges = a tie.
 - **Paired gain:** the same questions with and without our documents, compared question by question.
 - **Sign test p-value:** the chance that "better on 76, worse on 4" happens by luck if documents didn't matter.
 - **Cohen's h:** how big the difference is (0.2 small, 0.5 medium, 0.8+ large).

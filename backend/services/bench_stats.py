@@ -11,12 +11,15 @@ Methods (all explained on the page with an (i) button):
   - Cohen's kappa   judge agreement with chance agreement removed (0.61–0.80 = substantial)
   - calibration     of answers the app marked 🟢 Verified, how many the judges graded correct
 """
+import hashlib
 import json
 import math
 import os
 import random
 import statistics
 import threading
+
+import numpy as np
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 GRADE = {"correct": 1.0, "partial": 0.5, "wrong": 0.0}
@@ -61,13 +64,14 @@ def _mean(v):
 
 
 def _boot(values, seed):
-    """95% bootstrap range of the mean (in %)."""
+    """95% bootstrap range of the mean (in %). NumPy does all 2,000 re-draws at once (fast C code)."""
     if len(values) < 2:
         return None
-    rng = random.Random(seed)
-    n = len(values)
-    means = sorted(sum(values[rng.randrange(n)] for _ in range(n)) / n for _ in range(B))
-    return [round(100 * means[int(0.025 * B)], 1), round(100 * means[int(0.975 * B) - 1], 1)]
+    arr = np.asarray(values, dtype=np.float64)
+    rng = np.random.default_rng(int(hashlib.md5(str(seed).encode()).hexdigest()[:8], 16))
+    means = arr[rng.integers(0, len(arr), size=(B, len(arr)))].mean(axis=1)
+    lo, hi = np.percentile(means, [2.5, 97.5])
+    return [round(100 * float(lo), 1), round(100 * float(hi), 1)]
 
 
 def _sign_p(better, worse):
@@ -269,3 +273,14 @@ def progress():
                     "without": {"score": (c.get("sarvam_plain") or {}).get("score"),
                                 "range": (c.get("sarvam_plain") or {}).get("range")}})
     return out
+
+
+def warm_up_in_background():
+    """Compute every test's statistics right after startup, so the Explorer opens instantly."""
+    def _run():
+        for t in TESTS:
+            try:
+                compute(t)
+            except Exception as e:
+                print(f"⚠️ Explorer statistics for Test {t} could not be prepared: {e}", flush=True)
+    threading.Thread(target=_run, daemon=True, name="explorer-stats").start()
